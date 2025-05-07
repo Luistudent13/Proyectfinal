@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulario Alumno</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="formulario-container" id="alumnoPage">
+    <h2>Registro de Alumno</h2>
+
+    <form id="formAlumno">
+      <input type="text" id="nombre" placeholder="Nombre(s)" required />
+      <input type="text" id="apellidos" placeholder="Apellidos" required />
+      <input type="text" id="matricula" placeholder="Matrícula" maxlength="9" required />
+
+      <input type="text" id="licenciatura" placeholder="Licenciatura" list="listaLicenciaturas" required />
+      <datalist id="listaLicenciaturas"></datalist>
+
+      <input type="text" id="placa" placeholder="Placa (ej. ABC-123-X)" maxlength="8" required />
+      <input type="text" id="color" placeholder="Color del vehículo" required />
+
+      <input type="text" id="marca" placeholder="Marca" list="listaMarcas" required />
+      <datalist id="listaMarcas"></datalist>
+
+      <button type="submit">Registrar Alumno</button>
+    </form>
+
+    <a href="menu.html">
+      <button class="btn-regresar">Volver al Menú</button>
+    </a>
+  </div>
+  <script src="../js/shared.js"></script>
+  <script src="../js/alumno.js"></script>  
+</body>
+</html>

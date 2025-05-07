@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verificación de Usuario</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="formulario-container" id="verificacionPage">
+    <h2>Buscar Usuario por Matrícula</h2>
+
+    <form id="formBuscarUsuario">
+      <input type="text" id="matriculaBuscar" placeholder="Ingrese matrícula (ej. 20100234)" required />
+      <button type="submit">Buscar</button>
+    </form>
+
+    <div id="resultadoUsuario" style="display: none;">
+      <h3>Resultado:</h3>
+      <p><strong>Nombre:</strong> <span id="nombreResultado"></span></p>
+      <p><strong>Matrícula:</strong> <span id="matriculaResultado"></span></p>
+      <p><strong>Tipo de Usuario:</strong> <span id="tipoUsuarioResultado"></span></p>
+      <p><strong>Placa:</strong> <span id="placaResultado"></span></p>
+      <p><strong>Color:</strong> <span id="colorResultado"></span></p>
+      <p><strong>Marca:</strong> <span id="marcaResultado"></span></p>
+    </div>
+
+    <a href="menu.html">
+      <button class="btn-regresar">Volver al Menú</button>
+    </a>
+  </div>
+  <script src="../js/shared.js"></script>
+  <script src="../js/verificacion.js"></script>
+</body>
+</html>

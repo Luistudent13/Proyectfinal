@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visitante Temporal</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="formulario-container" id="temporalPage">
+    <h2>Registro de Visitante Temporal</h2>
+
+    <form id="formTemporal">
+      <input type="text" id="nombreTemporal" placeholder="Nombre del visitante" required />
+      <input type="text" id="apellidosTemporal" placeholder="Apellidos" required />
+      <input type="text" id="personaRecoge" placeholder="¿A quién recoge?" required />
+      <input type="text" id="relacionEstudiante" placeholder="Relación con el estudiante" required />
+
+      <input type="text" id="placaTemporal" placeholder="Placa (ej. ABC-123-X)" maxlength="8" required />
+      <input type="text" id="colorTemporal" placeholder="Color del vehículo" required />
+
+      <input type="text" id="marcaTemporal" placeholder="Marca" list="listaMarcasTemporal" required />
+      <datalist id="listaMarcasTemporal"></datalist>
+
+      <button type="submit">Registrar Entrada</button>
+    </form>
+
+    <a href="menu.html">
+      <button class="btn-regresar">Volver al Menú</button>
+    </a>
+  </div>
+  <script src="../js/shared.js"></script>
+  <script src="../js/temporal.js"></script>  
+</body>
+</html>

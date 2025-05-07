@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulario Visitante</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="formulario-container" id="visitantePage">
+    <h2>Registro de Visitante</h2>
+
+    <form id="formVisitante">
+      <input type="text" id="nombreVisitante" placeholder="Nombre(s)" required />
+      <input type="text" id="apellidosVisitante" placeholder="Apellidos" required />
+      <input type="text" id="matriculaVisitante" placeholder="Identificador o visita #" required />
+
+      <input type="text" id="placaVisitante" placeholder="Placa (ej. ABC-123-X)" maxlength="8" required />
+      <input type="text" id="colorVisitante" placeholder="Color del vehículo" required />
+
+      <input type="text" id="marcaVisitante" placeholder="Marca" list="listaMarcasVisitante" required />
+      <datalist id="listaMarcasVisitante"></datalist>
+
+      <button type="submit">Registrar Visitante</button>
+    </form>
+
+    <a href="menu.html">
+      <button class="btn-regresar">Volver al Menú</button>
+    </a>
+  </div>
+  <script src="../js/shared.js"></script>
+  <script src="../js/visitante.js"></script>  
+</body>
+</html>
