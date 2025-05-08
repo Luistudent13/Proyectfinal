@@ -1,0 +1,20 @@
+# node_modules y entornos
+node_modules/
+.env
+.vscode/
+*.log
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Compilaciones o builds
+dist/
+build/
+
+# Archivos temporales
+*.swp
+*.tmp
+
+# Coverage (si llegas a usar pruebas)
+coverage/

@@ -4,11 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Iniciar Sesión</title>
-  <link rel="stylesheet" href="../styles.css" />
+  <!-- ✅ Ruta absoluta desde el root servido por Express -->
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
   <div class="login-container" id="loginPage">
-    <img src="../assets/logo_ucc.svg" alt="Logo UCC" class="logo" />
+    <!-- ✅ Ruta absoluta al logo -->
+    <img src="/assets/logo_ucc.svg" alt="Logo UCC" class="logo" />
     <h2>INICIAR SESIÓN</h2>
     <form id="loginForm">
       <input type="text" id="username" placeholder="Usuario" required />
@@ -16,7 +18,8 @@
       <button type="submit">Ingresar</button>
     </form>
   </div>
-  <script src="../js/shared.js"></script>
-  <script src="../js/login.js"></script>
+  <!-- ✅ Rutas absolutas a JS -->
+  <script src="/js/shared.js"></script>
+  <script src="/js/login.js"></script>
 </body>
 </html>

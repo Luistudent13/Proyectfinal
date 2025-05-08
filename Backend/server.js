@@ -9,7 +9,7 @@ const PORT = 3000;
 // Middlewares
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'Frontend')));
+app.use(express.static(path.join(__dirname, '../Frontend')));
 
 // Rutas
 const usuariosRoutes = require('./routes/usuarios');
