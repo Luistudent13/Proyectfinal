@@ -1,3 +1,40 @@
+document.getElementById("btnVerRegistros").addEventListener("click", () => {
+  window.location.href = "registros.html";
+});
+ 
+document.getElementById("btnIngreso").addEventListener("click", () => {
+  window.location.href = "verificacion.html"; // o la pantalla de ingreso que uses
+});
+
+document.getElementById("btnAlumno").addEventListener("click", () => {
+  window.location.href = "alumno.html";
+});
+
+document.getElementById("btnEmpleado").addEventListener("click", () => {
+  window.location.href = "empleado.html";
+});
+
+document.getElementById("btnVisitante").addEventListener("click", () => {
+  window.location.href = "visitante.html";
+});
+
+document.getElementById("btnTemporal").addEventListener("click", () => {
+  window.location.href = "temporal.html";
+});
+
+document.getElementById("btnHistorialAcceso").addEventListener("click", () => {
+  window.location.href = "historial.html"; // crea este archivo si aún no existe
+});
+
+document.getElementById("btnBuscarUsuario").addEventListener("click", () => {
+  window.location.href = "buscar.html"; // crea este archivo si aún no existe
+});
+
+document.getElementById("btnReportarProblema").addEventListener("click", () => {
+  window.location.href = "reporte.html";
+});
+
+
 // 🔹 Validar que matrícula tenga solo números y 9 dígitos
 function validarMatricula(matricula) {
     return /^\d{1,9}$/.test(matricula);

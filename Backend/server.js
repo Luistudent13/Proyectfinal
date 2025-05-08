@@ -24,7 +24,7 @@ app.use('/marcas', marcasRoutes);
 
 // Ruta raíz
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../Frontend/screens/login.html'));
+  res.sendFile(path.join(__dirname, '../Frontend/screens/index.html'));
 });
 
 // Iniciar servidor

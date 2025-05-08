@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registros</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="registro-table-container" id="registrosPage">
+    <img src="../assets/logo_ucc.svg" alt="Logo UCC" class="logo">
+    <h2>Registros de Usuarios</h2>
+
+    <div style="overflow-x: auto;">
+      <table class="registro-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Matrícula</th>
+            <th>Tipo</th>
+            <th>Licenciatura</th>
+            <th>Placa</th>
+            <th>Marca</th>
+            <th>Color</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="registrosBody"></tbody>
+      </table>
+    </div>
+
+    <button class="btn-rojo-mini" onclick="window.location.href='menu.html'">Volver</button>
+  </div>
+  <script src="../js/shared.js"></script>
+<script src="../js/registros.js"></script>
+</body>
+</html>

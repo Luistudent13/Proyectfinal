@@ -8,16 +8,30 @@
 </head>
 <body>
   <div class="menu-container" id="menuPage">
-    <h2>Menú Principal</h2>
+    <img src="../assets/logo_ucc.svg" alt="Logo UCC" class="logo">
 
-    <div class="menu-botones">
-      <a href="alumno.html"><button class="btn-azul">Alumno</button></a>
-      <a href="empleado.html"><button class="btn-azul">Empleado</button></a>
-      <a href="visitante.html"><button class="btn-azul">Visitante</button></a>
-      <a href="temporal.html"><button class="btn-azul">Temporal</button></a>
-      <a href="verificacion.html"><button class="btn-azul">Verificar Usuario</button></a>
-      <a href="reporte.html"><button class="btn-rojo">Reportar Problema</button></a>
+    <div class="seccion-menu">
+      <div class="seccion-titulo">Registro de usuario</div>
+      <button class="btn-azul-grande" id="btnIngreso">Registrar ingreso</button>
     </div>
+
+    <div class="seccion-menu">
+      <div class="seccion-titulo">Registrar nuevo usuario</div>
+      <div class="fila-doble">
+        <button class="btn-azul-mini" id="btnAlumno">Alumno</button>
+        <button class="btn-azul-mini" id="btnEmpleado">Empleado</button>
+      </div>
+      <button class="btn-azul" id="btnVisitante">Registrar visitante nuevo</button>
+      <button class="btn-azul" id="btnTemporal">Registrar usuario temporal</button>
+    </div>
+
+    <button class="btn-azul" id="btnVerRegistros">Ver registros</button>
+    <button class="btn-azul" id="btnHistorialAcceso">Ver historial de accesos</button>
+    <button class="btn-azul" id="btnBuscarUsuario">Buscar usuario</button>
+    <button class="btn-naranja" id="btnReportarProblema">Reportar problema</button>
+    <button class="btn-rojo-grande" onclick="mostrarModalCerrarSesion()">Cerrar sesión</button>
   </div>
+
+  <script src="../js/shared.js"></script>
 </body>
 </html>
