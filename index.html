@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sistema Estacionamiento</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
+</head>
+<body>
+  
+  <!-- Pantalla de bienvenida -->
+  <div class="welcome-container" id="welcomePage">
+    <div class="welcome-box">
+      <img src="assets/logo_ucc.svg" alt="Logo UCC" class="logo-welcome">
+      <button onclick="mostrarLogin()">INICIAR SESIÓN</button>
+    </div>
+  </div>
+
+  <!-- Pantalla de login -->
+  <div class="login-container" id="loginPage">
+    <img src="assets/logo_ucc.svg" alt="Logo UCC" class="logo">
+    <h2>INICIAR SESIÓN</h2>
+    <form id="loginForm">
+      <input type="text" placeholder="Username" id="username" required>
+      <input type="password" placeholder="Password" id="password" required>
+      <button type="submit">INGRESAR</button>
+    </form>
+  </div>
+
+  <!-- Menú principal (guardia) -->
+  <div class="menu-container" id="menuPage">
+    <img src="assets/logo_ucc.svg" alt="Logo UCC" class="logo">
+  
+    <!-- Sección: Registrar ingreso -->
+    <div class="seccion-menu">
+      <div class="seccion-titulo">Registro de usuario</div>
+      <button class="btn-azul-grande" id="btnIngreso">Registrar ingreso</button>
+    </div>
+  
+    <!-- Sección: Registrar nuevo usuario -->
+    <div class="seccion-menu">
+      <div class="seccion-titulo">Registrar nuevo usuario</div>
+      <div class="fila-doble">
+        <button class="btn-azul-mini" id="btnAlumno">Alumno</button>
+        <button class="btn-azul-mini" id="btnEmpleado">Empleado</button>
+      </div>
+      <button class="btn-azul" id="btnVisitante">Registrar visitante nuevo</button>
+      <button class="btn-azul" id="btnTemporal">Registrar usuario temporal</button>
+    </div>
+  
+    <!-- Otros botones fuera del marco -->
+    <button class="btn-azul" id="btnVerRegistros">Ver registros</button>
+    <button class="btn-azul" id="btnHistorialAcceso">Ver historial de accesos</button>
+    <button class="btn-azul-grande" id="btnBuscarUsuario">Buscar usuario</button>
+    <button class="btn-naranja" id="btnReportarProblema">Reportar problema</button>
+    <button class="btn-rojo-grande" onclick="mostrarModalCerrarSesion()">Cerrar sesión</button>
+  </div>
+  
+
+  <!-- Pantalla del formulario Alumno -->
+  <div class="alumno-form-container" id="alumnoPage" style="display: none;">
+    <img src="assets/logo_ucc.svg" alt="Logo UCC" class="logo">
+    <div class="form-box">
+      <form id="formAlumno">
+        <fieldset>
+          <legend>Datos del alumno</legend>
+          <div class="row">
+            <div class="form-group">
+              <label for="nombre">Nombre(s):</label>
+              <input type="text" id="nombre" required>
+            </div>
+            <div class="form-group">
+              <label for="apellidos">Apellidos:</label>
+              <input type="text" id="apellidos" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="matricula">Matrícula:</label>
+            <input type="text" id="matricula" required>
+          </div>
+          <div class="form-group" style="position: relative;">
+            <label for="licenciaturaInput">Licenciatura:</label>
+            <input type="text" id="licenciaturaInput" class="input-busqueda" autocomplete="off" required>
+            <div id="licenciaturaDropdown" class="dropdown-content"></div>
+          </div>
+        </fieldset>
+  
+        <fieldset>
+          <legend>Datos del vehículo</legend>
+          <div class="form-group">
+            <label for="placa">Número de Placa:</label>
+            <input type="text" id="placa" required oninput="formatearPlaca(this)">
+
+          </div>
+          <div class="form-group">
+            <label for="color">Color del vehículo:</label>
+            <input type="text" id="color" required>
+          </div>
+          <div class="form-group" style="position: relative;">
+            <label for="marcaInput">Marca del vehículo:</label>
+            <input type="text" id="marcaInput" class="input-busqueda" autocomplete="off" required>
+          </div>          
+        </fieldset>
+  
+        <div class="form-buttons">
+          <button type="submit" class="btn-azul-mini">Enviar</button>
+          <button type="button" class="btn-rojo-mini" onclick="cancelarAlumno()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+ <!-- Pantalla del formulario Empleado -->
+<div class="empleado-form-container" id="empleadoPage" style="display: none;">
+  <img src="assets/logo_ucc.svg" alt="Logo UCC" class="logo">
+  <div class="form-box">
+    <form id="formEmpleado">
+      <fieldset>
+        <legend>Datos del Empleado</legend>
+        <div class="row">
+          <div class="form-group">
+            <label for="nombre_empl">Nombre(s):</label>
+            <input type="text" id="nombre_empl" required>
+          </div>
+          <div class="form-group">
+            <label for="apellidos_empl">Apellidos:</label>
+            <input type="text" id="apellidos_empl" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="matricula_empl">Matrícula de empleado:</label>
+          <input type="text" id="matricula_empl" required>
+        </div>
+        <div class="form-group">
+          <label for="area_empl">Área:</label>
+          <input type="text" id="area_empl" required>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Datos del vehículo</legend>
+        <div class="form-group">
+          <label for="placa_empl">Número de Placa:</label>
+          <input type="text" id="placa_empl" required oninput="formatearPlaca(this)">
+        </div>
+        <div class="form-group">
+          <label for="color_empl">Color del vehículo:</label>
+          <input type="text" id="color_empl" required>
+        </div>
+        <div class="form-group" style="position: relative;">
+          <label for="marcaInput">Marca del vehículo:</label>
+          <input type="text" id="marcaEmpleadoInput" class="input-busqueda" autocomplete="off" required>
+        </div>        
+      </fieldset>
+
+      <div class="form-buttons">
+        <button type="submit" class="btn-azul-mini">Enviar</button>
+        <button type="button" class="btn-rojo-mini" onclick="cancelarEmpleado()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Pantalla del formulario Usuario Temporal -->
+<div class="empleado-form-container" id="temporalPage" style="display: none;">
+  <img src="assets/logo_ucc.svg" alt="Logo UCC" class="logo">
+  <div class="form-box">
+    <form id="formTemporal">
+      <fieldset>
+        <legend>Datos del visitante</legend>
+        <div class="row">
+          <div class="form-group">
+            <label for="nombre_temp">Nombre(s):</label>
+            <input type="text" id="nombre_temp" required>
+          </div>
+          <div class="form-group">
+            <label for="apellidos_temp">Apellidos:</label>
+            <input type="text" id="apellidos_temp" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="persona_recoge">Persona que recoge:</label>
+          <input type="text" id="persona_recoge" required>
+        </div>
+        <div class="form-group">
+          <label for="relacion_estudiante">Relación con la/el estudiante:</label>
+          <input type="text" id="relacion_estudiante" required>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Datos del vehículo</legend>
+        <div class="form-group">
+          <label for="placa_temp">Placa del vehículo:</label>
+          <input type="text" id="placa_temp" required oninput="formatearPlaca(this)">
+        </div>
+        <div class="form-group">
+          <label for="color_temp">Color del vehículo:</label>
+          <input type="text" id="color_temp" required>
+        </div>
+        <div class="form-group" style="position: relative;">
+          <label for="marcaInput">Marca del vehículo:</label>
+          <input type="text" id="marcaTemporalInput" class="input-busqueda" autocomplete="off" required>
+        </div>        
+      </fieldset>
+
+      <div class="form-buttons">
+        <button type="submit" class="btn-azul-mini">Enviar</button>
+        <button type="button" class="btn-rojo-mini" onclick="cancelarTemporal()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Pantalla del formulario Visitante -->
+<div class="empleado-form-container" id="visitantePage" style="display: none;">
+  <img src="assets/logo_ucc.svg" alt="Logo UCC" class="logo">
+  <div class="form-box">
+    <form id="formVisitante">
+      <fieldset>
+        <legend>Registrar visitante</legend>
+        <div class="row">
+          <div class="form-group">
+            <label for="nombre_visitante">Nombre(s):</label>
+            <input type="text" id="nombre_visitante" required>
+          </div>
+          <div class="form-group">
+            <label for="apellidos_visitante">Apellidos:</label>
+            <input type="text" id="apellidos_visitante" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="evento_visitante">Evento al que asiste:</label>
+          <input type="text" id="evento_visitante" required>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label for="hora_ingreso">H. de ingreso:</label>
+            <input type="time" id="hora_ingreso" required>
+          </div>
+          <div class="form-group">
+            <label for="hora_salida">H. de salida:</label>
+            <input type="time" id="hora_salida" required>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Datos del vehículo</legend>
+        <div class="form-group">
+          <label for="placa_visitante">Placa del vehículo:</label>
+          <input type="text" id="placa_visitante" required oninput="formatearPlaca(this)">
+        </div>
+        <div class="form-group">
+          <label for="color_visitante">Color del vehículo:</label>
+          <input type="text" id="color_visitante" required>
+        </div>
+        <div class="form-group" style="position: relative;">
+          <label for="marcaInput">Marca del vehículo:</label>
+          <input type="text" id="marcaVisitanteInput" class="input-busqueda" autocomplete="off" required>
+        </div>        
+      </fieldset>
+
+      <div class="form-buttons">
+        <button type="submit" class="btn-azul-mini">Enviar</button>
+        <button type="button" class="btn-rojo-mini" onclick="cancelarVisitante()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Vista de registros -->
+<div class="registro-table-container" id="registrosPage" style="display: none;">
+  <img src="assets/logo_ucc.svg" alt="Logo UCC" class="logo">
+  <h2>Registros de Usuarios</h2>
+  <!-- ESTE DIV es el que controla el scroll horizontal si la tabla se desborda -->
+  <div style="overflow-x: auto;">
+    <table class="registro-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Matrícula</th>
+          <th>Tipo</th>
+          <th>Licenciatura</th> <!-- ✅ NUEVA -->
+          <th>Placa</th>
+          <th>Marca</th>
+          <th>Color</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="registrosBody">
+        <!-- Aquí se insertan filas dinámicamente -->
+      </tbody>
+    </table>
+  </div>
+  <button class="btn-rojo-mini" onclick="volverAlMenu()">Volver</button>
+</div>
+
+<div class="registro-table-container" id="registrosAccesoPage" style="display: none;">
+  <img src="assets/logo_ucc.svg" alt="Logo UCC" class="logo">
+  <h2>Historial de accesos</h2>
+  
+  <input type="text" id="busquedaAcceso" placeholder="Buscar por placa o nombre..." oninput="filtrarAccesos()">
+
+  <table class="registro-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Usuario</th>
+        <th>Placa</th>
+        <th>Fecha y hora</th>
+      </tr>
+    </thead>
+    <tbody id="accesosBody"></tbody>
+  </table>
+
+  <div class="form-buttons">
+    <button class="btn-rojo-mini" onclick="volverMenuDesdeAccesos()">Volver</button>
+  </div>
+</div>
+
+
+
+
+<div id="editarUsuarioPage" style="display:none;" class="alumno-form-container">
+  <img src="assets/logo_ucc.svg" alt="Logo UCC" class="logo">
+  <div class="form-box">
+    <form id="formEditarUsuario">
+      <fieldset>
+        <legend>Editar datos del usuario</legend>
+
+        <div class="form-group">
+          <label for="editarNombre">Nombre completo</label>
+          <input type="text" id="editarNombre" required>
+        </div>
+
+        <div class="form-group">
+          <label for="editarMatricula">Matrícula</label>
+          <input type="text" id="editarMatricula" required>
+        </div>
+
+        <div class="form-group">
+          <label for="editarPlaca">Placa</label>
+          <input type="text" id="editarPlaca" required oninput="formatearPlaca(this)">
+        </div>
+
+        <div class="form-group">
+          <label for="editarColor">Color</label>
+          <input type="text" id="editarColor" required>
+        </div>
+
+        <div class="form-group" id="campoLicenciaturaOArea" style="display: none;">
+          <label id="labelLicenciaArea" for="editarLicenciatura">Licenciatura o Área</label>
+          <input type="text" id="editarLicenciatura" class="input-busqueda" autocomplete="off">
+
+        </div>
+
+        <div class="form-group">
+          <label for="editarMarca">Marca del vehículo</label>
+          <input type="text" id="editarMarca" class="input-busqueda" autocomplete="off" required>
+        </div>
+
+        <input type="hidden" id="editarIdUsuario">
+
+        <div class="form-buttons">
+          <button type="submit" class="btn-azul-mini">Guardar Cambios</button>
+          <button type="button" class="btn-rojo-mini" onclick="cancelarEdicion()">Cancelar</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div id="reportarProblemaPage" style="display: none;" class="alumno-form-container">
+  <div class="form-box">
+    <span class="seccion-titulo">Reportar un problema</span>
+    <form id="formReporte">
+      <div class="form-group">
+        <label for="asuntoReporte">Asunto:</label>
+        <input type="text" id="asuntoReporte" required>
+      </div>
+      <div class="form-group">
+        <label for="descripcionReporte">Descripción:</label>
+        <textarea id="descripcionReporte" rows="5" required style="resize: none; border-radius: 10px; padding: 10px;"></textarea>
+      </div>
+      <div class="form-buttons">
+        <button type="submit" class="btn-azul">Enviar</button>
+        <button type="button" onclick="cancelarReporte()" class="btn-rojo">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<!-- Pantalla de verificación de placas -->
+<div class="verificacion-container" id="verificacionPage" style="display: none;">
+  <div class="verificacion-box">
+    <img src="assets/logo_ucc.svg" alt="Logo UCC" class="logo-verificacion">
+    <div class="verificacion-content">
+      <h3>Verificación de vehículo</h3>
+      <label for="placaVerificar">Ingresar placa del vehículo:</label>
+      <input type="text" id="placaVerificar" placeholder="XXX-XXX-X" required oninput="formatearPlaca(this)">
+      <div class="form-group">
+      <div class="verificacion-buttons">
+        <button class="btn-verde" onclick="verificarPlaca()">Verificar</button>
+        <button class="btn-rojo" onclick="cancelarVerificacion()">Cancelar</button>
+      </div>
+      <p id="resultadoVerificacion"></p>
+    </div>
+  </div>
+</div>
+
+<!-- Pantalla de Buscar Usuario -->
+<div class="verificacion-container" id="buscarUsuarioPage" style="display: none;">
+  <div class="verificacion-box">
+    <img src="assets/logo_ucc.svg" class="logo-verificacion" alt="Logo UCC">
+    <div class="verificacion-content">
+      <h3>Búsqueda de usuario</h3>
+
+      <label for="matriculaBuscar">Matrícula:</label>
+      <input type="text" id="matriculaBuscar" placeholder="Ej. 20231234">
+
+      <label for="placaBuscar">Placa:</label>
+      <input type="text" id="placaBuscar" placeholder="Ej. XXX-000-X">
+
+      <div class="verificacion-buttons">
+        <button class="btn-verde" onclick="buscarUsuario()">Buscar</button>
+        <button class="btn-rojo" onclick="cancelarBusqueda()">Cancelar</button>
+      </div>
+
+      <div id="resultadoBusqueda" style="margin-top: 20px;"></div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  <script src="script.js"></script>
+
+  <div id="customAlert" class="alert-modal">
+    <div class="alert-content">
+      <p id="alertMessage">Mensaje aquí</p>
+      <button onclick="cerrarAlerta()">Aceptar</button>
+    </div>
+  </div>
+  
+  <div id="modalCerrarSesion" class="alert-modal">
+    <div class="alert-content">
+      <p>¿Estás seguro de cerrar sesión?</p>
+      <button onclick="confirmarCerrarSesion()">Sí</button>
+      <button onclick="cancelarCerrarSesion()">Cancelar</button>
+    </div>
+  </div>
+  </div>
+
+</body>
+</html>
