@@ -63,7 +63,8 @@ body {
 
 .logo {
   width: 100px;
-  margin-bottom: 15px;
+  margin: 0 auto 15px auto;
+  display: block;
 }
 
 h2 {
@@ -71,7 +72,10 @@ h2 {
   margin-bottom: 20px;
 }
 
-input, select {
+/* SOLO para login y búsqueda */
+.login-container input,
+.menu-container input,
+.input-busqueda {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -81,6 +85,7 @@ input, select {
   background: transparent;
   outline: none;
 }
+
 
 button {
   width: 100%;
@@ -373,7 +378,7 @@ legend {
   max-width: 600px;
   width: 90%;
   text-align: center;
-  display: none;
+  display: block;
   margin: 0 auto;
   overflow-x: auto;
 }
@@ -454,6 +459,11 @@ legend {
   display: block;
   margin: 15px 0 5px;
   font-weight: bold;
+}
+
+.verificacion-content h3 {
+  margin-top: 0;
+  font-size: 20px;
 }
 
 .verificacion-content input {
@@ -558,24 +568,25 @@ legend {
   background: white;
   border: 1px solid #ccc;
   border-radius: 10px;
-  padding: 5px 0;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 0;
+  list-style: none;
+  margin: 5px 0 0 0;
   z-index: 9999;
-  max-height: 200px;
-  overflow-y: auto;
 }
 
+
 .awesomplete li {
-  padding: 10px 15px;
-  color: black;
+  padding: 8px 12px;
   font-size: 15px;
-  cursor: pointer;
+  color: #333;
 }
 
 .awesomplete li:hover,
 .awesomplete li[aria-selected="true"] {
-  background-color: #0070b9;
+  background: #0070b9;
   color: white;
+  border-radius: 5px;
 }
 
 .awesomplete mark {
@@ -667,4 +678,103 @@ legend {
   .form-box {
     max-width: 720px;
   }
+}
+
+.input-con-icono {
+  position: relative;
+  width: 100%;
+}
+
+.input-con-icono input {
+  width: 100%;
+  padding-right: 40px; /* espacio para el icono */
+  box-sizing: border-box;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tarjeta-resultado {
+  background: white;
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-top: 20px;
+  color: #333;
+  text-align: left;
+}
+
+.tarjeta-resultado p {
+  margin: 8px 0;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 18px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 16px;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #0070b9;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+
+.row .form-group {
+  flex: 1 1 48%;
+}
+
+@media (max-width: 600px) {
+  .row .form-group {
+    flex: 1 1 100%;
+  }
+}
+
+.contenedor-principal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.visitante-form-container {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  display: block;
+}
+
+
+[aria-live] {
+  display: none !important;
+}
+
+.awesomplete li[aria-selected="true"] {
+  background: #0070b9;
+  color: white;
+  border-radius: 5px;
 }

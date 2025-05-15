@@ -3,35 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Formulario Empleado</title>
+  <title>Registro de Empleado</title>
   <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
 </head>
 <body>
-  <div class="formulario-container" id="empleadoPage">
-    <h2>Registro de Empleado</h2>
+  <div class="empleado-form-container" id="empleadoPage">
+    <img src="../assets/logo_ucc.svg" alt="Logo UCC" class="logo" />
+    <div class="form-box">
+      <form id="formEmpleado">
+        <fieldset>
+          <legend>Datos del Empleado</legend>
+          <div class="row">
+            <div class="form-group">
+              <label for="nombreEmpleado">Nombre(s):</label>
+              <input type="text" id="nombreEmpleado" required />
+            </div>
+            <div class="form-group">
+              <label for="apellidosEmpleado">Apellidos:</label>
+              <input type="text" id="apellidosEmpleado" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="matriculaEmpleado">Matrícula:</label>
+            <input type="text" id="matriculaEmpleado" maxlength="3" required />
+          </div>
+          <div class="form-group">
+            <label for="areaEmpleado">Área del empleado:</label>
+            <input type="text" id="areaEmpleado" required />
+          </div>
+        </fieldset>
 
-    <form id="formEmpleado">
-      <input type="text" id="nombreEmpleado" placeholder="Nombre(s)" required />
-      <input type="text" id="apellidosEmpleado" placeholder="Apellidos" required />
-      <input type="text" id="matriculaEmpleado" placeholder="Matrícula o ID" maxlength="9" required />
+        <fieldset>
+          <legend>Datos del vehículo</legend>
+          <div class="form-group">
+            <label for="placaEmpleado">Número de Placa:</label>
+            <input type="text" id="placaEmpleado" maxlength="8" required />
+          </div>
+          <div class="form-group">
+            <label for="colorEmpleado">Color del vehículo:</label>
+            <input type="text" id="colorEmpleado" required />
+          </div>
+          <div class="form-group">
+            <label for="marcaEmpleado">Marca del vehículo:</label>
+            <input type="text" id="marcaEmpleado" class="awesomplete" autocomplete="off" required />
+          </div>
+        </fieldset>
 
-      <input type="text" id="areaEmpleado" placeholder="Área del empleado" required />
-
-      <input type="text" id="placaEmpleado" placeholder="Placa (ej. ABC-123-X)" maxlength="8" required />
-      <input type="text" id="colorEmpleado" placeholder="Color del vehículo" required />
-
-      <input type="text" id="marcaEmpleado" placeholder="Marca" list="listaMarcasEmpleado" required />
-      <datalist id="listaMarcasEmpleado"></datalist>
-
-      <button type="submit">Registrar Empleado</button>
-    </form>
-
-    <a href="menu.html">
-      <button class="btn-regresar">Volver al Menú</button>
-    </a>
+        <div class="form-buttons">
+          <button type="submit" class="btn-azul-mini">Enviar</button>
+          <a href="menu.html"><button type="button" class="btn-rojo-mini">Cancelar</button></a>
+        </div>
+      </form>
+    </div>
   </div>
+
   <script src="../js/shared.js"></script>
   <script src="../js/empleado.js"></script>
-  
 </body>
 </html>

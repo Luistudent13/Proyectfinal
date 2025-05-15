@@ -11,4 +11,7 @@ router.post("/", accesosController.registrarAcceso);
 // 🔹 GET /accesos/matricula/:matricula
 router.get("/matricula/:matricula", accesosController.buscarAccesosPorMatricula);
 
+router.post("/salida", accesosController.registrarSalida);
+
+
 module.exports = router;

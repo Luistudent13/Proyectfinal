@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historial de Accesos</title>
+  <link rel="stylesheet" href="../historial.css">
+</head>
+<body>
+  <div class="historial-container">
+    <img src="../assets/logo_ucc.svg" alt="Logo UCC" class="logo">
+    <h2>Historial de Accesos</h2>
+
+    <div id="tablaHistorialContainer" class="tabla-container">
+      <table id="tablaHistorial">
+        <thead>
+  <tr>
+    <th>Nombre</th>
+    <th>Placa</th>
+    <th>Fecha Acceso</th>
+    <th>Hora Entrada</th>
+    <th>Hora Salida</th>
+  </tr>
+</thead>
+<tbody id="tablaHistorialBody"></tbody>
+          <!-- Registros se insertan aquí por JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <button class="btn-azul" onclick="window.location.href='../screens/menu.html'">Volver al Menú</button>
+  </div>
+
+  <script src="../js/historial.js"></script>
+</body>
+</html>

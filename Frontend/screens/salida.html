@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrar Salida</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-box {
+      background: #64b7d2;
+      border-radius: 20px;
+      padding: 30px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-box img {
+      width: 120px;
+      margin-bottom: 20px;
+    }
+
+    .form-box h2 {
+      color: white;
+      margin: 0 0 10px;
+    }
+
+    .form-box p {
+      color: white;
+      margin: 0 0 20px;
+    }
+
+    .input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .btn-verde {
+      background: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .btn-rojo {
+      background: #f44336;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-verde:hover {
+      background: #45a049;
+    }
+
+    .btn-rojo:hover {
+      background: #e53935;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-box">
+    <img src="../assets/logo_ucc.svg" alt="Logo UCC">
+    <h2>Registrar salida</h2>
+    <p>Ingresar placa del vehículo:</p>
+
+    <form id="formSalida">
+      <input type="text" id="placaSalida" class="input" placeholder="XXX-XXX-X" required />
+      <div>
+        <button type="submit" class="btn-verde">Registrar</button>
+        <button type="button" class="btn-rojo" onclick="window.location.href='menu.html'">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="../js/salida.js"></script>
+</body>
+</html>

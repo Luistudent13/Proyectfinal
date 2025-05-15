@@ -7,29 +7,61 @@
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <div class="formulario-container" id="temporalPage">
-    <h2>Registro de Visitante Temporal</h2>
 
+<div class="temporal-form-container" id="temporalPage">
+  <div class="form-box">
     <form id="formTemporal">
-      <input type="text" id="nombreTemporal" placeholder="Nombre del visitante" required />
-      <input type="text" id="apellidosTemporal" placeholder="Apellidos" required />
-      <input type="text" id="personaRecoge" placeholder="¿A quién recoge?" required />
-      <input type="text" id="relacionEstudiante" placeholder="Relación con el estudiante" required />
+      <fieldset>
+        <legend>Registro de Visitante Temporal</legend>
 
-      <input type="text" id="placaTemporal" placeholder="Placa (ej. ABC-123-X)" maxlength="8" required />
-      <input type="text" id="colorTemporal" placeholder="Color del vehículo" required />
+        <div class="form-group">
+          <label for="nombreTemporal">Nombre del visitante</label>
+          <input type="text" id="nombreTemporal" required />
+        </div>
 
-      <input type="text" id="marcaTemporal" placeholder="Marca" list="listaMarcasTemporal" required />
-      <datalist id="listaMarcasTemporal"></datalist>
+        <div class="form-group">
+          <label for="apellidosTemporal">Apellidos</label>
+          <input type="text" id="apellidosTemporal" required />
+        </div>
 
-      <button type="submit">Registrar Entrada</button>
+        <div class="form-group">
+          <label for="personaRecoge">¿A quién recoge?</label>
+          <input type="text" id="personaRecoge" required />
+        </div>
+
+        <div class="form-group">
+          <label for="relacionEstudiante">Relación con el estudiante</label>
+          <input type="text" id="relacionEstudiante" required />
+        </div>
+
+        <div class="form-group">
+          <label for="placaTemporal">Placa</label>
+          <input type="text" id="placaTemporal" maxlength="8" required />
+        </div>
+
+        <div class="form-group">
+          <label for="colorTemporal">Color del vehículo</label>
+          <input type="text" id="colorTemporal" required />
+        </div>
+
+        <div class="form-group">
+          <label for="marcaTemporal">Marca</label>
+          <input type="text" id="marcaTemporal" list="listaMarcasTemporal" required />
+          <datalist id="listaMarcasTemporal"></datalist>
+        </div>
+
+        <div class="form-buttons">
+          <button type="submit" class="btn-azul">Registrar Entrada</button>
+          <a href="menu.html"><button type="button" class="btn-rojo">Cancelar</button></a>
+        </div>
+
+      </fieldset>
     </form>
-
-    <a href="menu.html">
-      <button class="btn-regresar">Volver al Menú</button>
-    </a>
   </div>
-  <script src="../js/shared.js"></script>
-  <script src="../js/temporal.js"></script>  
+</div>
+
+<script src="../js/shared.js"></script>
+<script src="../js/temporal.js"></script>
+
 </body>
 </html>

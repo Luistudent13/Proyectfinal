@@ -1,34 +1,42 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("formVisitante");
-    const matriculaInput = document.getElementById("matriculaVisitante");
-    const placaInput = document.getElementById("placaVisitante");
-  
-    // Autocompletado de marcas
-    activarAutocompletadoMarcas("marcaVisitante", "listaMarcasVisitante");
-  
-    // Validación de matrícula (opcional si usas ID visita)
-    matriculaInput.addEventListener("input", function () {
-      if (!validarMatricula(this.value)) {
-        this.setCustomValidity("Solo números. Máx. 9 dígitos.");
-      } else {
-        this.setCustomValidity("");
-      }
-    });
-  
-    // Formatear placa
-    formatearPlacaAuto(placaInput);
-  
+  const form = document.getElementById("formVisitante");
+  const matriculaInput = document.getElementById("matriculaVisitante");
+  const placaInput = document.getElementById("placaVisitante");
+  const nombreInput = document.getElementById("nombreVisitante");
+  const apellidosInput = document.getElementById("apellidosVisitante");
+
+  const soloLetrasRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/;
+
+  nombreInput.addEventListener("input", function() {
+    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
+  });
+
+  apellidosInput.addEventListener("input", function() {
+    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
+  });
+
+// Autocompletado de marcas
+activarAutocompletadoMarcas("marcaVisitante");
+placaInput.addEventListener("input", () => {
+  formatearPlacaAuto(placaInput);
+});
+
+
     // Envío del formulario
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
   
       const nombre = document.getElementById("nombreVisitante").value.trim();
-      const apellidos = document.getElementById("apellidosVisitante").value.trim();
-      const matricula = matriculaInput.value.trim(); // Puede ser ID de visita
-      const placa = placaInput.value.trim();
-      const color = document.getElementById("colorVisitante").value.trim();
-      const marcaTexto = document.getElementById("marcaVisitante").value.trim();
+    const apellidos = document.getElementById("apellidosVisitante").value.trim();
+    const evento = document.getElementById("eventoAsiste").value.trim();
+    const horaIngreso = document.getElementById("horaIngreso").value;
+    const horaSalida = document.getElementById("horaSalida").value;
+    const placa = document.getElementById("placaVisitante").value.trim();
+    const color = document.getElementById("colorVisitante").value.trim();
+    const marcaTexto = document.getElementById("marcaVisitante").value.trim();
   
+    const nombreCompleto = `${nombre} ${apellidos}`;
+
       try {
         const resMarcas = await fetch("http://localhost:3000/marcas");
         const marcas = await resMarcas.json();
@@ -40,18 +48,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
   
         const datos = {
-          nombre,
-          apellidos,
-          matricula,
-          tipoUsuario: 5, // Visitante
-          licenciatura: null,
-          areaEmpleado: null,
-          personaRecoge: null,
-          relacionEstudiante: null,
-          placa,
-          color,
-          marca: idMarca
-        };
+  nombre_completo: nombreCompleto,
+  matricula: null,
+  tipoUsuario: 5,
+  licenciatura: null,
+  area_empleado: null,
+  persona_recoge: null,
+  relacion_estudiante: null,
+  placa,
+  color,
+  idMarca: idMarca
+};
+
+
   
         const res = await fetch("http://localhost:3000/usuarios", {
           method: "POST",
@@ -71,4 +80,3 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
-  

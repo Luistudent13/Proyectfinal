@@ -18,3 +18,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
   
+  function togglePasswordVisibility() {
+  const input = document.getElementById("password");
+  const eyeIcon = document.getElementById("eyeIcon");
+
+  if (input.type === "password") {
+    input.type = "text";
+    eyeIcon.setAttribute("fill", "#0070b9");
+  } else {
+    input.type = "password";
+    eyeIcon.setAttribute("fill", "#444");
+  }
+}

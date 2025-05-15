@@ -14,7 +14,17 @@
     <h2>INICIAR SESIÓN</h2>
     <form id="loginForm">
       <input type="text" id="username" placeholder="Usuario" required />
-      <input type="password" id="password" placeholder="Contraseña" required />
+<div class="input-con-icono">
+  <input type="password" id="password" placeholder="Contraseña" required />
+  <span class="toggle-password" onclick="togglePasswordVisibility()">
+    <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="#444">
+      <path d="M0 0h24v24H0z" fill="none"/>
+      <path d="M12 6a9.77 9.77 0 018 4.5A9.77 9.77 0 0112 15a9.77 9.77 0 01-8-4.5A9.77 9.77 0 0112 6m0-2C6.5 4 2 8 2 12s4.5 8 10 8 10-4 10-8-4.5-8-10-8zm0 3a5 5 0 015 5 5 5 0 01-5 5 5 5 0 01-5-5 5 5 0 015-5zm0 2a3 3 0 100 6 3 3 0 000-6z"/>
+    </svg>
+  </span>
+</div>
+
+
       <button type="submit">Ingresar</button>
     </form>
   </div>

@@ -3,32 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Formulario Visitante</title>
+  <title>Registrar visitante</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <div class="formulario-container" id="visitantePage">
-    <h2>Registro de Visitante</h2>
 
+<div class="contenedor-principal">
+  <div class="visitante-form-container">
+    <img src="../assets/logo_ucc.svg" alt="Logo UCC" class="logo">
     <form id="formVisitante">
-      <input type="text" id="nombreVisitante" placeholder="Nombre(s)" required />
-      <input type="text" id="apellidosVisitante" placeholder="Apellidos" required />
-      <input type="text" id="matriculaVisitante" placeholder="Identificador o visita #" required />
+      <div class="form-box">
 
-      <input type="text" id="placaVisitante" placeholder="Placa (ej. ABC-123-X)" maxlength="8" required />
-      <input type="text" id="colorVisitante" placeholder="Color del vehículo" required />
+        <fieldset>
+          <legend>Registrar visitante</legend>
 
-      <input type="text" id="marcaVisitante" placeholder="Marca" list="listaMarcasVisitante" required />
-      <datalist id="listaMarcasVisitante"></datalist>
+          <div class="row">
+            <div class="form-group">
+              <label for="nombreVisitante">Nombre(s):</label>
+              <input type="text" id="nombreVisitante" required />
+            </div>
+            <div class="form-group">
+              <label for="apellidosVisitante">Apellidos:</label>
+              <input type="text" id="apellidosVisitante" required />
+            </div>
+          </div>
 
-      <button type="submit">Registrar Visitante</button>
+          <div class="form-group">
+            <label for="eventoAsiste">Evento al que asiste:</label>
+            <input type="text" id="eventoAsiste" required />
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="horaIngreso">H. de ingreso:</label>
+              <input type="time" id="horaIngreso" required />
+            </div>
+            <div class="form-group">
+              <label for="horaSalida">H. de salida:</label>
+              <input type="time" id="horaSalida" required />
+            </div>
+          </div>
+
+        </fieldset>
+
+        <fieldset>
+          <legend>Datos del vehículo</legend>
+
+          <div class="form-group">
+            <label for="placaVisitante">Placa del vehículo:</label>
+            <input type="text" id="placaVisitante" maxlength="8" required />
+          </div>
+
+          <div class="form-group">
+            <label for="colorVisitante">Color del vehículo:</label>
+            <input type="text" id="colorVisitante" required />
+          </div>
+
+          <div class="form-group">
+            <label for="marcaVisitante">Marca del vehículo:</label>
+<input type="text" id="marcaVisitante" class="awesomplete" autocomplete="off" required />            <datalist id="listaMarcasVisitante"></datalist>
+          </div>
+
+        </fieldset>
+
+        <div class="form-buttons">
+          <button type="submit" class="btn-azul">Enviar</button>
+          <a href="menu.html"><button type="button" class="btn-rojo">Cancelar</button></a>
+        </div>
+
+      </div>
     </form>
-
-    <a href="menu.html">
-      <button class="btn-regresar">Volver al Menú</button>
-    </a>
   </div>
-  <script src="../js/shared.js"></script>
-  <script src="../js/visitante.js"></script>  
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
+<script src="../js/shared.js"></script>
+<script src="../js/visitante.js"></script>
+
+
 </body>
 </html>

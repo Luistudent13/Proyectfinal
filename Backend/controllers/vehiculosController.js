@@ -4,7 +4,7 @@ const db = require("../config/database");
 exports.obtenerVehiculos = async (req, res) => {
   try {
     const [resultados] = await db.query(
-      `SELECT v.*, u.Nombre, u.Apellidos, m.Marca
+      `SELECT v.*, u.Nombre_Completo, m.Marca
        FROM vehiculos v
        JOIN usuarios u ON v.ID_Usuario = u.ID_Usuario
        JOIN marca_vehiculos m ON v.ID_Marca = m.ID_Marca
@@ -45,7 +45,7 @@ exports.buscarVehiculoPorPlaca = async (req, res) => {
 
   try {
     const [resultados] = await db.query(
-      `SELECT v.*, u.Nombre, u.Apellidos, m.Marca
+      `SELECT v.*, u.Nombre_Completo, m.Marca
        FROM vehiculos v
        JOIN usuarios u ON v.ID_Usuario = u.ID_Usuario
        JOIN marca_vehiculos m ON v.ID_Marca = m.ID_Marca

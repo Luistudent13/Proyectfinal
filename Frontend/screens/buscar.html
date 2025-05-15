@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscar Usuario</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="verificacion-container">
+  <div class="verificacion-box">
+    <h3>Buscar Usuario</h3>
+
+    <div class="verificacion-content">
+      <label for="matriculaBuscar">Matrícula:</label>
+      <input type="text" id="matriculaBuscar" placeholder="Ej: 201000123">
+
+      <label for="placaBuscar">Placa:</label>
+      <input type="text" id="placaBuscar" placeholder="Ej: ABC-123-X">
+
+      <div class="verificacion-buttons">
+        <button class="btn-verde" id="btnBuscar">Buscar</button>
+        <button class="btn-rojo" id="btnCancelar">Cancelar</button>
+      </div>
+
+      <div id="resultadoBusqueda"></div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/shared.js"></script>
+<script src="../js/buscar.js"></script>
+
+</body>
+</html>

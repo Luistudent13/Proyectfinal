@@ -2,34 +2,33 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Verificación de Usuario</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Verificación de vehículo</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <div class="formulario-container" id="verificacionPage">
-    <h2>Buscar Usuario por Matrícula</h2>
 
-    <form id="formBuscarUsuario">
-      <input type="text" id="matriculaBuscar" placeholder="Ingrese matrícula (ej. 20100234)" required />
-      <button type="submit">Buscar</button>
-    </form>
+  <!-- Pantalla de verificación -->
+  <div class="verificacion-container" id="verificacionPage">
+    <div class="verificacion-box">
+      <img src="../assets/logo_ucc.svg" alt="Logo UCC" class="logo-verificacion">
+      <div class="verificacion-content">
+        <h3>Verificación de vehículo</h3>
 
-    <div id="resultadoUsuario" style="display: none;">
-      <h3>Resultado:</h3>
-      <p><strong>Nombre:</strong> <span id="nombreResultado"></span></p>
-      <p><strong>Matrícula:</strong> <span id="matriculaResultado"></span></p>
-      <p><strong>Tipo de Usuario:</strong> <span id="tipoUsuarioResultado"></span></p>
-      <p><strong>Placa:</strong> <span id="placaResultado"></span></p>
-      <p><strong>Color:</strong> <span id="colorResultado"></span></p>
-      <p><strong>Marca:</strong> <span id="marcaResultado"></span></p>
+        <label for="placaVerificar">Ingresar placa del vehículo:</label>
+        <input type="text" id="placaVerificar" placeholder="XXX-XXX-X" required>
+
+        <div class="verificacion-buttons">
+          <button class="btn-verde" onclick="verificarPlaca()">Verificar</button>
+          <button class="btn-rojo" onclick="cancelarVerificacion()">Cancelar</button>
+        </div>
+
+        <p id="resultadoVerificacion"></p>
+      </div>
     </div>
-
-    <a href="menu.html">
-      <button class="btn-regresar">Volver al Menú</button>
-    </a>
   </div>
-  <script src="../js/shared.js"></script>
+
   <script src="../js/verificacion.js"></script>
+  <script src="../js/shared.js"></script>
 </body>
 </html>

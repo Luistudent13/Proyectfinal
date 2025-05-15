@@ -13,7 +13,8 @@
     <div class="seccion-menu">
       <div class="seccion-titulo">Registro de usuario</div>
       <button class="btn-azul-grande" id="btnIngreso">Registrar ingreso</button>
-    </div>
+      <button class="btn-azul-grande" id="btnSalida">Registrar salida</button>
+</div>
 
     <div class="seccion-menu">
       <div class="seccion-titulo">Registrar nuevo usuario</div>
@@ -31,6 +32,16 @@
     <button class="btn-naranja" id="btnReportarProblema">Reportar problema</button>
     <button class="btn-rojo-grande" onclick="mostrarModalCerrarSesion()">Cerrar sesión</button>
   </div>
+
+  <!-- Modal de confirmación -->
+<div id="modalCerrarSesion" class="alert-modal">
+  <div class="alert-content">
+    <p>¿Deseas cerrar sesión?</p>
+    <button onclick="cerrarSesion()">Sí</button>
+    <button onclick="ocultarModalCerrarSesion()">No</button>
+  </div>
+</div>
+
 
   <script src="../js/shared.js"></script>
 </body>

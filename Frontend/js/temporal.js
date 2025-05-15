@@ -1,7 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("formTemporal");
     const placaInput = document.getElementById("placaTemporal");
+     const nombreInput = document.getElementById("nombreTemporal");
+  const apellidosInput = document.getElementById("apellidosTemporal");
   
+  const soloLetrasRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/;
+
+  nombreInput.addEventListener("input", function() {
+    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
+  });
+
+  apellidosInput.addEventListener("input", function() {
+    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
+  });
     // Autocompletado de marcas
     activarAutocompletadoMarcas("marcaTemporal", "listaMarcasTemporal");
   
@@ -30,19 +41,21 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
   
+        const nombreCompleto = `${nombre} ${apellidos}`;
+
         const datos = {
-          nombre,
-          apellidos,
-          matricula: `TEMP-${Date.now()}`, // Genera un ID único temporal
-          tipoUsuario: 6, // Visitante temporal
+          nombre_completo: nombreCompleto,
+          matricula: `TEMP-${Date.now()}`,
+          tipoUsuario: 5,
           licenciatura: null,
-          areaEmpleado: null,
-          personaRecoge,
-          relacionEstudiante,
-          placa,
-          color,
-          marca: idMarca
-        };
+          area_empleado: null,
+          persona_recoge: personaRecoge,
+          relacion_estudiante: relacionEstudiante,
+        placa,
+        color,
+        idMarca: idMarca
+          };
+
   
         const res = await fetch("http://localhost:3000/usuarios", {
           method: "POST",
