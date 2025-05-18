@@ -8,7 +8,7 @@ exports.obtenerAccesos = async (req, res) => {
   FROM registros_acceso ra
   JOIN usuarios u ON ra.ID_Usuario = u.ID_Usuario
   JOIN vehiculos v ON v.ID_Usuario = u.ID_Usuario
-  ORDER BY ra.Fecha_Acceso DESC
+  ORDER BY ra.Fecha_Acceso ASC, ra.Hora_Entrada ASC
 
 `);
 

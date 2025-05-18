@@ -95,15 +95,28 @@ exports.actualizarUsuario = async (req, res) => {
   const {
     nombre_completo,
     matricula,
-    licenciatura
+    licenciatura,
+    area_empleado,
+    placa,
+    color,
+    idMarca
   } = req.body;
 
   try {
+    // Actualizar usuario
     await db.query(
       `UPDATE usuarios SET
-        Nombre_Completo = ?, Matricula = ?, Licenciatura = ?
+        Nombre_Completo = ?, Matricula = ?, Licenciatura = ?, Area_Empleado = ?
        WHERE ID_Usuario = ?`,
-      [nombre_completo, matricula, licenciatura, id]
+      [nombre_completo, matricula, licenciatura, area_empleado, id]
+    );
+
+    // Actualizar vehículo
+    await db.query(
+      `UPDATE vehiculos SET
+        Placa = ?, Color = ?, ID_Marca = ?
+       WHERE ID_Usuario = ?`,
+      [placa, color, idMarca, id]
     );
 
     res.json({ mensaje: "Usuario actualizado correctamente" });
@@ -112,6 +125,7 @@ exports.actualizarUsuario = async (req, res) => {
     res.status(500).json({ error: "Error al actualizar usuario" });
   }
 };
+
 
 // 🔹 Eliminar un usuario
 exports.eliminarUsuario = async (req, res) => {
