@@ -1,18 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("formTemporal");
-    const placaInput = document.getElementById("placaTemporal");
-     const nombreInput = document.getElementById("nombreTemporal");
+ const form = document.getElementById("formTemporal");
+  const placaInput = document.getElementById("placaTemporal");
+
+  const nombreInput = document.getElementById("nombreTemporal");
   const apellidosInput = document.getElementById("apellidosTemporal");
-  
-  const soloLetrasRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/;
+  const personaRecogeInput = document.getElementById("personaRecoge");
+  const relacionInput = document.getElementById("relacionEstudiante");
+  const colorInput = document.getElementById("colorTemporal");
+  const marcaInput = document.getElementById("marcaTemporal");
 
-  nombreInput.addEventListener("input", function() {
-    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
-  });
-
-  apellidosInput.addEventListener("input", function() {
-    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
-  });
+  // Validaciones
+  permitirSoloTextoConAcentos(nombreInput);
+  permitirSoloTextoConAcentos(apellidosInput);
+  permitirSoloTextoConAcentos(personaRecogeInput);
+  permitirSoloTextoConAcentos(relacionInput);
+  permitirSoloTextoConAcentos(colorInput);
+  permitirSoloTextoConAcentos(marcaInput);
     // Autocompletado de marcas
     activarAutocompletadoMarcas("marcaTemporal", "listaMarcasTemporal");
   

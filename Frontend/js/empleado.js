@@ -4,6 +4,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const placaInput = document.getElementById("placaEmpleado");
     const nombreEmpleadoInput = document.getElementById("nombreEmpleado");
     const apellidosEmpleadoInput = document.getElementById("apellidosEmpleado");
+    const areaEmpleadoInput = document.getElementById("areaEmpleado");
+    const colorInput = document.getElementById("colorEmpleado");
+    const marcaInput = document.getElementById("marcaEmpleado");
+
+areaEmpleadoInput.addEventListener("input", function () {
+  this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
+});
+
+colorInput.addEventListener("input", function () {
+  this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
+});
+
+marcaInput.addEventListener("input", function () {
+  this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
+});
+
 
     matriculaInput.addEventListener("input", function () {
   this.value = this.value.replace(/\D/g, '').slice(0, 3);

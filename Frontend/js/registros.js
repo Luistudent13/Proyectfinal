@@ -66,5 +66,5 @@ async function eliminarUsuario(id) {
 }
 
 function editarUsuario(id) {
-  alert("Función de edición aún no implementada en esta vista.");
+  window.location.href = `editar.html?id=${id}`;
 }

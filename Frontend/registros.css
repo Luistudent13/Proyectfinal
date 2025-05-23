@@ -1,0 +1,78 @@
+.registro-table-container {
+  background-color: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  width: 95%;
+  margin: 30px auto;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.logo {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  color: #0070b9;
+  margin-bottom: 20px;
+}
+
+.registro-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.registro-table th,
+.registro-table td {
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 15px;
+  word-break: break-word;
+}
+
+.registro-table th {
+  background-color: #0070b9;
+  color: white;
+}
+
+.registro-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.btn-rojo-mini,
+.btn-azul-mini {
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 15px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 2px;
+}
+
+.btn-rojo-mini {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-azul-mini {
+  background-color: #0070b9;
+  color: white;
+}
+
+.btn-rojo-mini:hover {
+  background-color: #d32f2f;
+}
+
+.btn-azul-mini:hover {
+  background-color: #005b94;
+}
+
+button.btn-rojo-mini:last-of-type {
+  margin-top: 20px;
+}

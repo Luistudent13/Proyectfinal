@@ -127,6 +127,13 @@ function ocultarModalCerrarSesion() {
   if (modal) modal.style.display = "none";
 }
 
+function permitirSoloTextoConAcentos(input) {
+  input.addEventListener("input", () => {
+    input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
+  });
+}
+
+
 function cerrarSesion() {
   window.location.href = "index.html";
 }

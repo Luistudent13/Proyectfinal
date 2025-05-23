@@ -2,11 +2,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("formAlumno");
   const matriculaInput = document.getElementById("matricula");
   const placaInput = document.getElementById("placa");
-
-const nombreInput = document.getElementById("nombre");
+  const nombreInput = document.getElementById("nombre");
   const apellidosInput = document.getElementById("apellidos");
-
   const soloLetrasRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/;
+  const licenciaturaInput = document.getElementById("licenciatura");
+  const colorInput = document.getElementById("color");
+  const marcaInput = document.getElementById("marca");
+
+licenciaturaInput.addEventListener("input", function () {
+  this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
+});
+
+colorInput.addEventListener("input", function () {
+  this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
+});
+
+marcaInput.addEventListener("input", function () {
+  this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
+});
+
 
   nombreInput.addEventListener("input", function() {
     this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");

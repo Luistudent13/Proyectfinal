@@ -4,6 +4,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const placaInput = document.getElementById("placaVisitante");
   const nombreInput = document.getElementById("nombreVisitante");
   const apellidosInput = document.getElementById("apellidosVisitante");
+  const eventoInput = document.getElementById("eventoAsiste");
+  const colorInput = document.getElementById("colorVisitante");
+  const marcaInput = document.getElementById("marcaVisitante");
+
+  const soloLetrasConAcentosRegex = /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g;
+
+eventoInput.addEventListener("input", function () {
+  this.value = this.value.replace(soloLetrasConAcentosRegex, "");
+});
+
+colorInput.addEventListener("input", function () {
+  this.value = this.value.replace(soloLetrasConAcentosRegex, "");
+});
+
+marcaInput.addEventListener("input", function () {
+  this.value = this.value.replace(soloLetrasConAcentosRegex, "");
+});
+
+  
 
   const soloLetrasRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/;
 
