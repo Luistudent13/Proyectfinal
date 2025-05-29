@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const marcaTexto = document.getElementById("marcaTemporal").value.trim();
   
       try {
-        const resMarcas = await fetch("http://localhost:3000/marcas");
+        const resMarcas = await fetch("http://18.234.189.146:3000/marcas");
         const marcas = await resMarcas.json();
         const idMarca = obtenerIdMarca(marcaTexto, marcas);
   
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
           };
 
   
-        const res = await fetch("http://localhost:3000/usuarios", {
+        const res = await fetch("http://18.234.189.146:3000/usuarios", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(datos),

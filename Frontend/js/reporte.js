@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
       // Si más adelante decides guardar en base de datos, aquí va el fetch:
       /*
-      await fetch("http://localhost:3000/reportes", {
+      await fetch("http://18.234.189.146:3000/reportes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nombre, matricula, descripcion })
