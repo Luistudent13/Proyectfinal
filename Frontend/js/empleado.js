@@ -62,7 +62,7 @@ apellidosEmpleadoInput.addEventListener("input", function() {
       const marcaTexto = document.getElementById("marcaEmpleado").value.trim();
   
       try {
-        const resMarcas = await fetch("http://18.234.189.146:3000/marcas");
+        const resMarcas = await fetch("http://44.204.181.158:3000/marcas");
         const marcas = await resMarcas.json();
         const marcaObj = marcas.find(m => m.Marca.toLowerCase().trim() === marcaTexto.toLowerCase().trim());
 
@@ -89,7 +89,7 @@ const idMarca = marcaObj.ID_Marca;
       console.log("Datos enviados:", datos);
 
   
-        const res = await fetch("http://18.234.189.146:3000/usuarios", {
+        const res = await fetch("http://44.204.181.158:3000/usuarios", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify(datos),

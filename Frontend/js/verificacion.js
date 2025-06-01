@@ -1,4 +1,4 @@
-const API_URL = "http://18.234.189.146:3000";
+const API_URL = "http://44.204.181.158:3000";
 
 // ✅ Verificar placa
 async function verificarPlaca() {

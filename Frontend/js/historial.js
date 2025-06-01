@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function cargarHistorial() {
   try {
-    const res = await fetch("http://18.234.189.146:3000/accesos");
+    const res = await fetch("http://44.204.181.158:3000/accesos");
     const accesos = await res.json();
 
     const tbody = document.querySelector("#tablaHistorial tbody");

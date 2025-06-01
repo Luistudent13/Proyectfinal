@@ -69,7 +69,7 @@ function validarMatricula(matricula) {
   const input = document.getElementById(inputId);
 
   try {
-    const res = await fetch("http://18.234.189.146:3000/marcas");
+    const res = await fetch("http://44.204.181.158:3000/marcas");
     const marcas = await res.json();
     const lista = marcas.map(m => m.Marca);
 
