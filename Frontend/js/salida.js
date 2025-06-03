@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/accesos/salida", {
+      const res = await fetch("http://44.204.181.158:3000/accesos/salida", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ placa }),

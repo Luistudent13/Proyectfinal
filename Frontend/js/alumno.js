@@ -67,7 +67,7 @@ marcaInput.addEventListener("input", function () {
       const color = document.getElementById("color").value.trim();
       const idMarca = document.getElementById("marca").value;
   
-  const resMarcas = await fetch("http://localhost:3000/marcas");
+  const resMarcas = await fetch("http://44.204.181.158:3000/marcas");
 const marcas = await resMarcas.json();
 const marcaObj = marcas.find(m => m.Marca.toLowerCase() === idMarca.toLowerCase());
 if (!marcaObj) {
@@ -88,7 +88,7 @@ const idMarcaReal = marcaObj.ID_Marca;
 };
 
   try {
-    const res = await fetch("http://localhost:3000/usuarios", {
+    const res = await fetch("http://44.204.181.158:3000/usuarios", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(datos)

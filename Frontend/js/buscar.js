@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000";
+const API_URL = "http://44.204.181.158:3000";
 
 let usuariosGlobal = [];
 

@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function cargarRegistros() {
   try {
-    const res = await fetch("http://localhost:3000/usuarios");
+    const res = await fetch("http://44.204.181.158:3000/usuarios");
     const data = await res.json();
     console.log("Usuarios cargados:", data);
 
@@ -54,7 +54,7 @@ async function cargarRegistros() {
 async function eliminarUsuario(id) {
   if (!confirm("¿Deseas eliminar este usuario?")) return;
   try {
-  const res = await fetch(`http://localhost:3000/usuarios/${id}`, { method: "DELETE" });
+  const res = await fetch(`http://44.204.181.158:3000/usuarios/${id}`, { method: "DELETE" });
 
   if (res.ok) {
     alert("✅ Usuario eliminado correctamente.");

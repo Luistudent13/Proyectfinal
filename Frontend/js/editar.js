@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Cargar datos del usuario
   try {
-    const res = await fetch(`http://localhost:3000/usuarios/${id}`);
+    const res = await fetch(`http://44.204.181.158:3000/usuarios/${id}`);
     const datos = await res.json();
     const [nombreSolo, ...restoApellidos] = (datos.Nombre_Completo || "").split(" ");
     nombre.value = nombreSolo;
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 };
 
     try {
-      const res = await fetch(`http://localhost:3000/usuarios/${id}`, {
+      const res = await fetch(`http://44.204.181.158:3000/usuarios/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(datosActualizados),
