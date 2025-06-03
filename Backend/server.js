@@ -16,7 +16,9 @@ const usuariosRoutes = require('./routes/usuarios');
 const vehiculosRoutes = require('./routes/vehiculos');
 const accesosRoutes = require('./routes/accesos');
 const marcasRoutes = require('./routes/marcas');
+const reportesRoutes = require('./routes/reportes');
 
+app.use('/reportes', reportesRoutes);
 app.use('/usuarios', usuariosRoutes);
 app.use('/vehiculos', vehiculosRoutes);
 app.use('/accesos', accesosRoutes);

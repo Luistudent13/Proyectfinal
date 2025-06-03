@@ -1,42 +1,73 @@
-document.getElementById("btnVerRegistros").addEventListener("click", () => {
-  window.location.href = "registros.html";
-});
+const btnVerRegistros = document.getElementById("btnVerRegistros");
+if (btnVerRegistros) {
+  btnVerRegistros.addEventListener("click", () => {
+    window.location.href = "registros.html";
+  });
+}
  
-document.getElementById("btnIngreso").addEventListener("click", () => {
-  window.location.href = "verificacion.html"; // o la pantalla de ingreso que uses
-});
+const btnIngreso = document.getElementById("btnIngreso");
+if (btnIngreso) {
+  btnIngreso.addEventListener("click", () => {
+    window.location.href = "verificacion.html";
+  });
+}
 
-document.getElementById("btnSalida").addEventListener("click", () => {
-  window.location.href = "salida.html";
-});
+const btnSalida = document.getElementById("btnSalida");
+if (btnSalida) {
+  btnSalida.addEventListener("click", () => {
+    window.location.href = "salida.html";
+  });
+}
 
-document.getElementById("btnAlumno").addEventListener("click", () => {
-  window.location.href = "alumno.html";
-});
+const btnAlumno = document.getElementById("btnAlumno");
+if (btnAlumno) {
+  btnAlumno.addEventListener("click", () => {
+    window.location.href = "alumno.html";
+  });
+}
 
-document.getElementById("btnEmpleado").addEventListener("click", () => {
-  window.location.href = "empleado.html";
-});
+const btnEmpleado = document.getElementById("btnEmpleado");
+if (btnEmpleado) {
+  btnEmpleado.addEventListener("click", () => {
+    window.location.href = "empleado.html";
+  });
+}
 
-document.getElementById("btnVisitante").addEventListener("click", () => {
-  window.location.href = "visitante.html";
-});
+const btnVisitante = document.getElementById("btnVisitante");
+if (btnVisitante) {
+  btnVisitante.addEventListener("click", () => {
+    window.location.href = "visitante.html";
+  });
+}
 
-document.getElementById("btnTemporal").addEventListener("click", () => {
-  window.location.href = "temporal.html";
-});
+const btnTemporal = document.getElementById("btnTemporal");
+if (btnTemporal) {
+  btnTemporal.addEventListener("click", () => {
+    window.location.href = "temporal.html";
+  });
+}
 
-document.getElementById("btnHistorialAcceso").addEventListener("click", () => {
-  window.location.href = "historial.html"; // crea este archivo si aún no existe
-});
+const btnHistorialAcceso = document.getElementById("btnHistorialAcceso");
+if (btnHistorialAcceso) {
+  btnHistorialAcceso.addEventListener("click", () => {
+    window.location.href = "historial.html";
+  });
+}
 
-document.getElementById("btnBuscarUsuario").addEventListener("click", () => {
-  window.location.href = "buscar.html"; // crea este archivo si aún no existe
-});
+const btnBuscarUsuario = document.getElementById("btnBuscarUsuario");
+if (btnBuscarUsuario) {
+  btnBuscarUsuario.addEventListener("click", () => {
+    window.location.href = "buscar.html";
+  });
+}
 
-document.getElementById("btnReportarProblema").addEventListener("click", () => {
-  window.location.href = "reporte.html";
-});
+const btnReportarProblema = document.getElementById("btnReportarProblema");
+if (btnReportarProblema) {
+  btnReportarProblema.addEventListener("click", () => {
+    window.location.href = "reporte.html";
+  });
+}
+
 
 
 // 🔹 Validar que matrícula tenga solo números y 9 dígitos

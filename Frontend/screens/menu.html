@@ -4,45 +4,54 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Menú Principal</title>
-  <link rel="stylesheet" href="../styles.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../menu.css">
 </head>
 <body>
-  <div class="menu-container" id="menuPage">
-    <img src="../assets/logo_ucc.svg" alt="Logo UCC" class="logo">
-
-    <div class="seccion-menu">
-      <div class="seccion-titulo">Registro de usuario</div>
-      <button class="btn-azul-grande" id="btnIngreso">Registrar ingreso</button>
-      <button class="btn-azul-grande" id="btnSalida">Registrar salida</button>
-</div>
-
-    <div class="seccion-menu">
-      <div class="seccion-titulo">Registrar nuevo usuario</div>
-      <div class="fila-doble">
-        <button class="btn-azul-mini" id="btnAlumno">Alumno</button>
-        <button class="btn-azul-mini" id="btnEmpleado">Empleado</button>
-      </div>
-      <button class="btn-azul" id="btnVisitante">Registrar visitante nuevo</button>
-      <button class="btn-azul" id="btnTemporal">Registrar usuario temporal</button>
+  <div class="container">
+    <div class="header">
+      <img src="../assets/espacio-seguro.png" alt="Logo Espacio Seguro" />
+      <h1>ESPACIO SEGURO</h1>
     </div>
 
-    <button class="btn-azul" id="btnVerRegistros">Ver registros</button>
-    <button class="btn-azul" id="btnHistorialAcceso">Ver historial de accesos</button>
-    <button class="btn-azul" id="btnBuscarUsuario">Buscar usuario</button>
-    <button class="btn-naranja" id="btnReportarProblema">Reportar problema</button>
-    <button class="btn-rojo-grande" onclick="mostrarModalCerrarSesion()">Cerrar sesión</button>
+    <div class="section">
+      <div class="section-title">Registro de usuarios</div>
+      <button class="button" onclick="location.href='verificacion.html'">Registrar ingreso</button>
+      <button class="button" onclick="location.href='salida.html'">Registrar salida</button>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Registrar nuevos usuarios</div>
+      <div class="button-grid">
+        <button class="button secondary" onclick="location.href='alumno.html'">Alumno</button>
+        <button class="button secondary" onclick="location.href='empleado.html'">Profesor</button>
+        <button class="button secondary" onclick="location.href='visitante.html'">Visitante nuevo</button>
+        <button class="button secondary" onclick="location.href='temporal.html'">Visitante temporal</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Consultas y soporte</div>
+      <button class="button secondary" onclick="location.href='registros.html'">Ver registros</button>
+      <button class="button secondary" onclick="location.href='historial.html'">Historial de accesos</button>
+      <button class="button secondary" onclick="location.href='buscar.html'">Buscar usuario</button>
+      <button class="button secondary" onclick="location.href='verReportes.html'">Ver reportes</button>
+      <button class="button warning" onclick="location.href='reporte.html'">Reportar problema</button>
+      <button class="button danger" onclick="mostrarModalCerrarSesion()">Cerrar sesión</button>
+    </div>
   </div>
 
-  <!-- Modal de confirmación -->
-<div id="modalCerrarSesion" class="alert-modal">
-  <div class="alert-content">
-    <p>¿Deseas cerrar sesión?</p>
-    <button onclick="cerrarSesion()">Sí</button>
-    <button onclick="ocultarModalCerrarSesion()">No</button>
+  <!-- Modal confirmación -->
+  <div id="modalCerrarSesion" class="alert-modal">
+    <div class="alert-content">
+      <p>¿Deseas cerrar sesión?</p>
+      <button onclick="cerrarSesion()">Sí</button>
+      <button onclick="ocultarModalCerrarSesion()">No</button>
+    </div>
   </div>
-</div>
-
 
   <script src="../js/shared.js"></script>
 </body>
+
 </html>

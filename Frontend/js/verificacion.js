@@ -18,17 +18,26 @@ async function verificarPlaca() {
     const encontrado = vehiculos.find(v => v.Placa.toUpperCase() === placa);
 
     if (encontrado) {
-      resultado.innerText = "✅ Acceso permitido.";
-      resultado.style.color = "green";
-
-      await fetch(`${API_URL}/accesos`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      // Intenta registrar el acceso con validación
+const respuesta = await fetch(`${API_URL}/accesos`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
     ID_Usuario: encontrado.ID_Usuario,
     ID_Vehiculo: encontrado.ID_Vehiculo
-    })
-      });
+  })
+});
+
+const data = await respuesta.json();
+
+if (respuesta.ok) {
+  resultado.innerText = "✅ Acceso registrado correctamente.";
+  resultado.style.color = "green";
+} else {
+  resultado.innerText = `❌ ${data.mensaje || "Acceso denegado"}`;
+  resultado.style.color = "red";
+}
+
 
     } else {
       resultado.innerText = "❌ Vehículo NO registrado.";

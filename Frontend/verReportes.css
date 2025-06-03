@@ -1,0 +1,66 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 0;
+}
+
+.contenedor {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contenedor h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+th, td {
+  padding: 12px 18px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+th {
+  background: linear-gradient(90deg, #3b6fa1, #2d5c8c);
+  color: white;
+  font-weight: normal;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #e9f1ff;
+}
+
+.volver-btn {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+}
+
+.volver-btn a {
+  background: linear-gradient(90deg, #3b6fa1, #2d5c8c);
+  color: white;
+  padding: 10px 25px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.volver-btn a:hover {
+  background-color: #0056b3;
+}

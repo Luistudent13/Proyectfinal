@@ -1,13 +1,20 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* evita desplazamiento lateral */
+}
+
 .registro-table-container {
   background-color: white;
-  padding: 30px;
-  border-radius: 20px;
+  padding: 0 10px;
+  border-radius: 7px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  max-width: 1200px;
-  width: 95%;
+   max-width: 100%;
+  width: 100%;
   margin: 30px auto;
-  overflow-x: auto;
+  overflow-x: hidden;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .logo {
@@ -24,6 +31,8 @@ h2 {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  background-color: #ffffff;
+  table-layout: fixed;
 }
 
 .registro-table th,
@@ -33,6 +42,8 @@ h2 {
   text-align: center;
   font-size: 15px;
   word-break: break-word;
+    word-wrap: break-word;
+
 }
 
 .registro-table th {
@@ -48,7 +59,7 @@ h2 {
 .btn-azul-mini {
   padding: 6px 12px;
   font-size: 14px;
-  border-radius: 15px;
+  border-radius: 7px;
   border: none;
   font-weight: bold;
   cursor: pointer;
@@ -75,4 +86,68 @@ h2 {
 
 button.btn-rojo-mini:last-of-type {
   margin-top: 20px;
+}
+
+/* 🌐 Estilo responsivo para tabla */
+@media screen and (max-width: 768px) {
+
+
+  .registro-table thead {
+    display: none;
+  }
+
+  .registro-table, .registro-table tbody, .registro-table tr, .registro-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .registro-table tr {
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    background-color: white;
+  }
+
+  .registro-table td {
+  text-align: left;
+  padding: 8px 8px 8px 120px; /* espacio para el label */
+  position: relative;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+  .registro-table td::before {
+  content: attr(data-label);
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  font-weight: bold;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+}
+
+/* --- RESPONSIVIDAD --- */
+.tabla-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 768px) {
+  .registro-table th,
+  .registro-table td {
+    font-size: 14px;
+    padding: 6px 8px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .logo {
+    max-width: 100px;
+  }
 }

@@ -58,12 +58,14 @@ marcaInput.addEventListener("input", function () {
     e.preventDefault();
 
     // ✅ Capturar datos
-     const nombre_completo = document.getElementById("nombre").value.trim();
-  const matricula = document.getElementById("matricula").value.trim();
-  const licenciatura = document.getElementById("licenciatura").value.trim();
-  const placa = document.getElementById("placa").value.trim();
-  const color = document.getElementById("color").value.trim();
-  const idMarca = document.getElementById("marca").value;
+      const nombre = document.getElementById("nombre").value.trim();
+      const apellidos = document.getElementById("apellidos").value.trim();
+      const nombre_completo = `${nombre} ${apellidos}`;
+      const matricula = document.getElementById("matricula").value.trim();
+      const licenciatura = document.getElementById("licenciatura").value.trim();
+      const placa = document.getElementById("placa").value.trim();
+      const color = document.getElementById("color").value.trim();
+      const idMarca = document.getElementById("marca").value;
   
   const resMarcas = await fetch("http://localhost:3000/marcas");
 const marcas = await resMarcas.json();

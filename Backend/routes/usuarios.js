@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const usuariosController = require("../controllers/usuariosController");
 
+router.get("/:id", usuariosController.obtenerUsuarioPorId);
 // 🔹 GET /usuarios → obtener todos los usuarios
 router.get("/", usuariosController.obtenerUsuarios);
 // 🔹 POST /usuarios → registrar un nuevo usuario

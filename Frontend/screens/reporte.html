@@ -10,12 +10,19 @@
   <div class="formulario-container" id="reportePage">
     <h2>Reportar Problema</h2>
 
-    <form id="formReporte">
-      <input type="text" id="nombreReporte" placeholder="Tu nombre" required />
-      <input type="text" id="matriculaReporte" placeholder="Tu matrícula o ID" required />
-      <textarea id="descripcionReporte" placeholder="Describe el problema" rows="5" required></textarea>
-      <button type="submit">Enviar Reporte</button>
-    </form>
+  <form id="formReporte">
+  <label for="nombre">Nombre completo:</label>
+  <input type="text" id="nombre" name="nombre" required />
+
+  <label for="tipo">Tipo de Usuario:</label>
+  <input type="text" id="tipo" name="tipo" required />
+
+  <label for="mensaje">Describe el problema:</label>
+  <textarea id="problema" name="problema" required></textarea>
+
+  <button type="submit">Enviar Reporte</button>
+</form>
+
 
     <div id="mensajeEnvioReporte" style="margin-top: 20px;"></div>
 

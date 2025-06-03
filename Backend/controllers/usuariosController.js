@@ -3,7 +3,6 @@ const db = require("../config/database");
 // 🔹 Obtener todos los usuarios
 exports.obtenerUsuarios = async (req, res) => {
   try {
-    
     const [resultados] = await db.query(`
       SELECT 
         u.ID_Usuario,
@@ -11,6 +10,7 @@ exports.obtenerUsuarios = async (req, res) => {
         u.Matricula,
         u.ID_Tipo_Usuario,
         u.Licenciatura,
+        u.Area_Empleado,
         v.Placa,
         v.Color,
         m.Marca
@@ -26,7 +26,6 @@ exports.obtenerUsuarios = async (req, res) => {
     res.status(500).json({ error: "Error al obtener usuarios" });
   }
 };
-
 
 
 // 🔹 Registrar nuevo usuario (Alumno, Empleado, Visitante, etc.)
@@ -62,6 +61,40 @@ try {
 }
 };
 //modificado
+
+// 🔹 Buscar usuario por ID
+exports.obtenerUsuarioPorId = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [resultados] = await db.query(`
+      SELECT 
+        u.ID_Usuario,
+        u.Nombre_Completo,
+        u.Matricula,
+        u.ID_Tipo_Usuario,
+        u.Licenciatura,
+        u.Area_Empleado,
+        v.Placa,
+        v.Color,
+        m.Marca
+      FROM usuarios u
+      LEFT JOIN vehiculos v ON u.ID_Usuario = v.ID_Usuario
+      LEFT JOIN marca_vehiculos m ON v.ID_Marca = m.ID_Marca
+      WHERE u.ID_Usuario = ?
+    `, [id]);
+
+    if (resultados.length === 0) {
+      return res.status(404).json({ mensaje: "Usuario no encontrado" });
+    }
+
+    res.json(resultados[0]);
+  } catch (error) {
+    console.error("Error al obtener usuario:", error);
+    res.status(500).json({ error: "Error al obtener usuario" });
+  }
+};
+
 
 
 
@@ -99,30 +132,63 @@ exports.actualizarUsuario = async (req, res) => {
     area_empleado,
     placa,
     color,
-    idMarca
+    marca,  
+    nuevaMarcaTexto // ← TE FALTA ESTO// ← esta es la marca que llega como texto desde el frontend
   } = req.body;
 
   try {
-    // Actualizar usuario
+    // 1️⃣ Validar o insertar la marca
+    let idMarcaFinal;
+
+if (nuevaMarcaTexto) {
+  // Insertar nueva marca si se proporcionó
+  const [insertResult] = await db.query(
+    "INSERT INTO marca_vehiculos (Marca) VALUES (?)",
+    [nuevaMarcaTexto]
+  );
+  idMarcaFinal = insertResult.insertId;
+} else if (marca) {
+  // Buscar ID de la marca existente
+  const [marcaRows] = await db.query(
+    "SELECT ID_Marca FROM marca_vehiculos WHERE Marca = ?",
+    [marca]
+  );
+  if (marcaRows.length > 0) {
+    idMarcaFinal = marcaRows[0].ID_Marca;
+  } else {
+    return res.status(400).json({ mensaje: "La marca especificada no existe" });
+  }
+} else {
+  return res.status(400).json({ mensaje: "No se proporcionó marca válida" });
+}
+
+
+    // 2️⃣ Actualizar tabla usuarios
     await db.query(
-      `UPDATE usuarios SET
-        Nombre_Completo = ?, Matricula = ?, Licenciatura = ?, Area_Empleado = ?
-       WHERE ID_Usuario = ?`,
+      `UPDATE usuarios SET 
+        Nombre_Completo = ?, 
+        Matricula = ?, 
+        Licenciatura = ?, 
+        Area_Empleado = ?
+      WHERE ID_Usuario = ?`,
       [nombre_completo, matricula, licenciatura, area_empleado, id]
     );
 
-    // Actualizar vehículo
+    // 3️⃣ Actualizar tabla vehículos
     await db.query(
-      `UPDATE vehiculos SET
-        Placa = ?, Color = ?, ID_Marca = ?
-       WHERE ID_Usuario = ?`,
-      [placa, color, idMarca, id]
+      `UPDATE vehiculos SET 
+        Placa = ?, 
+        Color = ?, 
+        ID_Marca = ?
+      WHERE ID_Usuario = ?`,
+      [placa, color, idMarcaFinal, id]
     );
 
-    res.json({ mensaje: "Usuario actualizado correctamente" });
+    res.status(200).json({ mensaje: "Usuario actualizado correctamente" });
+
   } catch (error) {
     console.error("Error al actualizar usuario:", error);
-    res.status(500).json({ error: "Error al actualizar usuario" });
+    res.status(500).json({ mensaje: "Error al actualizar usuario" });
   }
 };
 

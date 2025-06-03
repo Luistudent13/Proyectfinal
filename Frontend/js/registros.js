@@ -23,13 +23,18 @@ async function cargarRegistros() {
                   : usuario.ID_Tipo_Usuario === 5 ? "Visitante"
                   : "Otro";
 
+      
+    const infoAcademica = tipo === "Alumno" ? usuario.Licenciatura :
+                      tipo === "Empleado" ? usuario.Area_Empleado : "-";
+
       const row = document.createElement("tr");
+      
       row.innerHTML = `
         <td>${usuario.ID_Usuario}</td>
         <td>${usuario.Nombre_Completo}</td>
         <td>${usuario.Matricula || "-"}</td>
         <td>${tipo}</td>
-        <td>${usuario.Licenciatura || "-"}</td>
+        <td>${infoAcademica || "-"}</td>
         <td>${usuario.Placa || "-"}</td>
         <td>${usuario.Marca || "-"}</td>
         <td>${usuario.Color || "-"}</td>

@@ -28,17 +28,32 @@ exports.registrarAcceso = async (req, res) => {
   }
 
   try {
+    // 1️⃣ Validar si ya existe un acceso sin salida
+    const [accesosActivos] = await db.query(
+      `SELECT ID_Acceso FROM registros_acceso 
+       WHERE ID_Vehiculo = ? AND Hora_Salida IS NULL`,
+      [ID_Vehiculo]
+    );
+
+    if (accesosActivos.length > 0) {
+      return res.status(400).json({ mensaje: "Este vehículo ya tiene un acceso activo sin salida." });
+    }
+
+    // 2️⃣ Insertar nuevo acceso si no hay pendiente
     const [resultado] = await db.query(
-  "INSERT INTO registros_acceso (ID_Vehiculo, ID_Usuario, Hora_Entrada, Fecha_Acceso) VALUES (?, ?, NOW(), CURDATE())",
-  [ID_Vehiculo, ID_Usuario]
-);
+      `INSERT INTO registros_acceso (ID_Vehiculo, ID_Usuario, Hora_Entrada, Fecha_Acceso)
+       VALUES (?, ?, NOW(), CURDATE())`,
+      [ID_Vehiculo, ID_Usuario]
+    );
 
     res.status(201).json({ mensaje: "Acceso registrado exitosamente", ID_Acceso: resultado.insertId });
+
   } catch (error) {
     console.error("Error al registrar acceso:", error);
     res.status(500).json({ error: "Error al registrar acceso" });
   }
 };
+
 
 // 🔹 Buscar accesos por matrícula
 exports.buscarAccesosPorMatricula = async (req, res) => {
