@@ -4,32 +4,24 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3001;               // usa 3001 para coincidir con lo que probaste
 
-// Middlewares
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../Frontend')));
 
-// Rutas
-const usuariosRoutes = require('./routes/usuarios');
-const vehiculosRoutes = require('./routes/vehiculos');
-const accesosRoutes = require('./routes/accesos');
-const marcasRoutes = require('./routes/marcas');
-const reportesRoutes = require('./routes/reportes');
+// 👉 Ruta ABSOLUTA correcta al frontend (respeta minúsculas)
+// /home/ricardo/sites/estacionamiento/node  ->  ../frontend/Frontend
+const FRONTEND_ROOT = path.join(__dirname, '..', 'frontend', 'Frontend');
 
-app.use('/reportes', reportesRoutes);
-app.use('/usuarios', usuariosRoutes);
-app.use('/vehiculos', vehiculosRoutes);
-app.use('/accesos', accesosRoutes);
-app.use('/marcas', marcasRoutes);
+// Sirve estáticos (CSS/JS/imagenes)
+app.use(express.static(FRONTEND_ROOT));
 
-// Ruta raíz
+// Home: tu index real está en screens/index.html
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../Frontend/screens/index.html'));
+  res.sendFile(path.join(FRONTEND_ROOT, 'screens', 'index.html'));
 });
 
-// Iniciar servidor
-app.listen(PORT, () => {
+// Iniciar servidor aceptando conexiones externas
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
