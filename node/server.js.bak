@@ -1,0 +1,34 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+
+// Middlewares
+app.use(cors());
+app.use(express.json());
+
+
+// Rutas
+const usuariosRoutes = require('./routes/usuarios');
+const vehiculosRoutes = require('./routes/vehiculos');
+const accesosRoutes = require('./routes/accesos');
+const marcasRoutes = require('./routes/marcas');
+const reportesRoutes = require('./routes/reportes');
+
+app.use('/reportes', reportesRoutes);
+app.use('/usuarios', usuariosRoutes);
+app.use('/vehiculos', vehiculosRoutes);
+app.use('/accesos', accesosRoutes);
+app.use('/marcas', marcasRoutes);
+
+// Ruta raíz
+
+
+// Iniciar servidor
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});

@@ -18,3 +18,4 @@ build/
 
 # Coverage (si llegas a usar pruebas)
 coverage/
+repo/
