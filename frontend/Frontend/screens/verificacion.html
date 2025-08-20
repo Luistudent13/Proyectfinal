@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Verificación de vehículo</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <!-- Pantalla de verificación -->
+  <div class="verificacion-container" id="verificacionPage">
+    <div class="verificacion-box">
+      <img src="../assets/espacio-seguro.png" alt="Logo UCC" class="logo-verificacion">
+      <div class="verificacion-content">
+        <h3>Verificación de vehículo</h3>
+
+        <label for="placaVerificar">Ingresar placa del vehículo:</label>
+        <input type="text" id="placaVerificar" placeholder="XXX-XXX-X" required>
+
+        <div class="verificacion-buttons">
+          <button class="btn-verde" onclick="verificarPlaca()">Verificar</button>
+          <button class="btn-rojo" onclick="cancelarVerificacion()">Cancelar</button>
+        </div>
+
+        <p id="resultadoVerificacion"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/verificacion.js"></script>
+  <script src="../js/shared.js"></script>
+</body>
+</html>
