@@ -4,10 +4,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function cargarHistorial() {
   try {
-    const res = await fetch("http://44.204.181.158:3000/accesos");
+    const res = await fetch("/accesos");
     const accesos = await res.json();
 
-    const tbody = document.querySelector("#tablaHistorial tbody");
+    const tbody = document.getElementById("tablaHistorialBody");
     tbody.innerHTML = "";
 
     accesos.forEach(acceso => {
@@ -35,12 +35,16 @@ document.getElementById("contadorLugares").textContent =
 
 function formatearSoloFecha(fechaISO) {
   if (!fechaISO) return "-";
-  const fecha = new Date(fechaISO);
-  return fecha.toLocaleDateString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  const normal = String(fechaISO).replace(" ", "T");
+  const fecha = new Date(normal);
+  if (isNaN(fecha)) return "-";
+  return fecha.toLocaleDateString("es-MX", { year: "numeric", month: "2-digit", day: "2-digit" });
 }
 
 function formatearSoloHora(fechaISO) {
   if (!fechaISO) return "-";
-  const fecha = new Date(fechaISO);
-  return fecha.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const normal = String(fechaISO).replace(" ", "T");
+  const fecha = new Date(normal);
+  if (isNaN(fecha)) return "-";
+  return fecha.toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 }

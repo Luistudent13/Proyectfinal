@@ -67,7 +67,7 @@ marcaInput.addEventListener("input", function () {
       const color = document.getElementById("color").value.trim();
       const idMarca = document.getElementById("marca").value;
   
-  const resMarcas = await fetch("http://44.204.181.158:3000/marcas");
+  const resMarcas = await fetch("/marcas");
 const marcas = await resMarcas.json();
 const marcaObj = marcas.find(m => m.Marca.toLowerCase() === idMarca.toLowerCase());
 if (!marcaObj) {
@@ -88,7 +88,7 @@ const idMarcaReal = marcaObj.ID_Marca;
 };
 
   try {
-    const res = await fetch("http://44.204.181.158:3000/usuarios", {
+    const res = await fetch("/usuarios", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(datos)
@@ -97,10 +97,14 @@ const idMarcaReal = marcaObj.ID_Marca;
     const respuesta = await res.json();
 
     if (res.ok) {
-  alert("✅ Alumno registrado correctamente.");
+  document.getElementById("msgAlumno").innerText = "✅ Alumno registrado correctamente.";
+document.getElementById("msgAlumno").style.color = "green";
+
   window.location.href = "registros.html";  // ← te lleva directo a ver la tabla registros
 } else {
-  alert(`❌ Error al registrar: ${respuesta.mensaje}`);
+  const msg = document.getElementById("msgAlumno");
+msg.innerText = `❌ ${respuesta.mensaje || "Error al registrar"}`;
+msg.style.color = "red";
 }
   } catch (error) {
     console.error("Error al registrar alumno:", error);

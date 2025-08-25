@@ -1,8 +1,7 @@
-const API_URL = "http://44.204.181.158:3000";
-
-// ✅ Verificar placa
 async function verificarPlaca() {
-  const placa = document.getElementById("placaVerificar").value.trim().toUpperCase();
+  const placa = (document.getElementById("placaVerificar").value || "")
+    .trim()
+    .toUpperCase();
   const resultado = document.getElementById("resultadoVerificacion");
 
   if (!placa) {
@@ -12,42 +11,44 @@ async function verificarPlaca() {
   }
 
   try {
-    const res = await fetch(`${API_URL}/vehiculos`);
-    const vehiculos = await res.json();
+    // ✅ Consulta directa al backend usando ruta relativa
+    const res = await fetch(`/vehiculos/placa/${placa}`);
 
-    const encontrado = vehiculos.find(v => v.Placa.toUpperCase() === placa);
-
-    if (encontrado) {
-      // Intenta registrar el acceso con validación
-const respuesta = await fetch(`${API_URL}/accesos`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    ID_Usuario: encontrado.ID_Usuario,
-    ID_Vehiculo: encontrado.ID_Vehiculo
-  })
-});
-
-const data = await respuesta.json();
-
-if (respuesta.ok) {
-  resultado.innerText = "✅ Acceso registrado correctamente.";
-  resultado.style.color = "green";
-} else {
-  resultado.innerText = `❌ ${data.mensaje || "Acceso denegado"}`;
-  resultado.style.color = "red";
-}
-
-
-    } else {
+    if (!res.ok) {
       resultado.innerText = "❌ Vehículo NO registrado.";
       resultado.style.color = "red";
+      return;
     }
 
+    const vehiculo = await res.json(); // { ID_Vehiculo, ID_Usuario, ... }
+
+    // ✅ Registrar acceso (ruta relativa, sin IP)
+    const resp = await fetch(`/accesos`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ID_Usuario: vehiculo.ID_Usuario,
+        ID_Vehiculo: vehiculo.ID_Vehiculo,
+      }),
+    });
+
+    const data = await resp.json().catch(() => ({}));
+
+    if (resp.ok) {
+      resultado.innerText = "✅ Acceso registrado correctamente.";
+      resultado.style.color = "green";
+    } else {
+      resultado.innerText = `❌ ${data.mensaje || "Acceso denegado"}`;
+      resultado.style.color = "red";
+    }
   } catch (error) {
     console.error("Error al verificar placa:", error);
+    resultado.innerText = "❌ Error de conexión con el servidor.";
+    resultado.style.color = "red";
   }
 }
+
+
 
 // ✅ Cancelar verificación
 function cancelarVerificacion() {

@@ -1,50 +1,42 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("formSalida");
   const placaInput = document.getElementById("placaSalida");
-  const mensajeSalida = document.getElementById("mensajeSalida");
+  const resultadoSalida = document.getElementById("resultadoSalida");
 
+  // Usa la utilidad global de shared.js
   formatearPlacaAuto(placaInput);
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const placa = placaInput.value.trim();
+    const placa = (placaInput.value || "").trim().toUpperCase();
 
     if (!placa) {
-      alert("Por favor ingresa una placa.");
+      resultadoSalida.innerText = "❌ Por favor ingresa una placa.";
+      resultadoSalida.style.color = "red";
       return;
     }
 
     try {
-      const res = await fetch("http://44.204.181.158:3000/accesos/salida", {
+      const res = await fetch(`/accesos/salida`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ placa }),
       });
 
-      const data = await res.json();
+const data = await res.json().catch(() => ({}));
 
-      if (res.ok) {
-        alert("Salida registrada correctamente");
+ if (res.ok) {
+        resultadoSalida.innerText = "✅ Salida registrada correctamente.";
+        resultadoSalida.style.color = "green";
         placaInput.value = "";
       } else {
-        alert(data.error || "Error al registrar salida");
+        resultadoSalida.innerText = `❌ ${data.mensaje || data.error || "Error al registrar salida"}`;
+        resultadoSalida.style.color = "red";
       }
     } catch (error) {
       console.error(error);
-      alert("Error de conexión con el servidor");
+      resultadoSalida.innerText = "❌ Error de conexión con el servidor.";
+      resultadoSalida.style.color = "red";
     }
   });
 });
-
-// Función para formatear placa: XXX-XXX-X
-function formatearPlacaAuto(input) {
-  input.addEventListener("input", function () {
-    let valor = this.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 7);
-    if (valor.length >= 3 && valor.length <= 6) {
-      valor = valor.slice(0, 3) + "-" + valor.slice(3);
-    } else if (valor.length === 7) {
-      valor = valor.slice(0, 3) + "-" + valor.slice(3, 6) + "-" + valor.slice(6);
-    }
-    this.value = valor;
-  });
-}

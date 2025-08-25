@@ -1,118 +1,126 @@
-document.addEventListener("DOMContentLoaded", async () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const id = urlParams.get("id");
+// Frontend/js/editar.js
+const API = ""; // mismo origen
 
-  const form = document.getElementById("formEditar");
-  const nombre = document.getElementById("nombre");
-  const matricula = document.getElementById("matricula");
-  const licenciatura = document.getElementById("licenciatura");
-  const areaEmpleado = document.getElementById("areaEmpleado");
-  const placa = document.getElementById("placa");
-  const color = document.getElementById("color");
-  const marcaInput = document.getElementById("marca");
-  const mensaje = document.getElementById("mensaje");
+document.addEventListener("DOMContentLoaded", init);
 
-  let listaMarcas = [];
-
-  matricula.addEventListener("input", () => {
-    matricula.value = matricula.value.replace(/\D/g, "").slice(0, 9);
-  });
-
-  // Obtener marcas
-  async function obtenerMarcas() {
-    try {
-      const res = await fetch("http://localhost:3000/marcas");
-      listaMarcas = await res.json();
-    } catch (err) {
-      console.error("Error al obtener marcas:", err);
-    }
+async function init() {
+  const params = new URLSearchParams(location.search);
+  const id = params.get("id");
+  if (!id) {
+    alert("Falta el id del usuario a editar.");
+    return;
   }
 
-  await obtenerMarcas();
-
-  // Cargar datos del usuario
+  // 1) Catálogo de marcas
+  let marcas = [];
   try {
-    const res = await fetch(`http://44.204.181.158:3000/usuarios/${id}`);
-    const datos = await res.json();
-    const [nombreSolo, ...restoApellidos] = (datos.Nombre_Completo || "").split(" ");
-    nombre.value = nombreSolo;
-    document.getElementById("apellidos").value = restoApellidos.join(" ");
-    matricula.value = datos.Matricula || "";
-    licenciatura.value = datos.Licenciatura || "";
-    areaEmpleado.value = datos.Area_Empleado || "";
-    placa.value = datos.Placa || "";
-    color.value = datos.Color || "";
-    marcaInput.value = datos.Marca || "";
+    const mr = await fetch(`${API}/marcas`);
+    if (mr.ok) marcas = await mr.json();
+  } catch {}
+  const marcaSet = new Set(
+    marcas.map(m => (m.Marca || m.marca || "").toLowerCase().trim())
+  );
 
-    // Mostrar u ocultar campos según tipo de usuario
-    if (datos.ID_Tipo_Usuario == 2) {
-      licenciatura.parentElement.style.display = "block";
-      areaEmpleado.parentElement.style.display = "none";
-    } else if (datos.ID_Tipo_Usuario == 3) {
-      licenciatura.parentElement.style.display = "none";
-      areaEmpleado.parentElement.style.display = "block";
-    } else {
-      licenciatura.parentElement.style.display = "none";
-      areaEmpleado.parentElement.style.display = "none";
-    }
+  // 2) Datos del usuario
+  const res = await fetch(`${API}/usuarios/${id}`);
+  if (!res.ok) {
+    alert("No pude obtener los datos del usuario.");
+    return;
+  }
+  const u = await res.json();
 
-  } catch (err) {
-    mensaje.textContent = "Error al cargar los datos del usuario.";
-    console.error(err);
+  // 3) Rellenar formulario
+  const form = document.getElementById("formEditar");
+  if (!form) return;
+
+  // separa nombre/apellidos (últimos 2 como apellidos si existen)
+  const partes = (u.Nombre_Completo || "").trim().split(/\s+/);
+  const apellidos = partes.length > 1 ? partes.slice(-2).join(" ") : "";
+  const nombre = partes.length > 1 ? partes.slice(0, -2).join(" ") : (u.Nombre_Completo || "");
+
+  form.nombre.value = nombre;
+  form.apellidos.value = apellidos;
+  form.matricula.value = u.Matricula || "";
+  form.licenciatura.value = u.Licenciatura || "";
+
+  // ⬅️ usa el nombre correcto del campo
+  if (form.areaEmpleado) form.areaEmpleado.value = u.Area_Empleado || "";
+  else {
+    const areaEl = document.getElementById("areaEmpleado");
+    if (areaEl) areaEl.value = u.Area_Empleado || "";
   }
 
-  // Enviar cambios
+  // asigna primero lo que venga del GET /usuarios/:id
+  form.placa.value = u.Placa || "";
+  form.color.value = u.Color || "";
+  form.marca.value = u.Marca || ""; // texto de marca
+
+  // luego: fallback si faltó algo
+  if (!form.placa.value || !form.color.value || !form.marca.value) {
+    try {
+      const vr = await fetch(`${API}/vehiculos`);
+      if (vr.ok) {
+        const vehiculos = await vr.json();
+        const v = vehiculos.find(x => x.ID_Usuario === u.ID_Usuario);
+        if (v) {
+          if (!form.placa.value) form.placa.value = v.Placa || "";
+          if (!form.color.value) form.color.value = v.Color || "";
+          if (!form.marca.value) form.marca.value = v.Marca || "";
+        }
+      }
+    } catch (e) {
+      console.warn("Fallback /vehiculos falló:", e);
+    }
+  }
+
+  // Mostrar/ocultar campos según tipo
+  const esAlumno = u.ID_Tipo_Usuario === 2;
+  const esEmpleado = u.ID_Tipo_Usuario === 3;
+  toggle(document.getElementById("grupoLic"), esAlumno);
+  toggle(document.getElementById("grupoArea"), esEmpleado);
+
+  // 4) Guardar
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const nombreMarca = marcaInput.value.trim();
-    if (!nombreMarca) {
-      mensaje.textContent = "Por favor, ingresa una marca válida.";
-      mensaje.style.color = "red";
-      return;
-    }
+    const nombre_completo = [form.nombre.value.trim(), form.apellidos.value.trim()]
+      .filter(Boolean).join(" ");
 
-    const marcaEncontrada = listaMarcas.find(
-  m => m.Marca.trim().toLowerCase() === nombreMarca.trim().toLowerCase()
-);
+    const marcaTexto = (form.marca.value || "").trim();
 
-    const nombre = document.getElementById("nombre").value.trim();
-    const apellidos = document.getElementById("apellidos").value.trim();
-    const matricula = document.getElementById("matricula").value.trim();
-    const licenciatura = document.getElementById("licenciatura").value.trim() || null;
-    const areaEmpleado = document.getElementById("areaEmpleado").value.trim() || null;
-    const placa = document.getElementById("placa").value.trim();
-    const color = document.getElementById("color").value.trim();
-
-    const datosActualizados = {
-  nombre_completo: `${nombre} ${apellidos}`,
-  matricula,
-  licenciatura,
-  area_empleado: areaEmpleado,
-  placa,
-  color,
-  idMarca: marcaEncontrada ? marcaEncontrada.ID_Marca : null,
-  nuevaMarcaTexto: !marcaEncontrada ? nombreMarca : null
-};
+    const payload = {
+      nombre_completo,
+      matricula: form.matricula.value.trim(),
+      licenciatura: esAlumno ? form.licenciatura.value.trim() : null,
+      // ⬅️ usa areaEmpleado
+      area_empleado: esEmpleado ? (form.areaEmpleado?.value || "").trim() : null,
+      placa: form.placa.value.trim(),
+      color: form.color.value.trim(),
+      ...(marcaSet.has(marcaTexto.toLowerCase())
+        ? { marca: marcaTexto }
+        : { nuevaMarcaTexto: marcaTexto }),
+    };
 
     try {
-      const res = await fetch(`http://44.204.181.158:3000/usuarios/${id}`, {
+      const up = await fetch(`${API}/usuarios/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datosActualizados),
+        body: JSON.stringify(payload),
       });
-
-      const result = await res.json();
-      if (res.ok) {
-        mensaje.textContent = "Usuario actualizado correctamente.";
-        mensaje.style.color = "green";
-      } else {
-        mensaje.textContent = result.error || "Error al actualizar.";
-        mensaje.style.color = "red";
+      if (!up.ok) {
+        const err = await up.json().catch(() => ({}));
+        throw new Error(err.mensaje || `HTTP ${up.status}`);
       }
+      alert("Cambios guardados correctamente.");
+      location.href = "registros.html";
     } catch (err) {
-      mensaje.textContent = "Error en la solicitud.";
-      console.error(err);
+      console.error("Error al actualizar:", err);
+      alert("No se pudo actualizar: " + err.message);
     }
   });
-});
+}
+
+function toggle(el, show) {
+  if (!el) return;
+  el.style.display = show ? "" : "none";
+}
