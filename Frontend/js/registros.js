@@ -26,9 +26,9 @@ async function cargarRegistros() {
     ]);
 
     // Dejar solo Alumno (2) y Empleado (3)
-const usuariosPrincipales = usuarios.filter(
-  u => u.ID_Tipo_Usuario === 2 || u.ID_Tipo_Usuario === 3
-);
+    const usuariosPrincipales = usuarios.filter(
+      u => u.ID_Tipo_Usuario === 2 || u.ID_Tipo_Usuario === 3
+    );
 
     // Mapas auxiliares
     // - Un vehiculo por usuario (si hay varios, tomamos el primero)
@@ -55,14 +55,14 @@ const usuariosPrincipales = usuarios.filter(
 
     usuariosPrincipales.forEach(u => {
       const tipo =
-        u.ID_Tipo_Usuario === 2 ? "Alumno"   :
-        u.ID_Tipo_Usuario === 3 ? "Empleado" :
-        u.ID_Tipo_Usuario === 4 ? "Temporal" :
-        u.ID_Tipo_Usuario === 5 ? "Visitante": "Otro";
+        u.ID_Tipo_Usuario === 2 ? "Alumno" :
+          u.ID_Tipo_Usuario === 3 ? "Empleado" :
+            u.ID_Tipo_Usuario === 4 ? "Temporal" :
+              u.ID_Tipo_Usuario === 5 ? "Visitante" : "Otro";
 
       const infoAcademica =
-        tipo === "Alumno"  ? (u.Licenciatura || "-") :
-        tipo === "Empleado"? (u.Area_Empleado || "-") : "-";
+        tipo === "Alumno" ? (u.Licenciatura || "-") :
+          tipo === "Empleado" ? (u.Area_Empleado || "-") : "-";
 
       const v = vehiculoPorUsuario.get(u.ID_Usuario) || {};
       const placa = v.Placa || "-";

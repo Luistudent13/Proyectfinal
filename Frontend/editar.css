@@ -73,3 +73,76 @@ form button:hover,
   font-size: 14px;
   font-weight: bold;
 }
+
+/* Mantén el layout vertical: label arriba, input abajo */
+.form-group label {
+  display: block;
+  margin: 0 0 6px;
+  font-weight: 600;
+}
+
+/* El wrapper de Awesomplete ocupa la línea completa (como un input normal) */
+.form-group .awesomplete {
+  display: block !important;
+  width: 100% !important;
+}
+.form-group .awesomplete > input,
+#marca {
+  display: block !important;
+  width: 100% !important;
+  box-sizing: border-box;
+  height: 48px;                    /* ajústalo si tus inputs usan otra altura */
+  padding: 12px 16px;
+  border: 1px solid #cbd5e1;       /* iguala a tus otros inputs */
+  border-radius: 8px;
+  background: #fff;
+  font-size: 16px;
+  line-height: 1.25;
+  margin: 0;                       /* evita centrado raro */
+}
+
+/* Que el dropdown de sugerencias no se corte ni se despegue */
+.awesomplete ul {
+  z-index: 9999;
+  width: 100% !important;          /* mismo ancho que el input */
+  left: 0 !important;
+}
+
+/* (si el label se sube a la misma línea, fuerza layout vertical) */
+.form-group label { 
+  display: block; 
+  margin: 0 0 6px;
+  font-weight: 600;
+}
+
+
+/* Que el wrapper de Awesomplete se comporte como un input normal */
+.awesomplete{                 /* aplica aunque no esté dentro de .form-group */
+  display:block !important;
+  width:100% !important;
+}
+.awesomplete > input{
+  width:100% !important;
+  box-sizing:border-box;
+  height:48px;
+  padding:12px 16px;
+  border:1px solid #cbd5e1;
+  border-radius:8px;
+  background:#fff;
+  font-size:16px;
+  margin:0;
+}
+
+/* Por si el label se sube a la misma línea, mantenlo arriba */
+.form-group label{
+  display:block;
+  margin:0 0 6px;
+  font-weight:600;
+}
+
+/* Dropdown del autocompletado a la anchura del input y por encima */
+.awesomplete ul{
+  z-index:9999;
+  width:100% !important;
+  left:0 !important;
+}

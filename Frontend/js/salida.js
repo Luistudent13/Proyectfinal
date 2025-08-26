@@ -23,9 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({ placa }),
       });
 
-const data = await res.json().catch(() => ({}));
+      const data = await res.json().catch(() => ({}));
 
- if (res.ok) {
+      if (res.ok) {
         resultadoSalida.innerText = "✅ Salida registrada correctamente.";
         resultadoSalida.style.color = "green";
         placaInput.value = "";

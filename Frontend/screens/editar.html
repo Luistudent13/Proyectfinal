@@ -1,23 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Editar Usuario</title>
-  <link rel="stylesheet" href="../editar.css">
+
+  <!-- primero Awesomplete -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.css">
+<!-- después tu CSS -->
+<link rel="stylesheet" href="../editar.css">
+
+<!-- el JS de Awesomplete puede quedarse donde lo tienes -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
+
 </head>
+
 <body>
   <div class="formulario-container">
     <h2>Editar Usuario</h2>
-    <form id="formEditar">
-      <input type="text" id="nombre" placeholder="Nombre completo" required />
-      <input type="text" id="apellidos" placeholder="Apellidos" required />
-      <input type="text" id="matricula" placeholder="Matrícula" required maxlength="9" inputmode="numeric" pattern="\d{1,9}" />
-      <input type="text" id="licenciatura" placeholder="Licenciatura (si aplica)" />
-      <input type="text" id="areaEmpleado" placeholder="Área de empleado (si aplica)" />
-      <input type="text" id="placa" placeholder="Placa del vehículo" required />
-      <input type="text" id="color" placeholder="Color del vehículo" required />
-      <input type="text" id="marca" placeholder="Marca del vehículo" required />
+    <form id="formEditar" method="post">
+      <input type="text" id="nombre" name="nombre" placeholder="Nombre completo" required />
+      <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos" required />
+      <div class="form-group">
+  <label for="matricula" id="labelMatricula">Matrícula</label>
+  <input
+    type="text"
+    id="matricula"
+    name="matricula"
+    placeholder="Matrícula"
+    required
+  />
+</div>
+
+      <div id="grupoLic" class="form-group">
+        <label for="licenciatura">Licenciatura (si aplica)</label>
+        <input id="licenciatura" name="licenciatura" type="text" />
+      </div>
+
+      <div id="grupoArea" class="form-group">
+        <label for="areaEmpleado">Área de empleado (si aplica)</label>
+        <input id="areaEmpleado" name="areaEmpleado" type="text" />
+      </div>
+
+      <input type="text" id="placa" name="placa" placeholder="Placa del vehículo" required />
+      <input type="text" id="color" name="color" placeholder="Color del vehículo" required />
+      <div class="form-group" id="grupoMarca">
+  <label for="marca">Marca del vehículo</label>
+  <input type="text" id="marca" name="marca" placeholder="Marca del vehículo" required />
+</div>
+
+
 
       <button type="submit">Guardar cambios</button>
       <button type="button" class="btn-regresar" onclick="location.href='registros.html'">Cancelar</button>
@@ -27,4 +60,5 @@
   <script src="../js/shared.js"></script>
   <script src="../js/editar.js"></script>
 </body>
+
 </html>
