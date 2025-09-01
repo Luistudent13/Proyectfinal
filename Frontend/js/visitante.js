@@ -1,101 +1,86 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const API = ""; // mismo origen
+
   const form = document.getElementById("formVisitante");
-  const matriculaInput = document.getElementById("matriculaVisitante");
   const placaInput = document.getElementById("placaVisitante");
   const nombreInput = document.getElementById("nombreVisitante");
   const apellidosInput = document.getElementById("apellidosVisitante");
   const eventoInput = document.getElementById("eventoAsiste");
+  const horaIngresoInput = document.getElementById("horaIngreso");
+  const horaSalidaInput  = document.getElementById("horaSalida");
   const colorInput = document.getElementById("colorVisitante");
   const marcaInput = document.getElementById("marcaVisitante");
 
-  const soloLetrasConAcentosRegex = /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g;
-
-eventoInput.addEventListener("input", function () {
-  this.value = this.value.replace(soloLetrasConAcentosRegex, "");
-});
-
-colorInput.addEventListener("input", function () {
-  this.value = this.value.replace(soloLetrasConAcentosRegex, "");
-});
-
-marcaInput.addEventListener("input", function () {
-  this.value = this.value.replace(soloLetrasConAcentosRegex, "");
-});
-
-  
-
-  const soloLetrasRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/;
-
-  nombreInput.addEventListener("input", function() {
-    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
+  const soloLetras = /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g;
+  [nombreInput, apellidosInput, eventoInput, colorInput, marcaInput].forEach(inp => {
+    if (inp) inp.addEventListener("input", function(){ this.value = this.value.replace(soloLetras, ""); });
   });
 
-  apellidosInput.addEventListener("input", function() {
-    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
-  });
+  activarAutocompletadoMarcas("marcaVisitante");
+  placaInput.addEventListener("input", () => formatearPlacaAuto(placaInput));
 
-// Autocompletado de marcas
-activarAutocompletadoMarcas("marcaVisitante");
-placaInput.addEventListener("input", () => {
-  formatearPlacaAuto(placaInput);
-});
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
+    const nombre = (nombreInput.value || "").trim();
+    const apellidos = (apellidosInput.value || "").trim();
+    const evento = (eventoInput.value || "").trim();
+    const horaIngreso = (horaIngresoInput.value || "").trim();  // HH:MM
+    const horaSalida  = (horaSalidaInput.value  || "").trim();  // HH:MM
+    const placa = (placaInput.value || "").trim().toUpperCase();
+    const color = (colorInput.value || "").trim();
+    const marcaTexto = (marcaInput.value || "").trim();
 
-    // Envío del formulario
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-  
-      const nombre = document.getElementById("nombreVisitante").value.trim();
-    const apellidos = document.getElementById("apellidosVisitante").value.trim();
-    const evento = document.getElementById("eventoAsiste").value.trim();
-    const horaIngreso = document.getElementById("horaIngreso").value;
-    const horaSalida = document.getElementById("horaSalida").value;
-    const placa = document.getElementById("placaVisitante").value.trim();
-    const color = document.getElementById("colorVisitante").value.trim();
-    const marcaTexto = document.getElementById("marcaVisitante").value.trim();
-  
-    const nombreCompleto = `${nombre} ${apellidos}`;
+    if (!nombre || !apellidos || !evento || !horaIngreso || !placa || !marcaTexto) {
+      alert("Completa nombre, apellidos, evento, hora de ingreso, placa y marca.");
+      return;
+    }
 
-      try {
-        const resMarcas = await fetch("http://44.204.181.158:3000/marcas");
-        const marcas = await resMarcas.json();
-        const idMarca = obtenerIdMarca(marcaTexto, marcas);
-  
-        if (!idMarca) {
-          alert("Marca inválida. Selecciona una de la lista.");
-          return;
-        }
-  
-        const datos = {
+    const horario = horaSalida ? `${horaIngreso}-${horaSalida}` : horaIngreso;
+    const nombreCompleto = `${nombre} ${apellidos}`.trim();
+
+    try {
+      // 1) Catálogo de marcas
+      const resMarcas = await fetch(`${API}/marcas`);
+      if (!resMarcas.ok) throw new Error(`HTTP ${resMarcas.status} en /marcas`);
+      const marcas = await resMarcas.json();
+
+      // buscar ID_Marca por texto (insensible a mayúsculas/espacios)
+      const idMarca = (marcas.find(m =>
+        (m.Marca || "").toLowerCase().trim() === marcaTexto.toLowerCase().trim()
+      ) || {}).ID_Marca;
+
+      if (!idMarca) {
+        alert("Marca inválida. Selecciona una de la lista.");
+        return;
+      }
+
+      // 2) Registrar visitante nuevo (tipo = 4)
+      const body = {
   nombre_completo: nombreCompleto,
-  matricula: null,
-  tipoUsuario: 5,
-  licenciatura: null,
-  area_empleado: null,
-  persona_recoge: null,
-  relacion_estudiante: null,
-  placa,
-  color,
-  idMarca: idMarca
+  tipoUsuario: 4,                 // Visitante nuevo
+  evento_asiste: evento,
+  hora_ingreso: horaIngreso,      // "HH:MM"
+  hora_salida: horaSalida || null,
+  placa, color, idMarca
 };
 
+      const res = await fetch(`${API}/usuarios`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
 
-  
-        const res = await fetch("http://44.204.181.158:3000/usuarios", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(datos),
-        });
-  
-        if (res.ok) {
-          alert("✅ Visitante registrado correctamente.");
-          form.reset();
-        } else {
-          alert("❌ Error al registrar visitante.");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        alert("❌ Ocurrió un error al registrar.");
+      if (!res.ok) {
+        const err = await res.json().catch(()=> ({}));
+        throw new Error(err.message || `HTTP ${res.status}`);
       }
-    });
+
+      alert("✅ Visitante registrado correctamente.");
+      form.reset();
+    } catch (err) {
+      console.error("Error al registrar visitante:", err);
+      alert("❌ No se pudo registrar el visitante.");
+    }
   });
+});

@@ -28,39 +28,77 @@ exports.obtenerUsuarios = async (req, res) => {
 };
 
 
-// 🔹 Registrar nuevo usuario (Alumno, Empleado, Visitante, etc.)
+// controllers/usuariosController.js
 exports.registrarUsuarioConVehiculo = async (req, res) => {
-  const { nombre_completo, matricula, tipoUsuario, licenciatura, placa, color, idMarca, area_empleado } = req.body;
+  const {
+    nombre_completo, matricula, tipoUsuario, licenciatura, area_empleado,
+    evento_asiste, hora_ingreso, hora_salida, persona_recoge, relacion_estudiante,
+    placa, color, idMarca
+  } = req.body;
 
-  console.log("DATOS QUE LLEGAN AL BACKEND:", req.body);
+  try {
+    const [rU] = await db.query(
+      `INSERT INTO usuarios
+       (Nombre_Completo, Matricula, ID_Tipo_Usuario, Licenciatura, Area_Empleado,
+        Evento_Asiste, Horario, Hora_Salida, Persona_Recoge, Relacion_Estudiante)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        nombre_completo || null, matricula || null, tipoUsuario,
+        licenciatura || null, area_empleado || null,
+        evento_asiste || null, hora_ingreso || null, hora_salida || null,
+        persona_recoge || null, relacion_estudiante || null
+      ]
+    );
 
-try {
-  console.log("Datos recibidos en registrarUsuarioConVehiculo:", req.body);
+    const idUsuario = rU.insertId;
+    await db.query(
+      `INSERT INTO vehiculos (Placa, Color, ID_Marca, ID_Usuario)
+       VALUES (?, ?, ?, ?)`,
+      [placa, color || null, idMarca, idUsuario]
+    );
 
-  // 1️⃣ Insertar en usuarios
-  const [usuarioResult] = await db.query(
-  'INSERT INTO usuarios (Nombre_Completo, Matricula, ID_Tipo_Usuario, Licenciatura, Area_Empleado) VALUES (?, ?, ?, ?, ?)',
-  [nombre_completo, matricula, tipoUsuario, licenciatura, area_empleado]
-);
-
-  const idUsuario = usuarioResult.insertId;  // ✅ Ahora sí, el id correcto
-
-   console.log("USUARIO INSERTADO CON ID:", idUsuario);
-  // 2️⃣ Insertar en vehiculos usando idUsuario
-  await db.query(
-  'INSERT INTO vehiculos (Placa, Color, ID_Marca, ID_Usuario) VALUES (?, ?, ?, ?)',
-  [placa, color, idMarca, idUsuario]
-);
-
-  console.log("VEHICULO VINCULADO AL USUARIO ID:", idUsuario);
-
-  res.status(200).json({ mensaje: 'Usuario y vehículo registrados correctamente' });
-} catch (error) {
-  console.error('Error al registrar usuario con vehículo:', error);
-  res.status(500).json({ mensaje: 'Error en el servidor' });
-}
+    res.json({ ok: true, ID_Usuario: idUsuario });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Error al registrar usuario' });
+  }
 };
+
 //modificado
+
+// Listar visitantes (nuevo y temporal)
+exports.listarVisitantes = async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT 
+        u.ID_Usuario,
+        u.Nombre_Completo,
+        u.ID_Tipo_Usuario,
+        u.Matricula,
+        u.Licenciatura,
+        u.Area_Empleado,
+        u.Evento_Asiste,
+        u.Horario,
+        u.Hora_Salida, 
+        u.Persona_Recoge,
+        u.Relacion_Estudiante,
+        u.Fecha_Registro,
+        v.Placa,
+        v.Color,
+        m.Marca
+      FROM usuarios u
+      LEFT JOIN vehiculos v ON v.ID_Usuario = u.ID_Usuario
+      LEFT JOIN marca_vehiculos m ON m.ID_Marca = v.ID_Marca
+      WHERE u.ID_Tipo_Usuario IN (4, 5)
+      ORDER BY u.Fecha_Registro DESC, u.ID_Usuario DESC
+    `);
+    res.json(rows);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Error al listar visitantes' });
+  }
+};
+
 
 // 🔹 Buscar usuario por ID
 exports.obtenerUsuarioPorId = async (req, res) => {
