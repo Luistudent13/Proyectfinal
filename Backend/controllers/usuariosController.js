@@ -29,14 +29,29 @@ exports.obtenerUsuarios = async (req, res) => {
 
 
 // controllers/usuariosController.js
+
+// Backend/controllers/usuariosController.js
 exports.registrarUsuarioConVehiculo = async (req, res) => {
-  const {
+  let {
     nombre_completo, matricula, tipoUsuario, licenciatura, area_empleado,
     evento_asiste, hora_ingreso, hora_salida, persona_recoge, relacion_estudiante,
     placa, color, idMarca
   } = req.body;
 
+  // Defensa adicional (si alguien invoca sin middlewares)
+  const faltan = [];
+  if (!nombre_completo || String(nombre_completo).trim() === '') faltan.push('nombre_completo');
+  if (tipoUsuario === undefined || tipoUsuario === null || String(tipoUsuario).trim() === '') faltan.push('tipoUsuario');
+  if (!placa || String(placa).trim() === '') faltan.push('placa');
+  if (faltan.length) {
+    return res.status(400).json({ mensaje: `Faltan campos: ${faltan.join(', ')}` });
+  }
+
+  // Normaliza placa (defensa de backend)
+  const placaFinal = String(placa).trim().toUpperCase();
+
   try {
+    // 1) Insertar usuario
     const [rU] = await db.query(
       `INSERT INTO usuarios
        (Nombre_Completo, Matricula, ID_Tipo_Usuario, Licenciatura, Area_Empleado,
@@ -50,19 +65,26 @@ exports.registrarUsuarioConVehiculo = async (req, res) => {
       ]
     );
 
+    // 2) Insertar vehículo
     const idUsuario = rU.insertId;
     await db.query(
       `INSERT INTO vehiculos (Placa, Color, ID_Marca, ID_Usuario)
        VALUES (?, ?, ?, ?)`,
-      [placa, color || null, idMarca, idUsuario]
+      [placaFinal, color || null, idMarca, idUsuario]
     );
 
-    res.json({ ok: true, ID_Usuario: idUsuario });
+    return res.status(201).json({ ok: true, ID_Usuario: idUsuario });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ message: 'Error al registrar usuario' });
+    if (e.code === 'ER_DUP_ENTRY') {
+      // Claves únicas: p.ej. Matricula o Placa duplicadas
+      return res.status(409).json({ mensaje: 'Usuario o vehículo ya existe (duplicado).' });
+    }
+    return res.status(500).json({ message: 'Error al registrar usuario' });
   }
 };
+
+
 
 //modificado
 

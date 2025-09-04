@@ -3,65 +3,81 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Visitante Temporal</title>
+  <title>Registro de Visitante Temporal</title>
+  <!-- MISMOS ESTILOS DEL PROYECTO -->
   <link rel="stylesheet" href="../styles.css" />
+  <!-- Awesomplete (autocompletado de marcas igual que visitante) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.css"/>
 </head>
 <body>
-<div class="temporal-form-container" id="temporalPage">
-  
-  <div class="form-box">
-    <form id="formTemporal">
-      <fieldset>
-        <legend>Registro de Visitante Temporal</legend>
+  <div class="contenedor-principal">
+    <div class="temporal-form-container">
+      <img src="../assets/espacio-seguro.png" alt="Logo" class="logo">
 
-        <div class="form-group">
-          <label for="nombreTemporal">Nombre del visitante</label>
-          <input type="text" id="nombreTemporal" required />
+      <form id="formTemporal">
+        <div class="form-box">
+          <!-- SECCIÓN: Datos del visitante -->
+          <fieldset>
+            <legend>Registro de Visitante Temporal</legend>
+
+            <div class="row">
+              <div class="form-group">
+                <label for="nombreTemporal">Nombre del visitante</label>
+                <input type="text" id="nombreTemporal" required />
+              </div>
+
+              <div class="form-group">
+                <label for="apellidosTemporal">Apellidos</label>
+                <input type="text" id="apellidosTemporal" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="personaRecoge">¿A quién recoge?</label>
+              <input type="text" id="personaRecoge" required />
+            </div>
+
+            <div class="form-group">
+              <label for="relacionEstudiante">Relación con el estudiante</label>
+              <input type="text" id="relacionEstudiante" required />
+            </div>
+          </fieldset>
+
+          <!-- SECCIÓN: Datos del vehículo -->
+          <fieldset>
+            <legend>Datos del vehículo</legend>
+
+            <div class="row">
+              <div class="form-group">
+                <label for="placaTemporal">Placa</label>
+                <input type="text" id="placaTemporal" maxlength="9" placeholder="ABC-123-X" required />
+              </div>
+
+              <div class="form-group">
+                <label for="colorTemporal">Color del vehículo</label>
+                <input type="text" id="colorTemporal" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="marcaTemporal">Marca</label>
+              <input type="text" id="marcaTemporal" class="awesomplete" autocomplete="off" required />
+            </div>
+          </fieldset>
+
+          <!-- BOTONES -->
+          <div class="form-buttons">
+            <button type="submit" class="btn-verde">Registrar entrada</button>
+            <a href="menu.html"><button type="button" class="btn-rojo">Cancelar</button></a>
+          </div>
         </div>
-
-        <div class="form-group">
-          <label for="apellidosTemporal">Apellidos</label>
-          <input type="text" id="apellidosTemporal" required />
-        </div>
-
-        <div class="form-group">
-          <label for="personaRecoge">¿A quién recoge?</label>
-          <input type="text" id="personaRecoge" required />
-        </div>
-
-        <div class="form-group">
-          <label for="relacionEstudiante">Relación con el estudiante</label>
-          <input type="text" id="relacionEstudiante" required />
-        </div>
-
-        <div class="form-group">
-          <label for="placaTemporal">Placa</label>
-          <input type="text" id="placaTemporal" maxlength="8" required />
-        </div>
-
-        <div class="form-group">
-          <label for="colorTemporal">Color del vehículo</label>
-          <input type="text" id="colorTemporal" required />
-        </div>
-
-        <div class="form-group">
-          <label for="marcaTemporal">Marca</label>
-          <input type="text" id="marcaTemporal" list="listaMarcasTemporal" required />
-          <datalist id="listaMarcasTemporal"></datalist>
-        </div>
-
-        <div class="form-buttons">
-          <button type="submit" class="btn-verde">Registrar Entrada</button>
-          <a href="menu.html"><button type="button" class="btn-rojo">Cancelar</button></a>
-        </div>
-
-      </fieldset>
-    </form>
+      </form>
+    </div>
   </div>
-</div>
 
-<script src="../js/shared.js"></script>
-<script src="../js/temporal.js"></script>
-
+  <!-- Librerías y lógica (igual que en visitante) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
+  <script src="../js/shared.js"></script>
+  <script src="../js/temporal.js"></script>
 </body>
 </html>

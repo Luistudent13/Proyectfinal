@@ -1,17 +1,15 @@
-const express = require("express");
+// accesos.js (Router)
+const express = require('express');
 const router = express.Router();
-const accesosController = require("../controllers/accesosController");
+const accesosCtrl = require('../controllers/accesosController');
 
-// 🔹 GET /accesos
-router.get("/", accesosController.obtenerAccesos);
+// GET /accesos  -> historial
+router.get('/', accesosCtrl.listarAccesos); // si ya lo tienes, déjalo igual
 
-// 🔹 POST /accesos
-router.post("/", accesosController.registrarAcceso);
+// POST /accesos -> ingreso con anti-duplicado
+router.post('/', accesosCtrl.crearAcceso);
 
-// 🔹 GET /accesos/matricula/:matricula
-router.get("/matricula/:matricula", accesosController.buscarAccesosPorMatricula);
-
-router.post("/salida", accesosController.registrarSalida);
-
+// POST /accesos/salida -> salida por placa con validación de abierto
+router.post('/salida', accesosCtrl.registrarSalidaPorPlaca);
 
 module.exports = router;
