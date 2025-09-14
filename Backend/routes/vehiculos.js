@@ -1,14 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const vehiculosController = require("../controllers/vehiculosController");
+const catchAsync = require("../middlewares/catchAsync");
 
-// 🔹 GET /vehiculos → obtener todos los vehículos
-router.get("/", vehiculosController.obtenerVehiculos);
-
-// 🔹 POST /vehiculos → registrar un nuevo vehículo
-router.post("/", vehiculosController.registrarVehiculo);
-
-// 🔹 GET /vehiculos/placa/:placa → buscar un vehículo por placa
-router.get("/placa/:placa", vehiculosController.buscarVehiculoPorPlaca);
+router.get("/",                 catchAsync(vehiculosController.obtenerVehiculos));
+router.post("/",                catchAsync(vehiculosController.registrarVehiculo));
+router.get("/placa/:placa",     catchAsync(vehiculosController.buscarVehiculoPorPlaca));
 
 module.exports = router;

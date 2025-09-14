@@ -1,13 +1,15 @@
 // Backend/routes/usuarios.js
 const express = require("express");
 const router = express.Router();
+
 const usuariosController = require("../controllers/usuariosController");
 const { requireFields, sanitize, validators } = require("../middlewares/validate");
+const catchAsync = require("../middlewares/catchAsync");
 
-// Rutas específicas primero
-router.get("/", usuariosController.obtenerUsuarios);
-router.get("/matricula/:matricula", usuariosController.buscarUsuarioPorMatricula);
-router.get("/visitantes", usuariosController.listarVisitantes);
+// Orden: rutas específicas primero
+router.get("/",            catchAsync(usuariosController.obtenerUsuarios));
+router.get("/matricula/:matricula", catchAsync(usuariosController.buscarUsuarioPorMatricula));
+router.get("/visitantes",  catchAsync(usuariosController.listarVisitantes));
 
 // Crear usuario + vehículo (VALIDADO)
 router.post("/",
@@ -18,12 +20,12 @@ router.post("/",
     nombre_completo: (v) => String(v).trim(),
     placa: (v) => String(v).trim().toUpperCase(),
   }),
-  usuariosController.registrarUsuarioConVehiculo
+  catchAsync(usuariosController.registrarUsuarioConVehiculo)
 );
 
-// Luego las que usan parámetros genéricos
-router.get("/:id", usuariosController.obtenerUsuarioPorId);
-router.put("/:id", usuariosController.actualizarUsuario);
-router.delete("/:id", usuariosController.eliminarUsuario);
+// Genéricas al final
+router.get("/:id",   catchAsync(usuariosController.obtenerUsuarioPorId));
+router.put("/:id",   catchAsync(usuariosController.actualizarUsuario));
+router.delete("/:id",catchAsync(usuariosController.eliminarUsuario));
 
 module.exports = router;

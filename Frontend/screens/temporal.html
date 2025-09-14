@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registro de Visitante Temporal</title>
   <!-- MISMOS ESTILOS DEL PROYECTO -->
-  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="/styles.css" />
   <!-- Awesomplete (autocompletado de marcas igual que visitante) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.css"/>
 </head>
 <body>
   <div class="contenedor-principal">
     <div class="temporal-form-container">
-      <img src="../assets/espacio-seguro.png" alt="Logo" class="logo">
+      <img src="/assets/espacio-seguro.png" alt="Logo" class="logo">
 
       <form id="formTemporal">
         <div class="form-box">
@@ -68,7 +68,8 @@
           <!-- BOTONES -->
           <div class="form-buttons">
             <button type="submit" class="btn-verde">Registrar entrada</button>
-            <a href="menu.html"><button type="button" class="btn-rojo">Cancelar</button></a>
+            <button type="button" class="btn-rojo" onclick="window.location.href='menu.html'">Cancelar</button>
+
           </div>
         </div>
       </form>
@@ -77,7 +78,7 @@
 
   <!-- Librerías y lógica (igual que en visitante) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
-  <script src="../js/shared.js"></script>
-  <script src="../js/temporal.js"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/js/temporal.js"></script>
 </body>
 </html>

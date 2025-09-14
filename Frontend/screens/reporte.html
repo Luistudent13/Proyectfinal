@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reportar Problema</title>
-  <link rel="stylesheet" href="../reporte.css" />
+  <link rel="stylesheet" href="/reporte.css" />
 </head>
 <body>
   <div class="formulario-container" id="reportePage">
@@ -17,8 +17,9 @@
   <label for="tipo">Tipo de Usuario:</label>
   <input type="text" id="tipo" name="tipo" required />
 
-  <label for="mensaje">Describe el problema:</label>
-  <textarea id="problema" name="problema" required></textarea>
+<label for="problema">Describe el problema:</label>
+<textarea id="problema" name="problema" required></textarea>
+
 
   <button type="submit">Enviar Reporte</button>
 </form>
@@ -26,11 +27,10 @@
 
     <div id="mensajeEnvioReporte" style="margin-top: 20px;"></div>
 
-    <a href="menu.html">
-      <button class="btn-regresar">Volver al Menú</button>
-    </a>
+    <button type="button" class="btn-rojo" onclick="window.location.href='/screens/menu.html'">Cancelar</button>
+
   </div>
-  <script src="../js/shared.js"></script>
-<script src="../js/reporte.js"></script>
+  <script src="/js/shared.js"></script>
+<script src="/js/reporte.js"></script>
 </body>
 </html>

@@ -29,6 +29,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../Frontend/screens/index.html'));
 });
 
+// ⛑️ Middleware global de errores SIEMPRE al final
+const errorHandler = require('./middlewares/errorHandler');
+app.use(errorHandler);
+
 // Iniciar servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);

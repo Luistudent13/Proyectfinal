@@ -29,3 +29,59 @@
   display: block;
   margin: 0 auto 20px auto;
 }
+
+/* =========================
+   📱 Responsive < 768px
+   ========================= */
+@media (max-width: 768px) {
+
+  /* Caja principal más compacta y fluida */
+  .form-container {
+    max-width: 92%;
+    padding: 20px 16px;
+    border-radius: 12px;
+    margin: 24px auto;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  }
+
+  /* Inputs cómodos para dedo (evita zoom en iOS con 16px) */
+  .input {
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+
+  /* Botones a 100% de ancho */
+  .button,
+  button,
+  .btn,
+  .btn-verde,
+  .btn-rojo {
+    width: 100%;
+    font-size: 16px;
+    padding: 12px;
+    margin-top: 10px;
+  }
+
+  /* Mensajes y textos */
+  .mensaje {
+    font-size: 14px;
+  }
+
+  /* Logo más pequeño en móvil */
+  .logo {
+    width: 140px;
+    margin-bottom: 12px;
+  }
+}
+
+/* =========================
+   📱 Extra-compacto < 480px
+   ========================= */
+@media (max-width: 480px) {
+  .form-container {
+    padding: 16px 12px;
+  }
+  .logo {
+    width: 120px;
+  }
+}

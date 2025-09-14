@@ -146,3 +146,78 @@ form button:hover,
   width:100% !important;
   left:0 !important;
 }
+
+/* =========================
+   📱 Responsive < 768px
+   ========================= */
+@media (max-width: 768px) {
+
+  /* El body deja de centrar en vertical para evitar overflow en pantallas chicas */
+  body {
+    align-items: flex-start;
+    min-height: auto;
+  }
+
+  /* El contenedor principal se hace más angosto y con menos padding */
+  .formulario-container {
+    width: 100%;
+    max-width: 560px;
+    padding: 20px 16px;
+    margin: 24px 12px;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  }
+
+  /* Si hay filas en grid/flex, forzamos 1 columna */
+  .form-row,
+  .row {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Cada grupo ocupa todo el ancho */
+  .form-group {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  /* Inputs y selects cómodos para móvil (evita zoom en iOS con 16px) */
+  input,
+  select,
+  textarea {
+    width: 100%;
+    font-size: 16px;
+    padding: 10px 12px;
+  }
+
+  /* Botones en columna y a 100% */
+  button,
+  .btn-regresar {
+    width: 100%;
+    margin: 8px 0 0 0;
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  /* Si usas tablas dentro de esta pantalla, hazlas scrolleables */
+  .tabla-responsive,
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* =========================
+   📱 Extra-compacto < 480px
+   ========================= */
+@media (max-width: 480px) {
+  .formulario-container {
+    padding: 16px 12px;
+  }
+  h1, h2, h3 {
+    font-size: 18px;
+  }
+}

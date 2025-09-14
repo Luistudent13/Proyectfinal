@@ -36,16 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
   activarAutocompletadoMarcas("marcaEmpleado");
 
   // Formato de placa: XXX-XXX-X / hasta 9 chars por si lo necesitas
-  placaInput.addEventListener("input", function () {
-    let valor = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 9);
-    if (valor.length <= 3) {
-      this.value = valor;
-    } else if (valor.length <= 6) {
-      this.value = valor.slice(0, 3) + '-' + valor.slice(3);
-    } else {
-      this.value = valor.slice(0, 3) + '-' + valor.slice(3, 6) + '-' + valor.slice(6);
-    }
-  });
+  placaInput.addEventListener("input", () => formatearPlacaAuto(placaInput));
+
 
   // Envío del formulario
   form.addEventListener("submit", async (e) => {

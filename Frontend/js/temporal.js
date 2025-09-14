@@ -2,7 +2,6 @@
 // Funciones de validación y formateo (autónomas por si no cargas shared.js)
 (function () {
   const ACCENTS = 'áéíóúÁÉÍÓÚñÑüÜ';
-  const reOnlyLetters = new RegExp(`^[a-zA-Z ${ACCENTS}]*$`);
   const reLettersSpaces = new RegExp(`[^a-zA-Z ${ACCENTS}]`, 'g');
   const rePlateChars = /[^A-Za-z0-9]/g;
 
@@ -64,13 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Placa: mayúsculas + alfanumérico + máscara ABC-123-X
-  placa.addEventListener('input', () => {
-    const caret = placa.selectionStart;
-    const formatted = window.__formatPlate(placa.value);
-    placa.value = formatted;
-    // intentamos mantener el cursor
-    placa.setSelectionRange(formatted.length, formatted.length);
-  });
+  placa.addEventListener('input', () => formatearPlacaAuto(placa));
   placa.addEventListener('blur', () => {
     placa.value = window.__formatPlate(placa.value);
   });

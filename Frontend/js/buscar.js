@@ -2,6 +2,10 @@ const API_URL = "";
 
 let usuariosGlobal = [];
 
+  // 🔎 Mapeo de tipo de usuario a texto
+const TIPO_MAP = { 2: "Alumno", 3: "Empleado", 4: "Visitante", 5: "Temporal" };
+const tipoToText = (n) => TIPO_MAP[n] || `Desconocido (${n ?? "-"})`;
+
 document.addEventListener("DOMContentLoaded", async () => {
   const inputMatricula = document.getElementById("matriculaBuscar");
   const inputPlaca = document.getElementById("placaBuscar");
@@ -61,8 +65,8 @@ document.getElementById("btnBuscar").addEventListener("click", () => {
     <div class="tarjeta-resultado">
       <p><strong>Nombre:</strong> ${usuario.Nombre_Completo}</p>
       <p><strong>Matrícula:</strong> ${usuario.Matricula || "-"}</p>
-      <p><strong>Tipo:</strong> ${usuario.ID_Tipo_Usuario}</p>
-      <p><strong>Licenciatura/Área:</strong> ${usuario.Licenciatura || "-"}</p>
+      <p><strong>Tipo:</strong> ${tipoToText(usuario.ID_Tipo_Usuario)}</p>
+      <p><strong>Licenciatura/Área:</strong> ${usuario.Licenciatura || usuario.Area_Empleado || "-"}</p>
       <p><strong>Placa:</strong> ${usuario.Placa || "-"}</p>
       <p><strong>Marca:</strong> ${usuario.Marca || "-"}</p>
       <p><strong>Color:</strong> ${usuario.Color || "-"}</p>

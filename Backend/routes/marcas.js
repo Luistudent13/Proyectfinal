@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const marcasController = require("../controllers/marcasController");
+const catchAsync = require("../middlewares/catchAsync");
 
-// 🔹 GET /marcas → obtener todas las marcas
-router.get("/", marcasController.obtenerMarcas);
-
-// 🔹 POST /marcas → registrar una nueva marca
-router.post("/", marcasController.registrarMarca);
+router.get("/",  catchAsync(marcasController.obtenerMarcas));
+router.post("/", catchAsync(marcasController.registrarMarca));
 
 module.exports = router;

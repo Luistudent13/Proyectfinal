@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registrar visitante</title>
-  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
 <div class="contenedor-principal">
   <div class="visitante-form-container">
-    <img src="../assets/espacio-seguro.png" alt="Logo UCC" class="logo">
+    <img src="/assets/espacio-seguro.png" alt="Logo UCC" class="logo">
     <form id="formVisitante">
       <div class="form-box">
 
@@ -66,17 +66,18 @@
         </fieldset>
 
         <div class="form-buttons">
-          <button type="submit" class="btn-verde">Enviar</button>
-          <a href="menu.html"><button type="button" class="btn-rojo">Cancelar</button></a>
-        </div>
+  <button type="submit" class="btn-verde">Enviar</button>
+ <button type="button" class="btn-rojo" onclick="window.location.href='menu.html'">Cancelar</button>
+
+</div>
 
       </div>
     </form>
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
-<script src="../js/shared.js"></script>
-<script src="../js/visitante.js"></script>
+<script src="/js/shared.js"></script>
+<script src="/js/visitante.js"></script>
 
 
 </body>

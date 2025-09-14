@@ -5,39 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Menú Principal</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../styles.css">
-  <link rel="stylesheet" href="../menu.css">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/menu.css">
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <img src="../assets/espacio-seguro.png" alt="Logo Espacio Seguro" />
+      <img src="/assets/espacio-seguro.png" alt="Logo Espacio Seguro" />
       <h1>ESPACIO SEGURO</h1>
     </div>
 
     <div class="section">
       <div class="section-title">Registro de usuarios</div>
-      <button class="button" onclick="location.href='verificacion.html'">Registrar ingreso</button>
-      <button class="button" onclick="location.href='salida.html'">Registrar salida</button>
+      <button class="button" onclick="location.href='/screens/verificacion.html'">Registrar ingreso</button>
+      <button class="button" onclick="location.href='/screens/salida.html'">Registrar salida</button>
     </div>
 
     <div class="section">
       <div class="section-title">Registrar nuevos usuarios</div>
       <div class="button-grid">
-        <button class="button secondary" onclick="location.href='alumno.html'">Alumno</button>
-        <button class="button secondary" onclick="location.href='empleado.html'">Profesor</button>
-        <button class="button secondary" onclick="location.href='visitante.html'">Visitante nuevo</button>
-        <button class="button secondary" onclick="location.href='temporal.html'">Visitante temporal</button>
+        <button class="button secondary" onclick="location.href='/screens/alumno.html'">Alumno</button>
+        <button class="button secondary" onclick="location.href='/screens/empleado.html'">Profesor</button>
+        <button class="button secondary" onclick="location.href='/screens/visitante.html'">Visitante nuevo</button>
+        <button class="button secondary" onclick="location.href='/screens/temporal.html'">Visitante temporal</button>
       </div>
     </div>
 
     <div class="section">
       <div class="section-title">Consultas y soporte</div>
-      <button class="button secondary" onclick="location.href='registros.html'">Ver registros</button>
-      <button class="button secondary" onclick="location.href='historial.html'">Historial de accesos</button>
-      <button class="button secondary" onclick="location.href='buscar.html'">Buscar usuario</button>
-      <button class="button secondary" onclick="location.href='verReportes.html'">Ver reportes</button>
-      <button class="button warning" onclick="location.href='reporte.html'">Reportar problema</button>
+      <button class="button secondary" onclick="location.href='/screens/registros.html'">Ver registros</button>
+      <button class="button secondary" onclick="location.href='/screens/historial.html'">Historial de accesos</button>
+      <button class="button secondary" onclick="location.href='/screens/buscar.html'">Buscar usuario</button>
+      <button class="button secondary" onclick="location.href='/screens/verReportes.html'">Ver reportes</button>
+      <button class="button warning" onclick="location.href='/screens/reporte.html'">Reportar problema</button>
       <button class="button danger" onclick="mostrarModalCerrarSesion()">Cerrar sesión</button>
     </div>
   </div>
@@ -51,7 +51,7 @@
     </div>
   </div>
 
-  <script src="../js/shared.js"></script>
+  <script src="/js/shared.js"></script>
 </body>
 
 </html>

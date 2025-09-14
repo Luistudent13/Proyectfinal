@@ -5,14 +5,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registro de Empleado</title>
-  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
 </head>
 
 <body>
   <div class="empleado-form-container" id="empleadoPage">
-    <img src="../assets/espacio-seguro.png" alt="Logo UCC" class="logo" />
+    <img src="/assets/espacio-seguro.png" alt="Logo UCC" class="logo" />
     <div class="form-box">
       <form id="formEmpleado">
         <fieldset>
@@ -55,14 +55,15 @@
 
         <div class="form-buttons">
           <button type="submit" class="btn-verde">Enviar</button>
-          <a href="menu.html"><button type="button" class="btn-rojo-mini">Cancelar</button></a>
+          <button type="button" class="btn-rojo" onclick="window.location.href='/screens/menu.html'">Cancelar</button>
+
         </div>
       </form>
     </div>
   </div>
 
-  <script src="../js/shared.js"></script>
-  <script src="../js/empleado.js"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/js/empleado.js"></script>
 </body>
 
 </html>
