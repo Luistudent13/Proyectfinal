@@ -1,3 +1,34 @@
+// URL global para TODA la app (apunta a tu VPS)
+window.API_URL = "https://ricman-lab-one.it.com/api";
+
+// --- helper opcional para simplificar fetchs ---
+async function apiGet(path) {
+  const r = await fetch(`${API_URL}${path}`, { credentials: "include" });
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json();
+}
+
+// Activar autocompletado de marcas (FIX: parsear JSON y usar la variable correcta)
+async function activarAutocompletadoMarcas(inputId) {
+  const input = document.getElementById(inputId);
+  try {
+    // antes: const res = await fetch(`${API_URL}/marcas`);
+    //       const lista = marcas.map(m => m.Marca); // <- 'marcas' no existía
+    const marcas = await apiGet('/marcas');                // <-- obtiene JSON
+    const lista = marcas.map(m => m.Marca);                // <-- usa 'marcas'
+
+    new Awesomplete(input, {
+      list: lista,
+      minChars: 1,
+      maxItems: 10,
+      autoFirst: true
+    });
+  } catch (error) {
+    console.error("Error cargando marcas:", error);
+    alert("No se pudieron cargar las marcas. Verifica la conexión con el servidor.");
+  }
+}
+
 const btnVerRegistros = document.getElementById("btnVerRegistros");
 if (btnVerRegistros) {
   btnVerRegistros.addEventListener("click", () => {
@@ -100,8 +131,7 @@ async function activarAutocompletadoMarcas(inputId) {
   const input = document.getElementById(inputId);
 
   try {
-    const res = await fetch("/marcas");
-    const marcas = await res.json();
+    const res = await fetch(`${API_URL}/marcas`);
     const lista = marcas.map(m => m.Marca);
 
     new Awesomplete(input, {
