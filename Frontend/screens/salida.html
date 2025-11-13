@@ -2,8 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registrar salida</title>
+  <!-- Solo tu CSS global -->
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
@@ -15,14 +16,25 @@
       <div class="verificacion-content">
         <h3>Registro de salida</h3>
 
+        <!-- Este form y estos ids son los que usa salida.js de tu proyecto grande -->
         <form id="formSalida">
-        <label for="placaSalida">Ingresar placa del vehículo:</label>
-        <input type="text" id="placaSalida" placeholder="XXX-XXX-X" required>
+          <label for="placaSalida">Ingresar placa del vehículo:</label>
+          <input
+            type="text"
+            id="placaSalida"
+            placeholder="XXX-XXX-X"
+            required
+          />
 
-        <div class="verificacion-buttons">
-          <button type="submit" class="btn-verde">Registrar</button>
-          <button type="button" class="btn-rojo" onclick="window.location.href='menu.html'">Cancelar</button>
-        </div>
+          <div class="verificacion-buttons">
+            <button type="submit" class="btn-verde">Registrar</button>
+            <button
+              type="button"
+              class="btn-rojo"
+              onclick="window.location.href='menu.html'">
+              Cancelar
+            </button>
+          </div>
         </form>
 
         <p id="resultadoSalida"></p>
@@ -30,7 +42,10 @@
     </div>
   </div>
 
+  <!-- JS: usamos los del proyecto grande -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="/js/shared.js"></script>
+  <script src="/js/sharedForms.js"></script>
   <script src="/js/salida.js"></script>
 </body>
 </html>

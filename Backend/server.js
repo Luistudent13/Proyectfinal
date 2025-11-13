@@ -1,39 +1,43 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
+// Backend/server.js
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Middlewares
+// Middlewares base
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../Frontend')));
 
-// Rutas
-const usuariosRoutes = require('./routes/usuarios');
-const vehiculosRoutes = require('./routes/vehiculos');
-const accesosRoutes = require('./routes/accesos');
-const marcasRoutes = require('./routes/marcas');
-const reportesRoutes = require('./routes/reportes');
+// Frontend estático
+app.use(express.static(path.join(__dirname, "../Frontend")));
 
-app.use('/reportes', reportesRoutes);
-app.use('/usuarios', usuariosRoutes);
-app.use('/vehiculos', vehiculosRoutes);
-app.use('/accesos', accesosRoutes);
-app.use('/marcas', marcasRoutes);
+// Rutas API
+const authRoutes = require("./routes/auth");
+const usuariosRoutes = require("./routes/usuarios");
+const vehiculosRoutes = require("./routes/vehiculos");
+const accesosRoutes = require("./routes/accesos");
+const marcasRoutes = require("./routes/marcas");
+const reportesRoutes = require("./routes/reportes");
 
-// Ruta raíz
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../Frontend/screens/index.html'));
+app.use("/api/auth", authRoutes);
+app.use("/api/usuarios", usuariosRoutes);
+app.use("/api/vehiculos", vehiculosRoutes);
+app.use("/api/accesos", accesosRoutes);
+app.use("/api/marcas", marcasRoutes);
+app.use("/api/reportes", reportesRoutes);
+
+// Ruta raíz → pantalla principal
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../Frontend/screens/index.html"));
 });
 
-// ⛑️ Middleware global de errores SIEMPRE al final
-const errorHandler = require('./middlewares/errorHandler');
+// Manejo global de errores
+const errorHandler = require("./middlewares/errorHandler");
 app.use(errorHandler);
 
-// Iniciar servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

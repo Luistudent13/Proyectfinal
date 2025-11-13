@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.13.0"
   },
   "name": "backend",

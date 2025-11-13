@@ -1,79 +1,74 @@
-async function verificarPlaca() {
-  const placa = (document.getElementById("placaVerificar").value || "")
-    .trim()
-    .toUpperCase();
-  const resultado = document.getElementById("resultadoVerificacion");
+// /js/verificacion.js — Ingreso por placa
+document.addEventListener("DOMContentLoaded", () => {
+  // Solo ADMIN y GUARDIA
+  requireAuth({ roles: ["ADMIN", "GUARDIA"] });
 
-  if (!placa) {
-    resultado.innerText = "❌ Ingresa una placa válida.";
-    resultado.style.color = "red";
-    return;
-  }
-
-  try {
-    // ✅ Consulta directa al backend usando ruta relativa
-    const res = await fetch(`/vehiculos/placa/${placa}`);
-
-    if (!res.ok) {
-      resultado.innerText = "❌ Vehículo NO registrado.";
-      resultado.style.color = "red";
-      return;
-    }
-
-    const vehiculo = await res.json(); // { ID_Vehiculo, ID_Usuario, ... }
-
-    // ✅ Registrar acceso (ruta relativa, sin IP)
-    const resp = await fetch(`/accesos`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ID_Usuario: vehiculo.ID_Usuario,
-        ID_Vehiculo: vehiculo.ID_Vehiculo,
-      }),
-    });
-
-    const data = await resp.json().catch(() => ({}));
-
-    if (resp.ok) {
-      resultado.innerText = "✅ Acceso registrado correctamente.";
-      resultado.style.color = "green";
-    } else {
-      resultado.innerText = `❌ ${data.mensaje || "Acceso denegado"}`;
-      resultado.style.color = "red";
-    }
-  } catch (error) {
-    console.error("Error al verificar placa:", error);
-    resultado.innerText = "❌ Error de conexión con el servidor.";
-    resultado.style.color = "red";
-  }
-}
-
-
-
-// ✅ Cancelar verificación
-function cancelarVerificacion() {
-  const menuPage = document.getElementById("menuPage");
-  const verificacionPage = document.getElementById("verificacionPage");
-
-  if (menuPage && verificacionPage) {
-    verificacionPage.style.display = "none";
-    menuPage.style.display = "block";
-  } else {
-    window.location.href = "../screens/menu.html";
-  }
-
+  const form = document.getElementById("formVerificacion");
   const inputPlaca = document.getElementById("placaVerificar");
   const resultado = document.getElementById("resultadoVerificacion");
 
-  if (inputPlaca) inputPlaca.value = "";
-  if (resultado) resultado.innerText = "";
-}
+  if (!form || !inputPlaca) return;
 
-// ✅ Formateo de placa al escribir
-document.addEventListener("DOMContentLoaded", () => {
-  const placaInput = document.getElementById("placaVerificar");
+  // Validaciones de placa
+  bindPlateStrict(inputPlaca);
+  bindPlateMask(inputPlaca);
 
-  if (placaInput) {
-    placaInput.addEventListener("input", () => formatearPlacaAuto(placaInput));
-  }
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    let placa = (inputPlaca.value || "").trim().toUpperCase();
+
+    if (!placa) {
+      swalError("Ingresa la placa del vehículo.");
+      return;
+    }
+
+    if (!validarPlacaFormato(placa)) {
+      swalError("Placa inválida. Usa el formato ABC-123-X.");
+      inputPlaca.value = "";
+      inputPlaca.focus();
+      return;
+    }
+
+    try {
+      // 1) Buscar vehículo por placa
+      const vehiculo = await apiFetch(`/vehiculos/placa/${encodeURIComponent(placa)}`);
+
+      // Mostrar un pequeño resumen debajo (opcional)
+      if (resultado) {
+        resultado.textContent = `Vehículo de ${vehiculo.Nombre_Completo} (${vehiculo.Marca}${
+          vehiculo.Color ? ", " + vehiculo.Color : ""
+        })`;
+      }
+
+      // 2) Confirmar ingreso
+      const ok = await Swal.fire({
+        icon: "question",
+        title: "Confirmar ingreso",
+        text: `¿Registrar ingreso para ${vehiculo.Nombre_Completo}?`,
+        showCancelButton: true,
+        confirmButtonText: "Sí, registrar",
+        cancelButtonText: "Cancelar",
+      });
+
+      if (!ok.isConfirmed) return;
+
+      // 3) Registrar acceso (ingreso)
+      await apiFetch("/accesos", {
+        method: "POST",
+        body: JSON.stringify({
+          ID_Usuario: vehiculo.ID_Usuario,
+          ID_Vehiculo: vehiculo.ID_Vehiculo,
+        }),
+      });
+
+      await swalSuccess("Ingreso registrado correctamente.");
+      inputPlaca.value = "";
+      inputPlaca.focus();
+      if (resultado) resultado.textContent = "";
+    } catch (err) {
+      console.error(err);
+      swalError(err.message || "Error al registrar ingreso.");
+    }
+  });
 });

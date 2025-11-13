@@ -1,15 +1,29 @@
-const express = require('express');
+// Backend/routes/accesos.js
+const express = require("express");
 const router = express.Router();
-const accesosCtrl = require('../controllers/accesosController');
+const accesosCtrl = require("../controllers/accesosController");
 const catchAsync = require("../middlewares/catchAsync");
+const { verificarToken } = require("../middlewares/authJWT");
 
-// GET /accesos -> historial
-router.get('/',          catchAsync(accesosCtrl.listarAccesos));
+// Historial de accesos
+router.get(
+  "/",
+  verificarToken(["ADMIN", "GUARDIA"]),
+  catchAsync(accesosCtrl.listarAccesos)
+);
 
-// POST /accesos -> ingreso
-router.post('/',         catchAsync(accesosCtrl.crearAcceso));
+// Registrar ingreso
+router.post(
+  "/",
+  verificarToken(["ADMIN", "GUARDIA"]),
+  catchAsync(accesosCtrl.crearAcceso)
+);
 
-// POST /accesos/salida -> salida por placa
-router.post('/salida',   catchAsync(accesosCtrl.registrarSalidaPorPlaca));
+// Registrar salida por placa
+router.post(
+  "/salida",
+  verificarToken(["ADMIN", "GUARDIA"]),
+  catchAsync(accesosCtrl.registrarSalidaPorPlaca)
+);
 
 module.exports = router;

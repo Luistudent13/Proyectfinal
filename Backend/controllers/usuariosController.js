@@ -2,6 +2,7 @@ const db = require("../config/database");
 const httpError = require("../utils/httpError");
 
 // Obtener todos los usuarios
+// Obtener todos los usuarios (alumnos, empleados, visitantes y temporales)
 exports.obtenerUsuarios = async (req, res) => {
   const [resultados] = await db.query(`
     SELECT 
@@ -11,6 +12,12 @@ exports.obtenerUsuarios = async (req, res) => {
       u.ID_Tipo_Usuario,
       u.Licenciatura,
       u.Area_Empleado,
+      u.Evento_Asiste,
+      u.Horario,
+      u.Hora_Salida,
+      u.Persona_Recoge,
+      u.Relacion_Estudiante,
+      u.Fecha_Registro,
       v.Placa,
       v.Color,
       m.Marca
@@ -19,8 +26,10 @@ exports.obtenerUsuarios = async (req, res) => {
     LEFT JOIN marca_vehiculos m ON v.ID_Marca = m.ID_Marca
     ORDER BY u.ID_Usuario ASC
   `);
+
   res.json(resultados);
 };
+
 
 // Crear usuario + vehículo
 exports.registrarUsuarioConVehiculo = async (req, res) => {

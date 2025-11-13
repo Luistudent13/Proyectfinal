@@ -433,17 +433,6 @@ legend {
   background-color: #f9f9f9;
 }
 
-
-.verificacion-container {
-  position: fixed;
-  inset: 0;
-  background: url('image.png') center/cover no-repeat; /* <- reemplaza con imagen de fondo */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
 .verificacion-box {
   background: white;
   border-radius: 7px;
@@ -736,9 +725,25 @@ legend {
   display: block;
 }
 
+.verificacion-container {
+  position: fixed;
+  inset: 0;
+  background: url('image.png') center/cover no-repeat; /* puedes cambiar la imagen si quieres */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
 
-[aria-live] {
-  display: none !important;
+
+
+/* Solo oculta los avisos ARIA internos del autocompletado, NO todo lo que tenga aria-live */
+.awesomplete [aria-live] {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
 }
 
 .awesomplete li[aria-selected="true"] {
@@ -765,4 +770,30 @@ legend {
   background-color: #92d9c2;
   transform: translateY(-2px);
   opacity: 0.95;
+}
+
+/* 🔧 Asegura que SweetAlert2 siempre quede por encima de todo */
+.swal2-container {
+  z-index: 99999 !important;
+  position: fixed !important;
+}
+
+.swal2-popup {
+  position: relative !important;
+  z-index: 100000 !important;
+}
+
+
+/* Evita que el formulario bloquee clics cuando aparece el modal */
+.alumno-form-container,
+.empleado-form-container,
+.temporal-form-container,
+.visitante-form-container {
+  position: relative;
+  z-index: auto;
+}
+
+.form-box {
+  position: relative;
+  z-index: auto;
 }

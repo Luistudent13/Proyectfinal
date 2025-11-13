@@ -1,119 +1,145 @@
+// Backend/controllers/accesosController.js
 const db = require("../config/database");
 
-// 🔹 POST /accesos → Registrar un nuevo acceso (entrada)
-exports.registrarAcceso = async (req, res) => {
+// POST /api/accesos → Registrar entrada
+exports.crearAcceso = async (req, res, next) => {
   try {
     const { ID_Usuario, ID_Vehiculo } = req.body;
+
     if (!ID_Usuario || !ID_Vehiculo) {
-      return res.status(400).json({ mensaje: "Faltan ID_Usuario o ID_Vehiculo" });
+      return res.status(400).json({
+        message: "Faltan ID_Usuario o ID_Vehiculo",
+        mensaje: "Faltan ID_Usuario o ID_Vehiculo",
+      });
     }
 
-    // 1) Anti-duplicado: ¿ya hay un acceso abierto para este vehículo?
-    const [accesosActivos] = await db.query(
-      `SELECT ID_Acceso
-       FROM registros_acceso
-       WHERE ID_Vehiculo = ? AND Hora_Salida IS NULL`,
+    // ¿ya existe acceso ABIERTO para ese vehículo?
+    const [activos] = await db.query(
+      "SELECT ID_Acceso FROM registros_acceso WHERE ID_Vehiculo = ? AND Hora_Salida IS NULL",
       [ID_Vehiculo]
     );
-    if (accesosActivos.length > 0) {
-      return res.status(409).json({ mensaje: "Este vehículo ya está dentro." });
+
+    if (activos.length > 0) {
+      // 🔴 Aquí el mensaje que quieres
+      return res.status(400).json({
+        message: "Este vehículo no ha salido",
+        mensaje: "Este vehículo no ha salido",
+        code: "VEHICULO_NO_HA_SALIDO",
+      });
     }
 
-    // 2) Insertar acceso
-    const [resultado] = await db.query(
+    const ahora = new Date();
+    const fecha = ahora.toISOString().slice(0, 10);
+    const hora = ahora.toTimeString().slice(0, 8);
+
+    const [result] = await db.query(
       `INSERT INTO registros_acceso (ID_Vehiculo, ID_Usuario, Hora_Entrada, Fecha_Acceso)
-       VALUES (?, ?, CURRENT_TIME(), CURDATE())`,
-      [ID_Vehiculo, ID_Usuario]
+       VALUES (?, ?, ?, ?)`,
+      [ID_Vehiculo, ID_Usuario, hora, fecha]
     );
 
     return res.status(201).json({
-      mensaje: "Acceso registrado exitosamente",
-      ID_Acceso: resultado.insertId
+      message: "Acceso registrado correctamente",
+      mensaje: "Acceso registrado correctamente",
+      ID_Acceso: result.insertId,
     });
   } catch (err) {
-    console.error("Error registrarAcceso:", err);
-    return res.status(500).json({ mensaje: "Error del servidor" });
+    next(err);
   }
 };
 
-// 🔹 POST /accesos/salida → Registrar salida por placa
-exports.registrarSalida = async (req, res) => {
-  try {
-    let { placa } = req.body;
-    if (!placa) return res.status(400).json({ mensaje: "Falta placa" });
-    placa = String(placa).trim().toUpperCase();
 
-    // 1) Resolver vehículo por placa
-    const [vehRows] = await db.query(
-      `SELECT ID_Vehiculo
-       FROM vehiculos
-       WHERE UPPER(Placa) = ?
-       LIMIT 1`,
+// POST /api/accesos/salida → Registrar salida por placa
+// POST /api/accesos/salida → Registrar salida por placa
+exports.registrarSalidaPorPlaca = async (req, res, next) => {
+  try {
+    const { placa } = req.body;
+    if (!placa) {
+      return res.status(400).json({
+        message: "La placa es obligatoria",
+        mensaje: "La placa es obligatoria",
+      });
+    }
+
+    // 1) Buscar vehículo por placa
+    const [vehiculos] = await db.query(
+      "SELECT ID_Vehiculo FROM vehiculos WHERE Placa = ?",
       [placa]
     );
-    if (vehRows.length === 0) {
-      return res.status(404).json({ mensaje: "Placa no registrada" });
+    if (vehiculos.length === 0) {
+      return res.status(404).json({
+        message: "Vehículo no encontrado",
+        mensaje: "Vehículo no encontrado",
+      });
     }
-    const { ID_Vehiculo } = vehRows[0];
+    const idVehiculo = vehiculos[0].ID_Vehiculo;
 
-    // 2) Buscar acceso abierto
-    const [accRows] = await db.query(
-      `SELECT ID_Acceso
+    // 2) Buscar el ÚLTIMO registro de acceso de ese vehículo
+    const [ultimos] = await db.query(
+      `SELECT ID_Acceso, Hora_Salida
        FROM registros_acceso
-       WHERE ID_Vehiculo = ? AND Hora_Salida IS NULL
+       WHERE ID_Vehiculo = ?
        ORDER BY ID_Acceso DESC
        LIMIT 1`,
-      [ID_Vehiculo]
+      [idVehiculo]
     );
-    if (accRows.length === 0) {
-      return res.status(404).json({ mensaje: "No hay un acceso abierto para esta placa." });
+
+    // Nunca ha entrado
+    if (ultimos.length === 0) {
+      return res.status(400).json({
+        message: "Este vehículo no tiene registros de entrada",
+        mensaje: "Este vehículo no tiene registros de entrada",
+      });
     }
 
-    const { ID_Acceso } = accRows[0];
+    const ultimo = ultimos[0];
 
-    // 3) Cerrar acceso
+    // 3) Si el último registro YA tiene Hora_Salida → ya egresó
+    if (ultimo.Hora_Salida) {
+      return res.status(400).json({
+        message: "Este vehículo ya egresó",
+        mensaje: "Este vehículo ya egresó",
+        code: "VEHICULO_YA_EGRESO",
+      });
+    }
+
+    // 4) Si el último registro NO tiene Hora_Salida → registrar salida
+    const ahora = new Date();
+    const horaSalida = ahora.toTimeString().slice(0, 8);
+
     await db.query(
-      `UPDATE registros_acceso
-       SET Hora_Salida = CURRENT_TIME()
-       WHERE ID_Acceso = ?`,
-      [ID_Acceso]
+      "UPDATE registros_acceso SET Hora_Salida = ? WHERE ID_Acceso = ?",
+      [horaSalida, ultimo.ID_Acceso]
     );
 
-    return res.json({ mensaje: "Salida registrada" });
+    return res.json({
+      message: "Salida registrada correctamente",
+      mensaje: "Salida registrada correctamente",
+    });
   } catch (err) {
-    console.error("Error registrarSalida:", err);
-    return res.status(500).json({ mensaje: "Error del servidor" });
+    next(err);
   }
 };
 
-// Alias y exportación unificada
-module.exports = {
-  listarAccesos: async (req, res) => {
-    try {
-      const [rows] = await db.query(`
-        SELECT 
-          ra.ID_Acceso,
-          u.Nombre_Completo,
-          v.Placa,
-          ra.Fecha_Acceso,
-          ra.Hora_Entrada,
-          ra.Hora_Salida
-        FROM registros_acceso ra
-        JOIN usuarios u ON u.ID_Usuario = ra.ID_Usuario
-        JOIN vehiculos v ON v.ID_Vehiculo = ra.ID_Vehiculo
-        ORDER BY ra.ID_Acceso DESC
-      `);
-      res.json(rows);
-    } catch (err) {
-      console.error("Error listarAccesos:", err);
-      res.status(500).json({ mensaje: "Error al obtener accesos" });
-    }
-  },
 
-  // Renombramos registrarAcceso → crearAcceso
-  crearAcceso: exports.registrarAcceso,
-
-  // Renombramos registrarSalida → registrarSalidaPorPlaca
-  registrarSalidaPorPlaca: exports.registrarSalida
+// GET /api/accesos → Historial completo
+exports.listarAccesos = async (req, res, next) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT ra.ID_Acceso,
+              ra.Fecha_Registro,
+              ra.Hora_Entrada,
+              ra.Hora_Salida,
+              ra.Fecha_Acceso,
+              v.Placa,
+              u.Nombre_Completo
+       FROM registros_acceso ra
+       JOIN vehiculos v ON ra.ID_Vehiculo = v.ID_Vehiculo
+       JOIN usuarios u ON ra.ID_Usuario = u.ID_Usuario
+       ORDER BY ra.ID_Acceso DESC`
+    );
+    res.json(rows);
+  } catch (err) {
+    next(err);
+  }
 };
-

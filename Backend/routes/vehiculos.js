@@ -1,10 +1,27 @@
+// Backend/routes/vehiculos.js
 const express = require("express");
 const router = express.Router();
 const vehiculosController = require("../controllers/vehiculosController");
 const catchAsync = require("../middlewares/catchAsync");
+const { verificarToken } = require("../middlewares/authJWT");
 
-router.get("/",                 catchAsync(vehiculosController.obtenerVehiculos));
-router.post("/",                catchAsync(vehiculosController.registrarVehiculo));
-router.get("/placa/:placa",     catchAsync(vehiculosController.buscarVehiculoPorPlaca));
+// ADMIN y GUARDIA pueden consultar y registrar
+router.get(
+  "/",
+  verificarToken(["ADMIN", "GUARDIA"]),
+  catchAsync(vehiculosController.obtenerVehiculos)
+);
+
+router.post(
+  "/",
+  verificarToken(["ADMIN", "GUARDIA"]),
+  catchAsync(vehiculosController.registrarVehiculo)
+);
+
+router.get(
+  "/placa/:placa",
+  verificarToken(["ADMIN", "GUARDIA"]),
+  catchAsync(vehiculosController.buscarVehiculoPorPlaca)
+);
 
 module.exports = router;

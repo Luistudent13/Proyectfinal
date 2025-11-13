@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,7 +8,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/menu.css">
+  <link rel="stylesheet" href="/chatbot.css">
 </head>
+
 <body>
   <div class="container">
     <div class="header">
@@ -52,6 +55,11 @@
   </div>
 
   <script src="/js/shared.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Menú solo accesible con sesión (ADMIN o GUARDIA)
+      requireAuth({ roles: ["ADMIN", "GUARDIA"] });
+    });
+  </script>
 </body>
-
 </html>

@@ -1,103 +1,59 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const API = ""; // mismo origen (http://localhost:3000)
+requireAuth({ roles: ["ADMIN", "GUARDIA"] });
 
-  const form = document.getElementById("formEmpleado");
-  const matriculaInput = document.getElementById("matriculaEmpleado");
-  const placaInput = document.getElementById("placaEmpleado");
-  const nombreEmpleadoInput = document.getElementById("nombreEmpleado");
-  const apellidosEmpleadoInput = document.getElementById("apellidosEmpleado");
-  const areaEmpleadoInput = document.getElementById("areaEmpleado");
-  const colorInput = document.getElementById("colorEmpleado");
-  const marcaInput = document.getElementById("marcaEmpleado");
+const form = document.getElementById("formEmpleado");
+const nombre = document.getElementById("nombreEmpleado");
+const apellidos = document.getElementById("apellidosEmpleado");
+const area = document.getElementById("areaEmpleado");
+const matricula = document.getElementById("matriculaEmpleado");
+const placa = document.getElementById("placaEmpleado");
+const color = document.getElementById("colorEmpleado");
+const marca = document.getElementById("marcaEmpleado");
 
-  // Solo letras (con acentos)
-  areaEmpleadoInput.addEventListener("input", function () {
-    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
+[nombre, apellidos, area, color, marca].forEach(bindOnlyLettersAccents);
+
+// Matrícula de empleado: 3 dígitos
+bindOnlyDigits(matricula, 3);
+
+// Placa
+bindPlateStrict(placa);
+bindPlateMask(placa);
+
+activarAutocompletadoMarcas(marca);
+
+registerForm(form, async () => {
+  if (!allRequiredFilled(form)) {
+    throw new Error("Completa todos los campos.");
+  }
+
+  if (matricula.value.trim().length !== 3) {
+    throw new Error("La matrícula del empleado debe tener 3 dígitos.");
+  }
+
+  if (!validarPlacaFormato(placa.value)) {
+    throw new Error("Placa inválida. Usa el formato ABC-123-X.");
+  }
+
+  const idMarca = await getMarcaIdByName(marca.value.trim());
+  if (!idMarca) {
+    throw new Error("Marca inválida. Selecciona una marca de la lista.");
+  }
+
+  const body = {
+    nombre_completo:
+      `${nombre.value.trim()} ${apellidos.value.trim()}`.trim(),
+    matricula: matricula.value.trim(),
+    tipoUsuario: 3, // Empleado
+    area: area.value.trim(),
+    placa: placa.value.trim().toUpperCase(),
+    color: color.value.trim(),
+    idMarca,
+  };
+
+  await apiFetch("/usuarios", {
+    method: "POST",
+    body: JSON.stringify(body),
   });
-  colorInput.addEventListener("input", function () {
-    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
-  });
-  marcaInput.addEventListener("input", function () {
-    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
-  });
-  nombreEmpleadoInput.addEventListener("input", function() {
-    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
-  });
-  apellidosEmpleadoInput.addEventListener("input", function() {
-    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
-  });
 
-  // Matrícula empleado: 3 dígitos exactos
-  matriculaInput.addEventListener("input", function () {
-    this.value = this.value.replace(/\D/g, '').slice(0, 3);
-  });
-
-  // Autocompletado de marcas (usa /marcas mismo origen)
-  activarAutocompletadoMarcas("marcaEmpleado");
-
-  // Formato de placa: XXX-XXX-X / hasta 9 chars por si lo necesitas
-  placaInput.addEventListener("input", () => formatearPlacaAuto(placaInput));
-
-
-  // Envío del formulario
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const nombre = nombreEmpleadoInput.value.trim();
-    const apellidos = apellidosEmpleadoInput.value.trim();
-    const nombreCompleto = `${nombre} ${apellidos}`.trim();
-    const matricula = matriculaInput.value.trim();
-    const areaEmpleado = areaEmpleadoInput.value.trim();
-    const placa = placaInput.value.trim();
-    const color = colorInput.value.trim();
-    const marcaTexto = marcaInput.value.trim();
-
-    if (matricula.length !== 3) {
-      alert("La matrícula de empleado debe tener exactamente 3 dígitos.");
-      matriculaInput.focus();
-      return;
-    }
-
-    try {
-      // Trae catálogo de marcas (mismo origen)
-      const resMarcas = await fetch(`${API}/marcas`);
-      if (!resMarcas.ok) throw new Error(`HTTP ${resMarcas.status} en /marcas`);
-      const marcas = await resMarcas.json();
-
-      const marcaObj = marcas.find(
-        m => (m.Marca || "").toLowerCase().trim() === marcaTexto.toLowerCase().trim()
-      );
-      if (!marcaObj) {
-        alert("Marca inválida. Selecciona una de la lista.");
-        return;
-      }
-
-      const datos = {
-        nombre_completo: nombreCompleto,
-        matricula,
-        tipoUsuario: 3,
-        area_empleado: areaEmpleado,
-        placa,
-        color,
-        idMarca: marcaObj.ID_Marca
-      };
-
-      const res = await fetch(`${API}/usuarios`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datos),
-      });
-
-      if (res.ok) {
-        alert("✅ Empleado registrado correctamente.");
-        form.reset();
-      } else {
-        const errorRes = await res.json().catch(() => ({}));
-        alert("❌ Error al registrar. " + (errorRes.error || "Revisa los datos."));
-      }
-    } catch (error) {
-      console.error("Error al registrar empleado:", error);
-      alert("❌ Ocurrió un error al registrar.");
-    }
-  });
+  await swalSuccess("Empleado registrado correctamente.");
+  location.href = "/screens/registros.html";
 });

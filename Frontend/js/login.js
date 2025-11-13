@@ -1,32 +1,43 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("loginForm");
-    const mensaje = document.getElementById("mensajeLogin");
-  
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-  
-      const usuario = document.getElementById("username").value.trim();
-      const contrasena = document.getElementById("password").value.trim();
-  
-      // 👇 Aquí validas el usuario y contraseña
-      if (usuario === "admin_ucc" && contrasena === "123") {
-        window.location.href = "../screens/menu.html"; // Redirige al menú
-      } else {
-        mensaje.textContent = "⚠️ Usuario o contraseña incorrectos";
-        mensaje.style.color = "red";
-      }
-    });
-  });
-  
-  function togglePasswordVisibility() {
-  const input = document.getElementById("password");
-  const eyeIcon = document.getElementById("eyeIcon");
+  const form = document.getElementById("loginForm");
+  const mensaje = document.getElementById("mensajeLogin");
 
-  if (input.type === "password") {
-    input.type = "text";
-    eyeIcon.setAttribute("fill", "#0070b9");
-  } else {
-    input.type = "password";
-    eyeIcon.setAttribute("fill", "#444");
-  }
-}
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const usuario = document.getElementById("username").value.trim();
+    const contrasena = document.getElementById("password").value.trim();
+
+    if (!usuario || !contrasena) {
+      mensaje.textContent = "Ingresa usuario y contraseña.";
+      mensaje.style.color = "red";
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({  username: usuario, password: contrasena }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        mensaje.textContent = data.mensaje || "Usuario o contraseña incorrectos";
+        mensaje.style.color = "red";
+        return;
+      }
+
+      // Guardar token y rol (si luego quieres proteger vistas)
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("rol", data.rol);
+
+      window.location.href = "../screens/menu.html";
+    } catch (err) {
+      console.error(err);
+      mensaje.textContent = "Error al conectar con el servidor.";
+      mensaje.style.color = "red";
+    }
+  });
+});

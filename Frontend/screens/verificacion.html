@@ -1,34 +1,52 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Verificación de vehículo</title>
+  <!-- Solo tu CSS global, como en el proyecto que funciona -->
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
 
-  <!-- Pantalla de verificación -->
+  <!-- Pantalla de verificación / ingreso -->
   <div class="verificacion-container" id="verificacionPage">
     <div class="verificacion-box">
       <img src="/assets/espacio-seguro.png" alt="Logo UCC" class="logo-verificacion">
       <div class="verificacion-content">
         <h3>Verificación de vehículo</h3>
-
         <label for="placaVerificar">Ingresar placa del vehículo:</label>
-        <input type="text" id="placaVerificar" placeholder="XXX-XXX-X" required>
 
-        <div class="verificacion-buttons">
-          <button class="btn-verde" onclick="verificarPlaca()">Verificar</button>
-          <button class="btn-rojo" onclick="cancelarVerificacion()">Cancelar</button>
-        </div>
+        <!-- IMPORTANTE: este form y este id son los que usa tu verificacion.js del proyecto grande -->
+        <form id="formVerificacion">
+          <input
+            type="text"
+            id="placaVerificar"
+            placeholder="XXX-XXX-X"
+            required
+          />
+
+          <div class="verificacion-buttons">
+            <!-- Este botón dispara el submit que maneja verificacion.js -->
+            <button type="submit" class="btn-verde">Verificar</button>
+            <button
+              type="button"
+              class="btn-rojo"
+              onclick="window.location.href='menu.html'">
+              Cancelar
+            </button>
+          </div>
+        </form>
 
         <p id="resultadoVerificacion"></p>
       </div>
     </div>
   </div>
 
-  <script src="/js/verificacion.js"></script>
+  <!-- JS: dejamos los mismos que ya usas en el proyecto grande -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="/js/shared.js"></script>
+  <script src="/js/sharedForms.js"></script>
+  <script src="/js/verificacion.js"></script>
 </body>
 </html>

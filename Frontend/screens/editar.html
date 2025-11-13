@@ -31,13 +31,7 @@
 </div>
       <div class="form-group">
   <label for="matricula" id="labelMatricula">Matrícula</label>
-  <input
-    type="text"
-    id="matricula"
-    name="matricula"
-    placeholder="Matrícula"
-    required
-  />
+<input type="text" id="matricula" name="matricula" placeholder="Matrícula" autocomplete="off" required />
 </div>
 
       <div id="grupoLic" class="form-group">
@@ -51,8 +45,10 @@
       </div>
 
       <div class="form-group">
-  <label for="placa">Placa del vehículo</label>
-  <input type="text" id="placa" name="placa" required />
+  <label for="placaEditar">Placa del vehículo</label>
+<input type="text" id="placaEditar" maxlength="9" placeholder="ABC-123-X" autocomplete="off" required>
+
+
 </div>
 
 <div class="form-group">
@@ -62,7 +58,7 @@
 
       <div class="form-group" id="grupoMarca">
   <label for="marca">Marca del vehículo</label>
-  <input type="text" id="marca" name="marca" placeholder="Marca del vehículo" required />
+<input type="text" id="marca" name="marca" placeholder="Marca del vehículo" autocomplete="off" required />
 </div>
 
 
@@ -72,8 +68,9 @@
     </form>
     <div id="mensaje" class="mensaje"></div>
   </div>
-  <script src="/js/shared.js"></script>
-  <script src="/js/editar.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/shared.js" defer></script>
+<script src="/js/sharedForms.js" defer></script>
+<script src="/js/editar.js" defer></script>
 </body>
-
 </html>

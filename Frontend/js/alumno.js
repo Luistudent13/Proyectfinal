@@ -1,107 +1,61 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("formAlumno");
-  const matriculaInput = document.getElementById("matricula");
-  const placaInput = document.getElementById("placa");
-  const nombreInput = document.getElementById("nombre");
-  const apellidosInput = document.getElementById("apellidos");
-  const soloLetrasRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/;
-  const licenciaturaInput = document.getElementById("licenciatura");
-  const colorInput = document.getElementById("color");
-  const marcaInput = document.getElementById("marca");
+requireAuth({ roles: ["ADMIN", "GUARDIA"] });
 
-licenciaturaInput.addEventListener("input", function () {
-  this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
-});
+const form = document.getElementById("formAlumno");
+const nombre = document.getElementById("nombre");
+const apellidos = document.getElementById("apellidos");
+const lic = document.getElementById("licenciatura");
+const matricula = document.getElementById("matricula");
+const placa = document.getElementById("placaAlumno");
+const color = document.getElementById("color");
+const marca = document.getElementById("marca");
 
-colorInput.addEventListener("input", function () {
-  this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
-});
+[nombre, apellidos, lic, color, marca].forEach(bindOnlyLettersAccents);
 
-marcaInput.addEventListener("input", function () {
-  this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
-});
+// Matrícula de alumno: 9 dígitos
+bindOnlyDigits(matricula, 9);
 
+// Placa con máscara AAA-123-X, automayúsculas
+bindPlateStrict(placa);
+bindPlateMask(placa);
 
-  nombreInput.addEventListener("input", function() {
-    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
-  });
+// Aquí tus autocompletados si ya los tienes:
+activarAutocompletadoLicenciaturas(lic);
+activarAutocompletadoMarcas(marca);
 
-  apellidosInput.addEventListener("input", function() {
-    this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "");
-  });
-
-
-  activarAutocompletadoMarcas("marca");
-  activarAutocompletadoLicenciaturas("licenciatura");
-
-
-    matriculaInput.addEventListener("input", function () {
-    this.value = this.value.replace(/\D/g, '').slice(0, 9);
-  });
-    placaInput.addEventListener("input", function () {
-  let valor = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 7);
-placaInput.addEventListener("input", () => formatearPlacaAuto(placaInput));
-
-})
-
-
-  formatearPlacaAuto(placaInput);
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    // ✅ Capturar datos
-      const nombre = document.getElementById("nombre").value.trim();
-      const apellidos = document.getElementById("apellidos").value.trim();
-      const nombre_completo = `${nombre} ${apellidos}`;
-      const matricula = document.getElementById("matricula").value.trim();
-      const licenciatura = document.getElementById("licenciatura").value.trim();
-      const placa = document.getElementById("placa").value.trim();
-      const color = document.getElementById("color").value.trim();
-      const idMarca = document.getElementById("marca").value;
-  
-  const resMarcas = await fetch("/marcas");
-const marcas = await resMarcas.json();
-const marcaObj = marcas.find(m => m.Marca.toLowerCase() === idMarca.toLowerCase());
-if (!marcaObj) {
-  alert("Marca no encontrada.");
-  return;
-}
-const idMarcaReal = marcaObj.ID_Marca;
-
-
-  const datos = {
-  nombre_completo,
-  matricula,
-  tipoUsuario: 2,
-  licenciatura,
-  placa,
-  color,
-  idMarca: idMarcaReal  // ⬅️ Correcto, aquí sí mandas el ID real
-};
-
-  try {
-    const res = await fetch("/usuarios", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datos)
-    });
-
-    const respuesta = await res.json();
-
-    if (res.ok) {
-  document.getElementById("msgAlumno").innerText = "✅ Alumno registrado correctamente.";
-document.getElementById("msgAlumno").style.color = "green";
-
-  window.location.href = "registros.html";  // ← te lleva directo a ver la tabla registros
-} else {
-  const msg = document.getElementById("msgAlumno");
-msg.innerText = `❌ ${respuesta.mensaje || "Error al registrar"}`;
-msg.style.color = "red";
-}
-  } catch (error) {
-    console.error("Error al registrar alumno:", error);
-    alert("❌ Error en el servidor.");
+registerForm(form, async () => {
+  if (!allRequiredFilled(form)) {
+    throw new Error("Completa todos los campos.");
   }
-});
+
+  if (matricula.value.trim().length !== 9) {
+    throw new Error("La matrícula del alumno debe tener 9 dígitos.");
+  }
+
+  if (!validarPlacaFormato(placa.value)) {
+    throw new Error("Placa inválida. Usa el formato ABC-123-X.");
+  }
+
+  const idMarca = await getMarcaIdByName(marca.value.trim());
+  if (!idMarca) {
+    throw new Error("Marca inválida. Selecciona una marca de la lista.");
+  }
+
+  const body = {
+    nombre_completo:
+      `${nombre.value.trim()} ${apellidos.value.trim()}`.trim(),
+    matricula: matricula.value.trim(),
+    tipoUsuario: 2, // Alumno
+    licenciatura: lic.value.trim(),
+    placa: placa.value.trim().toUpperCase(),
+    color: color.value.trim(),
+    idMarca,
+  };
+
+  await apiFetch("/usuarios", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+
+  await swalSuccess("Alumno registrado correctamente.");
+  location.href = "/screens/registros.html";
 });

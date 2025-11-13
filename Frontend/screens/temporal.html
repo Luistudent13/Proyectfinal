@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,14 +8,16 @@
   <!-- MISMOS ESTILOS DEL PROYECTO -->
   <link rel="stylesheet" href="/styles.css" />
   <!-- Awesomplete (autocompletado de marcas igual que visitante) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.css" />
+  <link rel="stylesheet" href="../chatbot.css">
 </head>
+
 <body>
   <div class="contenedor-principal">
     <div class="temporal-form-container">
       <img src="/assets/espacio-seguro.png" alt="Logo" class="logo">
 
-      <form id="formTemporal">
+      <form id="formTemporal" action="javascript:void(0)">
         <div class="form-box">
           <!-- SECCIÓN: Datos del visitante -->
           <fieldset>
@@ -50,7 +53,7 @@
             <div class="row">
               <div class="form-group">
                 <label for="placaTemporal">Placa</label>
-                <input type="text" id="placaTemporal" maxlength="9" placeholder="ABC-123-X" required />
+                <input type="text" id="placaTemporal" maxlength="9" placeholder="ABC-123-X" autocomplete="off" required />
               </div>
 
               <div class="form-group">
@@ -78,7 +81,10 @@
 
   <!-- Librerías y lógica (igual que en visitante) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="/js/shared.js"></script>
+  <script src="/js/sharedForms.js"></script>
   <script src="/js/temporal.js"></script>
 </body>
+
 </html>

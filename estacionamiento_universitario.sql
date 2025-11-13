@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.43, for Win64 (x86_64)
 --
 -- Host: localhost    Database: estacionamiento_universitario
 -- ------------------------------------------------------
--- Server version	8.0.41
+-- Server version	8.0.43
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -126,8 +126,9 @@ DROP TABLE IF EXISTS `marca_vehiculos`;
 CREATE TABLE `marca_vehiculos` (
   `ID_Marca` int NOT NULL AUTO_INCREMENT,
   `Marca` varchar(50) NOT NULL,
-  PRIMARY KEY (`ID_Marca`)
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`ID_Marca`),
+  UNIQUE KEY `ux_marca_vehiculos_marca` (`Marca`)
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,7 +137,7 @@ CREATE TABLE `marca_vehiculos` (
 
 LOCK TABLES `marca_vehiculos` WRITE;
 /*!40000 ALTER TABLE `marca_vehiculos` DISABLE KEYS */;
-INSERT INTO `marca_vehiculos` VALUES (1,'Toyota'),(2,'Honda'),(3,'Chevrolet'),(4,'Mercedes-Benz'),(5,'Toyota'),(6,'Honda'),(7,'Chevrolet'),(8,'Ford'),(9,'Nissan'),(10,'Volkswagen'),(11,'Mazda'),(12,'Hyundai'),(13,'Kia'),(14,'BMW'),(15,'Mercedes-Benz'),(16,'Audi'),(17,'Jeep'),(18,'Dodge'),(19,'Ram'),(20,'GMC'),(21,'Chrysler'),(22,'Peugeot'),(23,'Renault'),(24,'Fiat'),(25,'Mini'),(26,'Volvo'),(27,'Mitsubishi'),(28,'Suzuki'),(29,'SEAT'),(30,'Subaru'),(31,'Buick'),(32,'Cadillac'),(33,'Lincoln'),(34,'Acura'),(35,'Infiniti'),(36,'Lexus'),(37,'Isuzu'),(38,'Pontiac'),(39,'Opel'),(40,'Smart'),(41,'Saab'),(42,'Daewoo'),(43,'Alfa Romeo'),(44,'Jaguar'),(45,'Land Rover'),(46,'Tesla'),(47,'Hummer'),(48,'Peugeot'),(49,'BYD'),(50,'MG'),(51,'Changan'),(52,'JAC'),(53,'Baic'),(54,'Zotye'),(55,'Geely'),(56,'Foton'),(57,'Great Wall'),(58,'Chery'),(59,'Dongfeng'),(60,'FAW'),(61,'Lifan'),(62,'SEMCORP'),(63,'Datsun'),(64,'Scion'),(65,'Genesis'),(66,'Proton'),(67,'Rover'),(68,'Tata'),(69,'Skoda'),(70,'Koenigsegg'),(71,'Pagani'),(72,'Bugatti'),(73,'McLaren'),(74,'Cupra'),(75,'Mazda'),(76,'Mazda'),(77,'Chevrolet'),(78,'Mazda');
+INSERT INTO `marca_vehiculos` VALUES (34,'Acura'),(43,'Alfa Romeo'),(16,'Audi'),(53,'Baic'),(14,'BMW'),(72,'Bugatti'),(31,'Buick'),(49,'BYD'),(32,'Cadillac'),(51,'Changan'),(58,'Chery'),(3,'Chevrolet'),(21,'Chrysler'),(74,'Cupra'),(42,'Daewoo'),(63,'Datsun'),(18,'Dodge'),(59,'Dongfeng'),(60,'FAW'),(24,'Fiat'),(8,'Ford'),(56,'Foton'),(55,'Geely'),(65,'Gene i '),(20,'GMC'),(57,'Great Wall'),(2,'Honda'),(47,'Hummer'),(12,'Hyundai'),(35,'Infiniti'),(37,'Isuzu'),(52,'JAC'),(44,'Jaguar'),(17,'Jeep'),(13,'Kia'),(70,'Koenigsegg'),(45,'Land Rover'),(36,'Lexu '),(61,'Lifan'),(33,'Lincoln'),(11,'Mazda'),(73,'McLaren'),(4,'Mercedes-Benz'),(50,'MG'),(25,'Mini'),(27,'Mitsubishi'),(9,'Nissan'),(39,'Opel'),(71,'Pagani'),(22,'Peugeot'),(38,'Pontiac'),(66,'Proton'),(19,'Ram'),(23,'Renault'),(67,'Rover'),(41,'Saab'),(64,'Scion'),(29,'SEAT'),(62,'SEMCORP'),(69,'Skoda'),(40,'Smart'),(30,'Subaru'),(28,'Suzuki'),(68,'Tata'),(46,'Tesla'),(1,'Toyota'),(10,'Volkswagen'),(26,'Volvo'),(54,'Zotye');
 /*!40000 ALTER TABLE `marca_vehiculos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -152,15 +153,15 @@ CREATE TABLE `registros_acceso` (
   `ID_Vehiculo` int NOT NULL,
   `ID_Usuario` int NOT NULL,
   `Fecha_Registro` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `Hora_Entrada` datetime NOT NULL,
-  `Hora_Salida` datetime DEFAULT NULL,
+  `Hora_Entrada` time NOT NULL,
+  `Hora_Salida` time DEFAULT NULL,
   `Fecha_Acceso` date NOT NULL,
   PRIMARY KEY (`ID_Acceso`),
   KEY `ID_Vehiculo` (`ID_Vehiculo`),
   KEY `ID_Usuario` (`ID_Usuario`),
   CONSTRAINT `registros_acceso_ibfk_1` FOREIGN KEY (`ID_Vehiculo`) REFERENCES `vehiculos` (`ID_Vehiculo`) ON DELETE CASCADE,
   CONSTRAINT `registros_acceso_ibfk_2` FOREIGN KEY (`ID_Usuario`) REFERENCES `usuarios` (`ID_Usuario`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -169,7 +170,7 @@ CREATE TABLE `registros_acceso` (
 
 LOCK TABLES `registros_acceso` WRITE;
 /*!40000 ALTER TABLE `registros_acceso` DISABLE KEYS */;
-INSERT INTO `registros_acceso` VALUES (17,88,122,'2025-06-02 16:23:21','2025-06-02 16:23:21','2025-06-02 16:23:38','2025-06-02'),(18,88,122,'2025-06-02 22:18:58','2025-06-02 22:18:58','2025-06-02 22:28:11','2025-06-02'),(19,88,122,'2025-06-02 22:19:05','2025-06-02 22:19:05','2025-06-02 22:28:08','2025-06-02'),(20,88,122,'2025-06-02 22:28:20','2025-06-02 22:28:20','2025-06-02 22:35:27','2025-06-02'),(21,88,122,'2025-06-02 22:28:24','2025-06-02 22:28:24','2025-06-02 22:35:25','2025-06-02'),(22,88,122,'2025-06-03 02:07:09','2025-06-03 02:07:09','2025-06-03 14:18:09','2025-06-03'),(23,88,122,'2025-06-03 02:07:12','2025-06-03 02:07:12','2025-06-03 14:17:27','2025-06-03');
+INSERT INTO `registros_acceso` VALUES (29,104,139,'2025-09-07 18:20:19','18:20:19','18:20:30','2025-09-07'),(30,105,140,'2025-11-12 19:03:59','19:03:59','19:04:05','2025-11-13'),(31,105,140,'2025-11-12 19:34:48','19:34:48',NULL,'2025-11-13'),(32,121,157,'2025-11-12 22:59:14','22:59:14','23:21:27','2025-11-13'),(33,121,157,'2025-11-12 23:41:51','23:41:51','23:42:01','2025-11-13');
 /*!40000 ALTER TABLE `registros_acceso` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,6 +241,7 @@ CREATE TABLE `usuarios` (
   `Telefono` varchar(50) DEFAULT NULL,
   `Fecha_Registro` date NOT NULL DEFAULT (curdate()),
   `Horario` time DEFAULT NULL,
+  `Hora_Salida` time DEFAULT NULL,
   `Licenciatura` varchar(100) DEFAULT NULL,
   `Persona_Recoge` varchar(100) DEFAULT NULL,
   `Relacion_Estudiante` varchar(100) DEFAULT NULL,
@@ -250,7 +252,7 @@ CREATE TABLE `usuarios` (
   UNIQUE KEY `Matricula` (`Matricula`),
   KEY `ID_Tipo_Usuario` (`ID_Tipo_Usuario`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`ID_Tipo_Usuario`) REFERENCES `tipo_usuario` (`ID_Tipo_Usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=160 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -259,8 +261,37 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (108,'Luis Fernando Aldama',2,'201940021',NULL,NULL,'2025-05-19',NULL,'Ingeniería en Sistemas Computacionales',NULL,NULL,NULL,NULL),(110,'GUILLERMO ALDAMA',3,'002',NULL,NULL,'2025-05-28',NULL,NULL,NULL,NULL,'Maestro',NULL),(111,'Luis Fernando Aldama Castro',2,'2010000',NULL,NULL,'2025-06-02',NULL,'Ing. Sistemas',NULL,NULL,NULL,NULL),(115,'Jose Lois',2,'747591453',NULL,NULL,'2025-06-02',NULL,'Finanzas (Maestría)',NULL,NULL,NULL,NULL),(119,'Ricardo Morales ZAPO',2,'312534651',NULL,NULL,'2025-06-02',NULL,'Ingeniería en Sistemas Computacionales',NULL,NULL,NULL,NULL),(120,'Luis Stitch GONZALES CABRERA',3,'445',NULL,NULL,'2025-06-02',NULL,NULL,NULL,NULL,'Mantenimiento',NULL),(122,'GUILLERMO APELLIDO',3,'427',NULL,NULL,'2025-06-02',NULL,NULL,NULL,NULL,'Mantenimiento',NULL),(124,'Luis Morales Apellido',2,'354352462',NULL,NULL,'2025-06-03',NULL,'Impuestos (Maestría)',NULL,NULL,NULL,NULL),(125,'Luis MORALES DOMINGE',2,'201002456',NULL,NULL,'2025-06-03',NULL,'Economía',NULL,NULL,NULL,NULL),(126,'Luis Morales',2,'20100436',NULL,NULL,'2025-06-03',NULL,'Arquitectura',NULL,NULL,NULL,NULL),(127,'VISITANTE APELLIDO',5,NULL,NULL,NULL,'2025-06-03',NULL,NULL,NULL,NULL,NULL,NULL),(128,'Luis visitante Temporal',5,'TEMP-1748979803486',NULL,NULL,'2025-06-03',NULL,NULL,NULL,NULL,NULL,NULL),(129,'VISITANTE APELLIDO',5,NULL,NULL,NULL,'2025-06-03',NULL,NULL,NULL,NULL,NULL,NULL),(130,'Luis Fernando Aldama TEMPORAL',5,'TEMP-1748980723203',NULL,NULL,'2025-06-03',NULL,NULL,NULL,NULL,NULL,NULL),(132,'Luis Morales',2,'201002322',NULL,NULL,'2025-06-03',NULL,'Impuestos (Maestría)',NULL,NULL,NULL,NULL);
+INSERT INTO `usuarios` VALUES (127,'VISITANTE APELLIDO',5,NULL,NULL,NULL,'2025-06-03',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(128,'Luis visitante Temporal',5,'TEMP-1748979803486',NULL,NULL,'2025-06-03',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(129,'VISITANTE APELLIDO',5,NULL,NULL,NULL,'2025-06-03',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(130,'Luis Fernando Aldama TEMPORAL',5,'TEMP-1748980723203',NULL,NULL,'2025-06-03',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(135,'Katia Lopez',4,NULL,NULL,NULL,'2025-08-27',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(136,'Katia Lopez',4,NULL,NULL,NULL,'2025-08-28',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(137,'aehsr sjstrjsr',4,NULL,NULL,NULL,'2025-08-28','16:47:00','20:47:00',NULL,NULL,NULL,NULL,'Partido'),(138,'Luis Aldama',5,'TEMP-1756848306758',NULL,NULL,'2025-09-02',NULL,NULL,NULL,'Ricardo Morales','Primo',NULL,NULL),(139,'Luis ALdama cASTRO',5,NULL,NULL,NULL,'2025-09-03',NULL,NULL,NULL,'Ricardo Morales','Primo',NULL,NULL),(140,'Luis Pruebatres Apellido tres',2,'201940023',NULL,NULL,'2025-09-04',NULL,NULL,'Ingeniería en Sistemas Computacionales',NULL,NULL,NULL,NULL),(142,'Luis Fernandodos Aldama Pruebadosttta',2,'426640000',NULL,NULL,'2025-10-15',NULL,NULL,'Actuaría',NULL,NULL,NULL,NULL),(144,'wby bbwv',2,'135123513',NULL,NULL,'2025-10-15',NULL,NULL,'Arquitectura',NULL,NULL,NULL,NULL),(146,'ALDAMITA GONZALES CABRERA',2,'201923000',NULL,NULL,'2025-10-15',NULL,NULL,'Economía',NULL,NULL,NULL,NULL),(148,'Anasl ggerr',2,'784534634',NULL,NULL,'2025-10-15',NULL,NULL,'Impuestos (Maestría)',NULL,NULL,NULL,NULL),(149,'bjhbohbo rtgjnsfthatf',2,'435735673',NULL,NULL,'2025-10-15',NULL,NULL,'Psicología',NULL,NULL,NULL,NULL),(151,'Profeprueba Apellidopreuba',3,'515',NULL,NULL,'2025-10-15',NULL,NULL,NULL,NULL,NULL,'Docente',NULL),(152,'cew fsgs',4,NULL,NULL,NULL,'2025-10-15','10:52:00','19:14:00',NULL,NULL,NULL,NULL,'Partido'),(153,'Luis Fernandodos Aldama Pruebadossh',2,'123413251',NULL,NULL,'2025-10-15',NULL,NULL,'Administración',NULL,NULL,NULL,NULL),(154,'Jose Martin Aldama Castro',2,'201940000',NULL,NULL,'2025-10-16',NULL,NULL,'Médico Cirujano',NULL,NULL,NULL,NULL),(155,'Luis Fernandodos Aldama Pruebadosttta',2,'554563675',NULL,NULL,'2025-10-17',NULL,NULL,'Médico Cirujano',NULL,NULL,NULL,NULL),(156,'Luisuno Apellidoalum',2,'122123413',NULL,NULL,'2025-11-12',NULL,NULL,'Enfermería',NULL,NULL,NULL,NULL),(157,'Luis emp',3,'434',NULL,NULL,'2025-11-12',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(158,'Luis KAcinco',5,NULL,NULL,NULL,'2025-11-12',NULL,NULL,NULL,'ag','Hijo',NULL,NULL),(159,'Luis ALdama AldamaTEMP',5,NULL,NULL,NULL,'2025-11-13',NULL,NULL,NULL,'Ricardo Morales','Comp',NULL,NULL);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `usuarios_sistema`
+--
+
+DROP TABLE IF EXISTS `usuarios_sistema`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuarios_sistema` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `rol` enum('ADMIN','GUARDIA') NOT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '1',
+  `creado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuarios_sistema`
+--
+
+LOCK TABLES `usuarios_sistema` WRITE;
+/*!40000 ALTER TABLE `usuarios_sistema` DISABLE KEYS */;
+INSERT INTO `usuarios_sistema` VALUES (1,'admin_ucc','$2b$12$OU85ECW9k0MKfWj4Exc8M.RMIjn5eJRchNW15K7tuWFwDpEkuIU5u','ADMIN',1,'2025-11-08 02:03:53'),(2,'guardia_ucc','$2b$12$OU85ECW9k0MKfWj4Exc8M.RMIjn5eJRchNW15K7tuWFwDpEkuIU5u','GUARDIA',1,'2025-11-08 02:03:53');
+/*!40000 ALTER TABLE `usuarios_sistema` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -287,7 +318,7 @@ CREATE TABLE `vehiculos` (
   CONSTRAINT `vehiculos_ibfk_1` FOREIGN KEY (`ID_Usuario`) REFERENCES `usuarios` (`ID_Usuario`) ON DELETE CASCADE,
   CONSTRAINT `vehiculos_ibfk_2` FOREIGN KEY (`ID_Marca`) REFERENCES `marca_vehiculos` (`ID_Marca`),
   CONSTRAINT `vehiculos_ibfk_3` FOREIGN KEY (`ID_Discapacidad`) REFERENCES `discapacidad_vehiculos` (`ID_Discapacidad`)
-) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -296,7 +327,7 @@ CREATE TABLE `vehiculos` (
 
 LOCK TABLES `vehiculos` WRITE;
 /*!40000 ALTER TABLE `vehiculos` DISABLE KEYS */;
-INSERT INTO `vehiculos` VALUES (75,108,'ZXI-UHV-K',18,NULL,'Violeta',NULL,'2025-05-19'),(77,110,'NAS-V8H-V',50,NULL,'rojo',NULL,'2025-05-28'),(78,111,'YZX-12-34',75,NULL,'azul',NULL,'2025-06-02'),(81,115,'YZX-435-V',42,NULL,'Azul',NULL,'2025-06-02'),(85,119,'YZX-1FD-0',52,NULL,'asd',NULL,'2025-06-02'),(86,120,'JM4-3C4-3',19,NULL,'Azul',NULL,'2025-06-02'),(88,122,'3B4-5WV-T',78,NULL,'Azul',NULL,'2025-06-02'),(90,124,'YZQ-45Y-B',52,NULL,'NulasaS',NULL,'2025-06-03'),(91,125,'YZX-WVT-Y',19,NULL,'asd',NULL,'2025-06-03'),(92,126,'YZX-123-W',41,NULL,'sss',NULL,'2025-06-03'),(93,127,'V52-45Y-2',52,NULL,'XQT',NULL,'2025-06-03'),(94,128,'AGARBEBG',78,NULL,'Azul',NULL,'2025-06-03'),(95,129,'WEF-WFE-C',41,NULL,'ASDVat',NULL,'2025-06-03'),(96,130,'SEGBW5',78,NULL,'WW',NULL,'2025-06-03'),(97,132,'RBU-W56-N',53,NULL,'wb',NULL,'2025-06-03');
+INSERT INTO `vehiculos` VALUES (93,127,'V52-45Y-2',1,NULL,'XQT',NULL,'2025-06-03'),(94,128,'AGARBEBG',1,NULL,'Azul',NULL,'2025-06-03'),(95,129,'WEF-WFE-C',1,NULL,'ASDVat',NULL,'2025-06-03'),(96,130,'SEGBW5',1,NULL,'WW',NULL,'2025-06-03'),(100,135,'NOY-BCQ-8',11,NULL,'Rojo',NULL,'2025-08-27'),(101,136,'33T-Q34-T',20,NULL,'Rojo',NULL,'2025-08-28'),(102,137,'SBC-Q87-T',13,NULL,'Rojo',NULL,'2025-08-28'),(103,138,'HIH-C7H-7',28,NULL,'rojo',NULL,'2025-09-02'),(104,139,'JNI-C7A-N',72,NULL,'OR',NULL,'2025-09-03'),(105,140,'ACW-SRT-E',4,NULL,'Dorado',NULL,'2025-09-04'),(107,142,'FSG-123-Y',50,NULL,'A',NULL,'2025-10-15'),(109,144,'WV4-342-4',53,NULL,'as',NULL,'2025-10-15'),(110,146,'VW4-W34-T',14,NULL,'asd',NULL,'2025-10-15'),(112,148,'AFQ-FWE-G',19,NULL,'Doradov',NULL,'2025-10-15'),(113,149,'ASD-BWV-W',60,NULL,'A',NULL,'2025-10-15'),(115,151,'VWT-4TE-R',16,NULL,'Ser',NULL,'2025-10-15'),(116,152,'DFS-EG5-Y',60,NULL,'Aaef',NULL,'2025-10-15'),(117,153,'WFT-4TF-F',19,NULL,'Doradov33',NULL,'2025-10-15'),(118,154,'256-2HQ-R',11,NULL,'azul',NULL,'2025-10-16'),(119,155,'WRW-EV6-N',53,NULL,'ve',NULL,'2025-10-17'),(120,156,'WTV-WT4-5',14,NULL,'Azulwrw',NULL,'2025-11-12'),(121,157,'SVS-ERS-4',11,NULL,'af',NULL,'2025-11-12'),(122,158,'GWV-T43-T',39,NULL,'Sdwq',NULL,'2025-11-12'),(123,159,'CF2-345-2',39,NULL,'rojo',NULL,'2025-11-13');
 /*!40000 ALTER TABLE `vehiculos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -309,4 +340,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-03 14:34:02
+-- Dump completed on 2025-11-13  0:18:04

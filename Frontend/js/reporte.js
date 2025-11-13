@@ -1,3 +1,4 @@
+// /js/reporte.js (NUEVO)
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("#formReporte");
 
@@ -9,26 +10,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const problema = document.getElementById("problema").value.trim();
 
     if (!nombre || !tipo || !problema) {
-      alert("Por favor completa todos los campos.");
-      return;
+      return swalInfo("Por favor completa todos los campos.");
     }
 
     try {
-      const res = await fetch("/reportes", {
+      await apiFetch("/reportes", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nombre, tipo, problema })
       });
 
-      if (res.ok) {
-        alert("✅ Reporte enviado correctamente.");
-        form.reset();
-      } else {
-        alert("❌ Error al enviar el reporte.");
-      }
+      await swalSuccess("Reporte enviado correctamente.");
+      form.reset();
     } catch (err) {
-      console.error("Error:", err);
-      alert("❌ Error en la conexión.");
+      swalError(err.message || "Error al enviar el reporte.");
     }
   });
 });

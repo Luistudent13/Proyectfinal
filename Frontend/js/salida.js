@@ -1,42 +1,50 @@
+// /js/salida.js — Registro de salida por placa
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("formSalida");
-  const placaInput = document.getElementById("placaSalida");
-  const resultadoSalida = document.getElementById("resultadoSalida");
+  // Solo ADMIN y GUARDIA
+  requireAuth({ roles: ["ADMIN", "GUARDIA"] });
 
-  // Usa la utilidad global de shared.js
-  formatearPlacaAuto(placaInput);
+  const form = document.getElementById("formSalida");
+  const inputPlaca = document.getElementById("placaSalida");
+  const resultado = document.getElementById("resultadoSalida");
+
+  if (!form || !inputPlaca) return;
+
+  // Validaciones de placa
+  bindPlateStrict(inputPlaca);
+  bindPlateMask(inputPlaca);
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const placa = (placaInput.value || "").trim().toUpperCase();
+
+    let placa = (inputPlaca.value || "").trim().toUpperCase();
 
     if (!placa) {
-      resultadoSalida.innerText = "❌ Por favor ingresa una placa.";
-      resultadoSalida.style.color = "red";
+      swalError("Ingresa la placa del vehículo.");
+      return;
+    }
+
+    if (!validarPlacaFormato(placa)) {
+      swalError("Placa inválida. Usa el formato ABC-123-X.");
+      inputPlaca.value = "";
+      inputPlaca.focus();
       return;
     }
 
     try {
-      const res = await fetch(`/accesos/salida`, {
+      // Registrar salida por placa
+      await apiFetch("/accesos/salida", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ placa }),
       });
 
-      const data = await res.json().catch(() => ({}));
-
-      if (res.ok) {
-        resultadoSalida.innerText = "✅ Salida registrada correctamente.";
-        resultadoSalida.style.color = "green";
-        placaInput.value = "";
-      } else {
-        resultadoSalida.innerText = `❌ ${data.mensaje || data.error || "Error al registrar salida"}`;
-        resultadoSalida.style.color = "red";
-      }
-    } catch (error) {
-      console.error(error);
-      resultadoSalida.innerText = "❌ Error de conexión con el servidor.";
-      resultadoSalida.style.color = "red";
+      await swalSuccess("Salida registrada correctamente.");
+      inputPlaca.value = "";
+      inputPlaca.focus();
+      if (resultado) resultado.textContent = "";
+    } catch (err) {
+      console.error(err);
+      // Si no hay acceso activo o no se encontró la placa, el backend debería mandar 404/400 con mensaje
+      swalError(err.message || "Error al registrar salida.");
     }
   });
 });

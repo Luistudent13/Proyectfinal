@@ -4,19 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registrar visitante</title>
+  <!-- Estilos globales del proyecto (botones, grids, form-box, etc.) -->
   <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="../chatbot.css">
 </head>
 <body>
 <div class="contenedor-principal">
+  <!-- Tarjeta/contenedor del formulario de visitante -->
   <div class="visitante-form-container">
+    <!-- Logo institucional -->
     <img src="/assets/espacio-seguro.png" alt="Logo UCC" class="logo">
-    <form id="formVisitante">
-      <div class="form-box">
 
+    <!-- Formulario principal: se maneja en /js/visitante.js -->
+    <form id="formVisitante">
+      <div class="form-box"><!-- Caja con gradiente (definida en styles.css) -->
+
+        <!-- =============================
+             Datos del visitante
+        ============================== -->
         <fieldset>
           <legend>Registrar visitante</legend>
 
-          <div class="row">
+          <div class="row"><!-- Fila responsive (dos columnas en desktop, una en móvil) -->
             <div class="form-group">
               <label for="nombreVisitante">Nombre(s):</label>
               <input type="text" id="nombreVisitante" required />
@@ -35,21 +44,27 @@
           <div class="row">
             <div class="form-group">
               <label for="horaIngreso">H. de ingreso:</label>
+              <!-- Campo de hora HTML5 para capturar la hora de entrada -->
               <input type="time" id="horaIngreso" required />
             </div>
             <div class="form-group">
               <label for="horaSalida">H. de salida:</label>
+              <!-- Campo de hora HTML5 para capturar la hora de salida -->
               <input type="time" id="horaSalida" required />
             </div>
           </div>
 
         </fieldset>
 
+        <!-- =============================
+             Datos del vehículo
+        ============================== -->
         <fieldset>
           <legend>Datos del vehículo</legend>
 
           <div class="form-group">
             <label for="placaVisitante">Placa del vehículo:</label>
+            <!-- maxlength limita a 8 caracteres; la validación de formato se hace en JS si se requiere -->
             <input type="text" id="placaVisitante" maxlength="8" required />
           </div>
 
@@ -60,25 +75,50 @@
 
           <div class="form-group">
             <label for="marcaVisitante">Marca del vehículo:</label>
-<input type="text" id="marcaVisitante" class="awesomplete" autocomplete="off" required />            <datalist id="listaMarcasVisitante"></datalist>
+            <!--
+              Campo con Awesomplete para autocompletado de marcas.
+              Nota: Awesomplete NO usa <datalist>; pobla la lista por JS (visitante.js).
+              Si quisieras usar <datalist> nativo, deberías quitar Awesomplete y agregar list="listaMarcasVisitante" al input.
+            -->
+            <input
+              type="text"
+              id="marcaVisitante"
+              class="awesomplete"
+              autocomplete="off"
+              required
+            />
+            <!-- Fuente opcional para un autocompletado nativo (no usada por Awesomplete) -->
+            <datalist id="listaMarcasVisitante"></datalist>
           </div>
 
         </fieldset>
 
+        <!-- =============================
+             Botonera del formulario
+        ============================== -->
         <div class="form-buttons">
-  <button type="submit" class="btn-verde">Enviar</button>
- <button type="button" class="btn-rojo" onclick="window.location.href='menu.html'">Cancelar</button>
+          <!-- Enviar: disparará el submit y la lógica en /js/visitante.js -->
+          <button type="submit" class="btn-verde">Enviar</button>
+          <!-- Cancelar: vuelve al menú principal -->
+          <button type="button" class="btn-rojo" onclick="window.location.href='menu.html'">Cancelar</button>
+        </div>
 
-</div>
-
-      </div>
+      </div><!-- /form-box -->
     </form>
   </div>
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
 <script src="/js/shared.js"></script>
 <script src="/js/visitante.js"></script>
+<script defer src="../js/chatbot.js"></script
 
+<!-- Librería de autocompletado (Awesomplete) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
+<!-- Script compartido (suele exponer window.API_URL y utilidades) -->
+<script src="/js/shared.js"></script>
+<!-- Script de esta pantalla: llena autocompletado y hace POST al backend -->
+<script src="/js/visitante.js"></script>
 
 </body>
 </html>

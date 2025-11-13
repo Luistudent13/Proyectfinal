@@ -1,22 +1,25 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const tabla = document.querySelector("#tablaReportes tbody");
+   // Solo ADMIN puede ver esta pantalla
+  requireAuth({ roles: ["ADMIN"] });
+  const tbody = document.querySelector("#tablaReportes tbody");
 
   try {
-    const res = await fetch("/reportes");      // ✅ Esto sí funciona
-    const reportes = await res.json();
-
-    reportes.forEach((reporte) => {
-      const fila = document.createElement("tr");
-      fila.innerHTML = `
-        <td>${reporte.ID}</td>
-        <td>${reporte.Nombre}</td>
-        <td>${reporte.Tipo_Usuario}</td>
-        <td>${reporte.Problema}</td>
-        <td>${new Date(reporte.Fecha).toLocaleString()}</td>
+    const reportes = await apiFetch("/reportes");
+    reportes.forEach((r) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${r.ID}</td>
+        <td>${r.Nombre}</td>
+        <td>${r.Tipo_Usuario}</td>
+        <td>${r.Problema}</td>
+        <td>${new Date(r.Fecha).toLocaleString()}</td>
       `;
-      tabla.appendChild(fila);
+      tbody.appendChild(tr);
     });
   } catch (err) {
-    console.error("Error al cargar reportes:", err);
+    console.error(err);
+    if (typeof swalError === "function") {
+      swalError(err.message || "No se pudieron cargar los reportes.");
+    }
   }
 });
