@@ -48,8 +48,6 @@ exports.crearAcceso = async (req, res, next) => {
   }
 };
 
-
-// POST /api/accesos/salida → Registrar salida por placa
 // POST /api/accesos/salida → Registrar salida por placa
 exports.registrarSalidaPorPlaca = async (req, res, next) => {
   try {
