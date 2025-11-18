@@ -1,18 +1,30 @@
+// Importa el framework Express para crear rutas y manejar peticiones HTTP
 const express = require("express");
+
+// Crea un router modular (agrupa rutas relacionadas en un solo archivo)
 const router = express.Router();
+
+// Importa la conexión a la base de datos MySQL desde la carpeta config
 const db = require("../config/database");
+
+// Importa un middleware que encapsula funciones async para manejar errores automáticamente
 const catchAsync = require("../middlewares/catchAsync");
 
-// ==============================
-//  DISPONIBLES
-// ==============================
+// =====================================================================
+//  ENDPOINT: /disponibles
+//  Obtiene la cantidad de cajones libres (ID_Estado = 1)
+// =====================================================================
 router.get("/disponibles", catchAsync(async (req, res) => {
+
+  // Ejecuta consulta SQL para contar cuántos cajones están disponibles
   const [rows] = await db.query(`
     SELECT COUNT(*) AS disponibles
     FROM cajones_estacionamiento
     WHERE ID_Estado = 1
   `);
-  res.json(rows[0]);
+
+  // Envía la respuesta en formato JSON con el resultado
+  res.json(rows[0]); // rows[0] contiene { disponibles: X }
 }));
 
 // ==============================
