@@ -1,52 +1,47 @@
-// routes/dashboard.js
 const express = require("express");
 const router = express.Router();
 const db = require("../config/database");
-const { verificarToken } = require("../middlewares/authJWT");
 const catchAsync = require("../middlewares/catchAsync");
 
 // ==============================
 //  DISPONIBLES
 // ==============================
-router.get("/disponibles", verificarToken(["ADMIN", "GUARDIA"]), catchAsync(async (req, res) => {
+router.get("/disponibles", catchAsync(async (req, res) => {
   const [rows] = await db.query(`
     SELECT COUNT(*) AS disponibles
     FROM cajones_estacionamiento
     WHERE ID_Estado = 1
   `);
-
   res.json(rows[0]);
 }));
 
 // ==============================
 //  OCUPADOS
 // ==============================
-router.get("/ocupados", verificarToken(["ADMIN", "GUARDIA"]), catchAsync(async (req, res) => {
+router.get("/ocupados", catchAsync(async (req, res) => {
   const [rows] = await db.query(`
     SELECT COUNT(*) AS ocupados
     FROM cajones_estacionamiento
     WHERE ID_Estado = 2
   `);
-
   res.json(rows[0]);
 }));
 
 // ==============================
 //  TOTAL DE ESPACIOS
 // ==============================
-router.get("/total", verificarToken(["ADMIN", "GUARDIA"]), catchAsync(async (req, res) => {
+router.get("/total", catchAsync(async (req, res) => {
   const [rows] = await db.query(`
     SELECT COUNT(*) AS total
     FROM cajones_estacionamiento
   `);
-
   res.json(rows[0]);
 }));
 
 // ==============================
 //  TEMPORALES ACTIVOS HOY
 // ==============================
-router.get("/temporales", verificarToken(["ADMIN", "GUARDIA"]), catchAsync(async (req, res) => {
+router.get("/temporales", catchAsync(async (req, res) => {
   const [rows] = await db.query(`
     SELECT COUNT(*) AS temporales
     FROM registros_acceso ra
@@ -54,14 +49,13 @@ router.get("/temporales", verificarToken(["ADMIN", "GUARDIA"]), catchAsync(async
     WHERE u.ID_Tipo_Usuario = 5
       AND ra.Fecha_Acceso = CURDATE()
   `);
-
   res.json(rows[0]);
 }));
 
 // ==============================
-//  TODO JUNTO (GENERAL)
+//  GENERAL
 // ==============================
-router.get("/general", verificarToken(["ADMIN", "GUARDIA"]), catchAsync(async (req, res) => {
+router.get("/general", catchAsync(async (req, res) => {
 
   const [[disponibles]] = await db.query(`
     SELECT COUNT(*) AS disponibles
