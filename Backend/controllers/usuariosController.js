@@ -3,6 +3,7 @@ const httpError = require("../utils/httpError");
 
 // Obtener todos los usuarios
 // Obtener todos los usuarios (alumnos, empleados, visitantes y temporales)
+// Obtener todos los usuarios (alumnos, empleados, visitantes y temporales)
 exports.obtenerUsuarios = async (req, res) => {
   const [resultados] = await db.query(`
     SELECT 
@@ -14,6 +15,7 @@ exports.obtenerUsuarios = async (req, res) => {
       u.Area_Empleado,
       u.Evento_Asiste,
       u.Horario,
+      u.Hora_Salida,
       u.Persona_Recoge,
       u.Relacion_Estudiante,
       u.Fecha_Registro,
@@ -28,6 +30,8 @@ exports.obtenerUsuarios = async (req, res) => {
 
   res.json(resultados);
 };
+
+
 
 
 // Crear usuario + vehículo
@@ -45,7 +49,15 @@ exports.registrarUsuarioConVehiculo = async (req, res) => {
   if (faltan.length) throw httpError(400, `Faltan campos: ${faltan.join(', ')}`);
 
   const placaFinal = String(placa).trim().toUpperCase();
-
+  // Verificar si la placa ya existe ANTES de crear usuario
+  const [placasExistentes] = await db.query(
+    "SELECT ID_Vehiculo FROM vehiculos WHERE Placa = ?",
+    [placaFinal]
+  );
+  if (placasExistentes.length > 0) {
+    // No insertamos nada y regresamos error 409
+    throw httpError(409, "Esta placa ya está registrada");
+  }
   // 1) Insertar usuario
   const [rU] = await db.query(
     `INSERT INTO usuarios
@@ -72,6 +84,7 @@ exports.registrarUsuarioConVehiculo = async (req, res) => {
 };
 
 // Listar visitantes (nuevo y temporal)
+// Listar visitantes (nuevo y temporal)
 exports.listarVisitantes = async (req, res) => {
   const [rows] = await db.query(`
     SELECT 
@@ -82,7 +95,8 @@ exports.listarVisitantes = async (req, res) => {
       u.Licenciatura,
       u.Area_Empleado,
       u.Evento_Asiste,
-      u.Horario, 
+      u.Horario,
+      u.Hora_Salida,
       u.Persona_Recoge,
       u.Relacion_Estudiante,
       u.Fecha_Registro,
@@ -97,6 +111,7 @@ exports.listarVisitantes = async (req, res) => {
   `);
   res.json(rows);
 };
+
 
 // Obtener usuario por ID
 exports.obtenerUsuarioPorId = async (req, res) => {
