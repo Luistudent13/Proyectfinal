@@ -21,6 +21,8 @@ const vehiculosRoutes = require("./routes/vehiculos");
 const accesosRoutes = require("./routes/accesos");
 const marcasRoutes = require("./routes/marcas");
 const reportesRoutes = require("./routes/reportes");
+const dashboardRoutes = require("./routes/dashboard");
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/usuarios", usuariosRoutes);
@@ -28,6 +30,7 @@ app.use("/api/vehiculos", vehiculosRoutes);
 app.use("/api/accesos", accesosRoutes);
 app.use("/api/marcas", marcasRoutes);
 app.use("/api/reportes", reportesRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 // Ruta raíz → pantalla principal
 app.get("/", (req, res) => {
