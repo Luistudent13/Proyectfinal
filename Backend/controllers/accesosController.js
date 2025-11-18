@@ -20,7 +20,7 @@ exports.crearAcceso = async (req, res, next) => {
     );
 
     if (activos.length > 0) {
-      // 🔴 Aquí el mensaje que quieres
+      //
       return res.status(400).json({
         message: "Este vehículo no ha salido",
         mensaje: "Este vehículo no ha salido",
