@@ -1,38 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reportar Problema</title>
   <link rel="stylesheet" href="/reporte.css" />
 </head>
+
 <body>
-  <div class="formulario-container" id="reportePage">
+  <div class="formulario-container">
+    <img src="/assets/espacio-seguro.png" alt="Logo UCC" class="logo" />
     <h2>Reportar Problema</h2>
 
-  <form id="formReporte">
-  <label for="nombre">Nombre completo:</label>
-  <input type="text" id="nombre" name="nombre" required />
+    <form id="formReporte">
+      <div class="form-group">
+        <label for="nombre">Nombre completo:</label>
+        <input type="text" id="nombre" name="nombre" required />
+      </div>
 
-  <label for="tipo">Tipo de Usuario:</label>
-  <input type="text" id="tipo" name="tipo" required />
+      <div class="form-group">
+        <label for="tipo">Persona a reportar:</label>
+        <select id="tipo" name="tipo" required>
+          <option value="">Seleccione una opción</option>
+          <option value="estudiante">Estudiante</option>
+          <option value="empleado">Empleado</option>
+          <option value="visitante">Visitante</option>
+        </select>
+      </div>
 
-<label for="problema">Describe el problema:</label>
-<textarea id="problema" name="problema" required></textarea>
+      <div class="form-group">
+        <label for="problema">Describe el problema:</label>
+        <textarea id="problema" name="problema" rows="4" required></textarea>
+      </div>
 
+      <button type="submit" class="btn-azul">
+        Enviar Reporte
+      </button>
+    </form>
 
-  <button type="submit">Enviar Reporte</button>
-</form>
+    <div id="mensajeEnvioReporte" style="margin-top: 12px;"></div>
 
-
-    <div id="mensajeEnvioReporte" style="margin-top: 20px;"></div>
-
-    <button type="button" class="btn-rojo" onclick="window.location.href='/screens/menu.html'">Cancelar</button>
-
+    <button type="button" class="btn-regresar" onclick="window.location.href='/screens/menu.html'">
+      Cancelar
+    </button>
   </div>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js/shared.js"></script>
-<script src="/js/sharedForms.js"></script>
-<script src="/js/reporte.js"></script>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/js/sharedForms.js"></script>
+  <script src="/js/reporte.js"></script>
 </body>
+
 </html>

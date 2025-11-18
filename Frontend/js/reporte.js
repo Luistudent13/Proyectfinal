@@ -1,28 +1,55 @@
-// /js/reporte.js (NUEVO)
+// /js/reporte.js
 document.addEventListener("DOMContentLoaded", () => {
+  // Solo ADMIN o GUARDIA pueden enviar reportes
+  if (typeof requireAuth === "function") {
+    requireAuth({ roles: ["ADMIN", "GUARDIA"] });
+  }
+
   const form = document.querySelector("#formReporte");
+  if (!form) {
+    console.error("❌ No se encontró el formulario #formReporte");
+    return;
+  }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const nombre = document.getElementById("nombre").value.trim();
-    const tipo = document.getElementById("tipo").value.trim();
-    const problema = document.getElementById("problema").value.trim();
+    const nombre = form.nombre.value.trim();
+    const tipo = form.tipo.value;
+    const problema = form.problema.value.trim();
 
     if (!nombre || !tipo || !problema) {
-      return swalInfo("Por favor completa todos los campos.");
+      if (typeof swalError === "function") {
+        swalError("Completa todos los campos del reporte.");
+      } else {
+        alert("Completa todos los campos del reporte.");
+      }
+      return;
     }
 
     try {
+      const body = { nombre, tipo, problema };
+
+      // Llama al backend con JWT (apiFetch lo adjunta)
       await apiFetch("/reportes", {
         method: "POST",
-        body: JSON.stringify({ nombre, tipo, problema })
+        body: JSON.stringify(body),
       });
 
-      await swalSuccess("Reporte enviado correctamente.");
+      if (typeof swalSuccess === "function") {
+        await swalSuccess("Reporte enviado correctamente.");
+      } else {
+        alert("Reporte enviado correctamente.");
+      }
+
       form.reset();
     } catch (err) {
-      swalError(err.message || "Error al enviar el reporte.");
+      console.error("Error al enviar reporte:", err);
+      if (typeof swalError === "function") {
+        swalError(err.message || "Error al enviar el reporte.");
+      } else {
+        alert(err.message || "Error al enviar el reporte.");
+      }
     }
   });
 });
