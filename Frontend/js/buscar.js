@@ -26,8 +26,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 🔹 Cargar usuarios y autocompletar
   try {
-    const res = await fetch(`${API_URL}/usuarios`);
-    usuariosGlobal = await res.json();
+    usuariosGlobal = await apiFetch("/usuarios");
+
 
     const matriculas = usuariosGlobal.map(u => u.Matricula).filter(Boolean);
     const placas = usuariosGlobal.map(u => u.Placa).filter(Boolean);
