@@ -136,29 +136,44 @@ exports.buscarUsuarioPorMatricula = async (req, res) => {
   res.json(resultados[0]);
 };
 
-// Actualizar usuario existente
 exports.actualizarUsuario = async (req, res) => {
   const { id } = req.params;
   const {
-    nombre_completo, matricula, licenciatura, area_empleado,
-    placa, color, marca, nuevaMarcaTexto
+    nombre_completo,
+    matricula,
+    licenciatura,
+    area_empleado,
+    placa,
+    color,
+    idMarca,          // <- viene del frontend
+    marca,
+    nuevaMarcaTexto
   } = req.body;
 
-  // 1) Validar o insertar la marca
-  let idMarcaFinal;
-  if (nuevaMarcaTexto) {
+  // 1) Resolver la marca
+  let idMarcaFinal = null;
+
+  if (idMarca) {
+    // Si ya viene el ID de la marca desde el front, lo usamos directo
+    idMarcaFinal = idMarca;
+  } else if (nuevaMarcaTexto) {
+    // Crear una marca nueva
     const [insertResult] = await db.query(
       "INSERT INTO marca_vehiculos (Marca) VALUES (?)",
       [nuevaMarcaTexto]
     );
     idMarcaFinal = insertResult.insertId;
   } else if (marca) {
+    // Buscar la marca por nombre de texto
     const [marcaRows] = await db.query(
       "SELECT ID_Marca FROM marca_vehiculos WHERE Marca = ?",
       [marca]
     );
-    if (marcaRows.length > 0) idMarcaFinal = marcaRows[0].ID_Marca;
-    else throw httpError(400, "La marca especificada no existe");
+    if (marcaRows.length > 0) {
+      idMarcaFinal = marcaRows[0].ID_Marca;
+    } else {
+      throw httpError(400, "La marca especificada no existe");
+    }
   } else {
     throw httpError(400, "No se proporcionó marca válida");
   }
@@ -186,6 +201,7 @@ exports.actualizarUsuario = async (req, res) => {
 
   res.status(200).json({ mensaje: "Usuario actualizado correctamente" });
 };
+
 
 // Eliminar un usuario
 exports.eliminarUsuario = async (req, res) => {

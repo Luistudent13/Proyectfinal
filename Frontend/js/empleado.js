@@ -43,7 +43,7 @@ registerForm(form, async () => {
       `${nombre.value.trim()} ${apellidos.value.trim()}`.trim(),
     matricula: matricula.value.trim(),
     tipoUsuario: 3, // Empleado
-    area: area.value.trim(),
+    area_empleado: area.value.trim(),   // <- aquí el nombre correcto
     placa: placa.value.trim().toUpperCase(),
     color: color.value.trim(),
     idMarca,

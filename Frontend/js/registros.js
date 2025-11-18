@@ -1,7 +1,37 @@
 document.addEventListener("DOMContentLoaded", async () => {
   requireAuth({ roles: ["ADMIN", "GUARDIA"] });
+
+  // Utilidades de formato para horarios y fechas en la tabla de registros
+  function formatHoraCorta(horaStr) {
+    if (!horaStr) return "";
+    const partes = String(horaStr).split(":");
+    if (partes.length < 2) return horaStr;
+    let h = parseInt(partes[0], 10);
+    const m = partes[1] || "00";
+    if (Number.isNaN(h)) return horaStr;
+
+    const sufijo = h >= 12 ? "p. m." : "a. m.";
+    if (h === 0) h = 12;
+    else if (h > 12) h -= 12;
+
+    return `${h}:${m.padStart(2, "0")} ${sufijo}`;
+  }
+
+  function formatFechaRegistro(fechaStr) {
+    if (!fechaStr) return "";
+    const iso = String(fechaStr);
+    const soloFecha = iso.split("T")[0]; // YYYY-MM-DD
+    const partes = soloFecha.split("-");
+    if (partes.length !== 3) return iso;
+    const [y, m, d] = partes;
+    // 17/11/2025
+    return `${d}/${m}/${y}`;
+  }
+
   const tbodyArriba = document.getElementById("registrosBody");   // alumnos+empleados
   const tbodyAbajo = document.getElementById("tbodyVisitantes"); // visitantes+temporales
+
+
 
   try {
     const data = await apiFetch("/usuarios");
@@ -35,9 +65,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       const relacion = (u.Persona_Recoge || u.Relacion_Estudiante)
         ? `${u.Persona_Recoge || ""} / ${u.Relacion_Estudiante || ""}`
         : "";
-      const horarioEvt = (u.Horario || u.Hora_Salida)
-        ? `(${u.Horario || ""}${u.Hora_Salida ? " - " + u.Hora_Salida : ""})`
+
+      // Formatear horas y fecha
+      const horaIng = formatHoraCorta(u.Horario);
+      const horaSal = formatHoraCorta(u.Hora_Salida);
+      const horarioEvt = (horaIng || horaSal)
+        ? `(${horaIng}${horaSal ? " - " + horaSal : ""})`
         : "";
+
+      const fechaReg = formatFechaRegistro(u.Fecha_Registro);
 
       const tipoClass = tipo === "Visitante" ? "chip-visitante" : "chip-temporal";
 
@@ -50,8 +86,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           <td>${u.Marca || ""}</td>
           <td>${u.Color || ""}</td>
           <td>${evento} ${horarioEvt}</td>
-          <td>${relacion}</td>
-          <td>${u.Fecha_Registro || ""}</td>
+      <td>${relacion}</td>
+        <td>${fechaReg}</td>
+
           <td class="acciones">
             <button class="btn-azul-mini" onclick="location.href='/screens/editar.html?id=${u.ID_Usuario}'">Editar</button>
             <button class="btn-rojo-mini" onclick="eliminarUsuario(${u.ID_Usuario})">Eliminar</button>
