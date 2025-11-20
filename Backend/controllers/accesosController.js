@@ -1,3 +1,82 @@
+// Backend/controllers/accesosController.js
+const db = require("../config/database");
+
+// ===============================
+// POST /api/accesos → Registrar entrada
+// ===============================
+exports.crearAcceso = async (req, res, next) => {
+  try {
+    const { ID_Usuario, ID_Vehiculo } = req.body;
+
+    if (!ID_Usuario || !ID_Vehiculo) {
+      return res.status(400).json({
+        message: "Faltan ID_Usuario o ID_Vehiculo",
+        mensaje: "Faltan ID_Usuario o ID_Vehiculo",
+      });
+    }
+
+    // Validar si el vehículo ya tiene acceso sin salida
+    const [activos] = await db.query(
+      "SELECT ID_Acceso FROM registros_acceso WHERE ID_Vehiculo = ? AND Hora_Salida IS NULL",
+      [ID_Vehiculo]
+    );
+
+    if (activos.length > 0) {
+      return res.status(400).json({
+        message: "Este vehículo no ha salido",
+        mensaje: "Este vehículo no ha salido",
+        code: "VEHICULO_NO_HA_SALIDO",
+      });
+    }
+
+    // FORMATO DATETIME → YYYY-MM-DD HH:MM:SS
+    const ahora = new Date();
+    const fecha = ahora.toISOString().slice(0, 10);
+    const hora = ahora.toTimeString().slice(0, 8);
+    const fechaHora = `${fecha} ${hora}`;
+
+    // Insertar nuevo acceso
+    const [result] = await db.query(
+      `
+      INSERT INTO registros_acceso (ID_Vehiculo, ID_Usuario, Hora_Entrada, Fecha_Acceso)
+      VALUES (?, ?, ?, ?)
+      `,
+      [ID_Vehiculo, ID_Usuario, fechaHora, fecha]
+    );
+
+
+    //  🔥🔥🔥 BLOQUE QUE FALTABA — OCUPAR AUTOMÁTICAMENTE UN CAJÓN 🔥🔥🔥
+    // Buscar un cajón disponible
+    const [[cajonLibre]] = await db.query(`
+      SELECT ID_Cajon
+      FROM cajones_estacionamiento
+      WHERE ID_Estado = 1
+      ORDER BY Numero_Cajon ASC
+      LIMIT 1
+    `);
+
+    if (cajonLibre) {
+      // Ocupa ese cajón con el vehículo
+      await db.query(`
+        UPDATE cajones_estacionamiento
+        SET ID_Estado = 2,
+            ID_Vehiculo_Ocupando = ?
+        WHERE ID_Cajon = ?
+      `, [ID_Vehiculo, cajonLibre.ID_Cajon]);
+    }
+    // -----------------------------------------------------------------------
+
+
+    return res.status(201).json({
+      message: "Acceso registrado correctamente",
+      mensaje: "Acceso registrado correctamente",
+      ID_Acceso: result.insertId,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 
 
 
