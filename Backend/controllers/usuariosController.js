@@ -61,8 +61,8 @@ exports.registrarUsuarioConVehiculo = async (req, res) => {
   const [rU] = await db.query(
     `INSERT INTO usuarios
      (Nombre_Completo, Matricula, ID_Tipo_Usuario, Licenciatura, Area_Empleado,
-      Evento_Asiste, Horario, Hora_Salida, Persona_Recoge, Relacion_Estudiante)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      Evento_Asiste, Horario, Persona_Recoge, Relacion_Estudiante)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       nombre_completo || null, matricula || null, tipoUsuario,
       licenciatura || null, area_empleado || null,
