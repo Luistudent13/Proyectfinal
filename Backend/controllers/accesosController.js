@@ -150,6 +150,15 @@ exports.registrarSalidaPorPlaca = async (req, res, next) => {
       [fechaHora, ultimo.ID_Acceso]
     );
 
+    // 5) Liberar el cajón que tenía este vehículo
+    await db.query(`
+    UPDATE cajones_estacionamiento
+    SET ID_Estado = 1,
+    ID_Vehiculo_Ocupando = NULL
+    WHERE ID_Vehiculo_Ocupando = ?;
+` ,  [idVehiculo]);
+
+
     return res.json({
       message: "Salida registrada correctamente",
       mensaje: "Salida registrada correctamente",
