@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cajones Disponibles</title>
+  <link rel="stylesheet" href="/styles.css">
+
+  <style>
+    .grid-cajones {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .cajon {
+      padding: 16px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: bold;
+      background: #eee;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .disponible {
+      background: #8fda8f !important;
+    }
+
+    .ocupado {
+      background: #e67a7a !important;
+      cursor: not-allowed;
+    }
+
+    .reservado {
+      background: #f7d36a !important;
+    }
+
+    .discapacitado {
+      border: 3px solid #005eff;
+    }
+
+    .cajon:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="historial-container">
+    <img src="/assets/espacio-seguro.png" class="logo" />
+
+    <h2>Cajones (50 espacios)</h2>
+    <p>Da clic para **reservar**, **ocupar**, o **liberar**.</p>
+
+    <div id="gridCajones" class="grid-cajones"></div>
+
+    <button class="btn-azul" onclick="window.location.href='/screens/menu.html'">
+      Volver al Menú
+    </button>
+  </div>
+
+  <script src="/js/shared.js"></script>
+  <script src="/js/cajones.js"></script>
+</body>
+</html>
