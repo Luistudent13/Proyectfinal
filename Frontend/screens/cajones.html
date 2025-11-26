@@ -2,11 +2,11 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <!-- FIX: El meta estaba mal escrito como "meta-name" -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Cajones Disponibles</title>
-  <link rel="stylesheet" href="/styles.css">
+  
+  <link rel="stylesheet" href="styles.css">
 
   <style>
     body {
@@ -16,12 +16,13 @@
       font-family: "Segoe UI", sans-serif;
     }
 
-    /* CONTENEDOR GENERAL — SIN LÍMITE DE ANCHO */
+    /* CONTENEDOR GENERAL */
     .page-container {
       width: 100%;
       max-width: 100%;
       margin: 20px auto;
       padding: 0 20px;
+      box-sizing: border-box; /* Importante para que el padding no desborde */
     }
 
     .header-zone {
@@ -46,7 +47,7 @@
       font-size: 17px;
     }
 
-    /* GRID RESPONSIVE DE VERDAD */
+    /* GRID RESPONSIVE */
     .grid-cajones {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -67,6 +68,10 @@
       cursor: pointer;
       transition: .18s;
       min-height: 130px;
+      display: flex;       /* Centrar contenido verticalmente */
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
     .cajon:hover {
@@ -95,11 +100,17 @@
       cursor: pointer;
       transition: .2s;
       border: none;
+      margin-bottom: 40px;
     }
 
     .btn-volver:hover {
       background: #1a5fd0;
       transform: scale(1.05);
+    }
+    
+    /* Ajuste para alertas de SweetAlert */
+    .swal-wide {
+      width: 400px !important;
     }
   </style>
 </head>
@@ -108,11 +119,23 @@
   <div class="page-container">
 
     <div class="header-zone">
-      <img src="/assets/espacio-seguro.png" />
+      <img src="assets/espacio-seguro.png" alt="Logo" onerror="this.style.display='none'"/>
       <h2>Cajones (50 espacios)</h2>
       <p>Da clic para reservar, ocupar o liberar un espacio.</p>
     </div>
 
-    <div id="gridCajones" class="grid-cajones"></div>
+    <div id="gridCajones" class="grid-cajones">
+      </div>
 
-    <button class="btn-volver" onclick="window.location.href='/screens/menu.html'">
+    <button class="btn-volver" onclick="window.location.href='screens/menu.html'">
+      Volver al Menú
+    </button>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script src="js/cajones.js"></script>
+
+</body>
+</html>
