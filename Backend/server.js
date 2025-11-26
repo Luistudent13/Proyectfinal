@@ -1,3 +1,4 @@
+console.log("🔥 EL SERVIDOR QUE ESTÁ CORRIENDO ES ESTE:", __filename);
 // Backend/server.js
 require("dotenv").config();
 const express = require("express");
