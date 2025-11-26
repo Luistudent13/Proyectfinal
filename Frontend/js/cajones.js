@@ -1,4 +1,4 @@
-const apiFetch = window.apiFetch;
+const api = window.apiFetch;   // ✔ la única forma correcta
 
 document.addEventListener("DOMContentLoaded", cargarCajones);
 
@@ -7,7 +7,7 @@ async function cargarCajones() {
   grid.innerHTML = "<p>Cargando cajones...</p>";
 
   try {
-    const cajones = await apiFetch("/cajones");
+    const cajones = await api("/cajones");  // ✔ corregido
     grid.innerHTML = "";
 
     cajones.forEach(c => {
@@ -33,22 +33,22 @@ async function cargarCajones() {
     });
 
   } catch (err) {
+    console.error(err);
     grid.innerHTML = "<p>Error cargando cajones</p>";
   }
 }
 
-
 async function manejarAccion(cajon) {
-  // Si está ocupado → solo se puede liberar
+  // ✔ Si está ocupado, solo se puede liberar
   if (cajon.ID_Estado === 2) {
     if (confirm(`¿Liberar cajón ${cajon.Numero_Cajon}?`)) {
-      await apiFetch(`/cajones/liberar/${cajon.ID_Cajon}`, { method: "POST" });
+      await api(`/cajones/liberar/${cajon.ID_Cajon}`, { method: "POST" }); // ✔ corregido
       cargarCajones();
     }
     return;
   }
 
-  // Si NO está ocupado → puede reservar o ocupar
+  // ✔ Si está libre
   const accion = prompt(
     `Cajón ${cajon.Numero_Cajon}:\n` +
     `1 - Reservar / Quitar reserva\n` +
@@ -56,20 +56,21 @@ async function manejarAccion(cajon) {
     `3 - Cancelar`
   );
 
+  // Reservar
   if (accion === "1") {
-    await apiFetch(`/cajones/reservar/${cajon.ID_Cajon}`, {
+    await api(`/cajones/reservar/${cajon.ID_Cajon}`, {
       method: "POST",
       body: { reservado: cajon.Es_Reservado ? 0 : 1 }
     });
   }
 
+  // Ocupar
   if (accion === "2") {
-    await apiFetch(`/cajones/ocupar/${cajon.ID_Cajon}`, {
+    await api(`/cajones/ocupar/${cajon.ID_Cajon}`, {
       method: "POST",
-      body: { idVehiculo: 1 } // 🚨 luego lo conectamos al vehículo real
+      body: { idVehiculo: 1 }
     });
   }
 
   cargarCajones();
 }
-
