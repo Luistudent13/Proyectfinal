@@ -48,15 +48,7 @@ exports.registrarUsuarioConVehiculo = async (req, res) => {
   if (faltan.length) throw httpError(400, `Faltan campos: ${faltan.join(', ')}`);
 
   const placaFinal = String(placa).trim().toUpperCase();
-  // Verificar si la placa ya existe ANTES de crear usuario
-  const [placasExistentes] = await db.query(
-    "SELECT ID_Vehiculo FROM vehiculos WHERE Placa = ?",
-    [placaFinal]
-  );
-  if (placasExistentes.length > 0) {
-    // No insertamos nada y regresamos error 409
-    throw httpError(409, "Esta placa ya está registrada");
-  }
+
   // 1) Insertar usuario
   const [rU] = await db.query(
     `INSERT INTO usuarios
