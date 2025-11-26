@@ -72,9 +72,15 @@ async function manejarAccion(cajon) {
     title: `Cajón ${cajon.Numero_Cajon}`,
     html: `
       <div style="display:flex; flex-direction:column; gap:12px;">
-        <button id="btnReservar" class="swal2-confirm swal2-styled" style="background:#3b82f6;">${cajon.Es_Reservado ? "Quitar reserva" : "Reservar"}</button>
-        <button id="btnOcupar" class="swal2-confirm swal2-styled" style="background:#22c55e;">Ocupar (vehículo de prueba)</button>
-        <button id="btnCancelar" class="swal2-cancel swal2-styled" style="display:block; margin-top:5px;">Cancelar</button>
+        <button id="btnReservar" class="swal2-confirm swal2-styled" style="background:#3b82f6;">
+          ${cajon.Es_Reservado ? "Quitar reserva" : "Reservar"}
+        </button>
+        <button id="btnOcupar" class="swal2-confirm swal2-styled" style="background:#22c55e;">
+          Ocupar (vehículo de prueba)
+        </button>
+        <button id="btnCancelar" class="swal2-cancel swal2-styled" style="display:block; margin-top:5px;">
+          Cancelar
+        </button>
       </div>
     `,
     showConfirmButton: false,
@@ -111,7 +117,7 @@ async function reservarCajon(c) {
 async function ocuparCajon(c) {
   await api(`/cajones/ocupar/${c.ID_Cajon}`, {
     method: "POST",
-    body: { idVehiculo: 1 } // 🔧 luego lo conectas con registro real
+    body: { idVehiculo: 1 } // Luego lo conectarás con datos reales
   });
 
   Swal.fire("Ocupado", "El cajón ahora está ocupado.", "success");

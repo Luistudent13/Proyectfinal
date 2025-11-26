@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta-name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cajones Disponibles</title>
   <link rel="stylesheet" href="/styles.css">
 
@@ -17,7 +17,7 @@
     /* CONTENEDOR GENERAL */
     .page-container {
       width: 95%;
-      max-width: 1600px; /* MUCHO MÁS ANCHO */
+      max-width: 1600px;
       margin: 40px auto;
     }
 
@@ -43,10 +43,10 @@
       font-size: 17px;
     }
 
-    /* GRID — DISEÑO DE ESCRITORIO */
+    /* GRID RESPONSIVE */
     .grid-cajones {
       display: grid;
-      grid-template-columns: repeat(10, 1fr); /* MÁS ESPACIO HORIZONTAL */
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
       gap: 18px;
       margin-top: 20px;
       padding-bottom: 40px;
@@ -116,6 +116,9 @@
     </button>
 
   </div>
+
+  <!-- SWEETALERT2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script src="/js/shared.js"></script>
   <script src="/js/cajones.js"></script>
