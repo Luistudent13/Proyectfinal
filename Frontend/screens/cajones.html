@@ -4,119 +4,111 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cajones Disponibles</title>
-
-  <!-- Estilos globales -->
   <link rel="stylesheet" href="/styles.css">
 
-  <!-- SweetAlert2 -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
   <style>
-    /* ===== Contenedor principal ===== */
-    .contenedor-principal {
-      max-width: 1200px;
+    body {
+      background: #f2f5f9;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    /* CONTENEDOR GENERAL */
+    .page-container {
+      width: 95%;
+      max-width: 1600px; /* MUCHO MÁS ANCHO */
       margin: 40px auto;
-      padding: 30px;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 0 20px #0001;
     }
 
-    /* ===== Títulos ===== */
-    .titulo {
+    .header-zone {
       text-align: center;
-      margin-bottom: 10px;
+      margin-bottom: 25px;
     }
 
-    .subtitulo {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #444;
+    .header-zone img {
+      width: 110px;
+      opacity: 0.9;
     }
 
-    /* ===== Grid ===== */
+    .header-zone h2 {
+      font-size: 32px;
+      margin: 10px 0 6px 0;
+      font-weight: 700;
+      color: #233347;
+    }
+
+    .header-zone p {
+      color: #555;
+      font-size: 17px;
+    }
+
+    /* GRID — DISEÑO DE ESCRITORIO */
     .grid-cajones {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-      gap: 15px;
-      padding: 10px;
-      max-height: 70vh;
-      overflow-y: auto;
+      grid-template-columns: repeat(10, 1fr); /* MÁS ESPACIO HORIZONTAL */
+      gap: 18px;
+      margin-top: 20px;
+      padding-bottom: 40px;
     }
 
-    /* ===== Tarjeta de cajón ===== */
+    /* TARJETAS DE CAJÓN */
     .cajon {
-      padding: 16px;
-      border-radius: 14px;
+      padding: 18px 10px;
+      border-radius: 12px;
       text-align: center;
-      font-weight: bold;
+      font-weight: 600;
+      background: #e8eef5;
+      border: 1px solid #d0d8e2;
       cursor: pointer;
-      transition: .2s;
-      background: #f2f2f2;
-      border: 2px solid transparent;
+      transition: .18s;
+      min-height: 120px;
     }
 
     .cajon:hover {
-      transform: scale(1.05);
+      transform: translateY(-5px);
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
     }
 
-    .disponible {
-      background: #b5ffb5 !important;
-    }
+    /* ESTADOS */
+    .disponible { background: #bff7c5 !important; }
+    .ocupado { background: #f8a3a3 !important; }
+    .reservado { background: #ffe08a !important; }
+    .discapacitado { border: 3px solid #005eff; }
 
-    .ocupado {
-      background: #ffb5b5 !important;
-      cursor: not-allowed;
-    }
-
-    .reservado {
-      background: #ffe7a3 !important;
-    }
-
-    .discapacitado {
-      border: 3px solid #005eff !important;
-    }
-
-    /* ===== Botón volver ===== */
+    /* BOTÓN VOLVER */
     .btn-volver {
-      display: block;
-      margin: 25px auto 0;
-      padding: 12px 25px;
-      background: #0a84ff;
+      margin-top: 35px;
+      background: #2d7df6;
       color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
+      padding: 12px 26px;
+      font-size: 17px;
+      border-radius: 8px;
+      display: block;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
       cursor: pointer;
       transition: .2s;
+      border: none;
     }
 
     .btn-volver:hover {
-      background: #006fd6;
-      transform: scale(1.03);
-    }
-
-    /* Ancho extra para los modales de SweetAlert */
-    .swal-wide {
-      width: 380px !important;
+      background: #1a5fd0;
+      transform: scale(1.05);
     }
   </style>
 </head>
 
 <body>
+  <div class="page-container">
 
-  <div class="contenedor-principal">
-
-    <div class="titulo">
-      <img src="/assets/espacio-seguro.png" class="logo" style="width:120px; margin-bottom:-10px" />
+    <div class="header-zone">
+      <img src="/assets/espacio-seguro.png" />
       <h2>Cajones (50 espacios)</h2>
+      <p>Da clic para reservar, ocupar o liberar un espacio.</p>
     </div>
 
-    <p class="subtitulo">
-      Da clic para <strong>reservar</strong>, <strong>ocupar</strong> o <strong>liberar</strong>.
-    </p>
-
-    <!-- GRID -->
     <div id="gridCajones" class="grid-cajones"></div>
 
     <button class="btn-volver" onclick="window.location.href='/screens/menu.html'">
@@ -125,9 +117,7 @@
 
   </div>
 
-  <!-- Scripts -->
   <script src="/js/shared.js"></script>
   <script src="/js/cajones.js"></script>
-
 </body>
 </html>
