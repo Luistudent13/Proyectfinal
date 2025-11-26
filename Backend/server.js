@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+console.log("Frontend REAL:", path.join(__dirname, "../Frontend"));
 // Frontend estático
 app.use(express.static(path.join(__dirname, "../Frontend")));
 

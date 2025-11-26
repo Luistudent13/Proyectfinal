@@ -36,17 +36,23 @@ router.get("/", async (req, res) => {
 router.post("/reservar/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { reservado } = req.body;
+    const { reservado } = req.body;  // 1 = reservar, 0 = quitar reserva
 
     await db.query(
-      "UPDATE cajones_estacionamiento SET Es_Reservado = ? WHERE ID_Cajon = ?",
+      `UPDATE cajones_estacionamiento 
+       SET Es_Reservado = ? 
+       WHERE ID_Cajon = ?`,
       [reservado ? 1 : 0, id]
     );
 
-    res.json({ mensaje: "Reserva actualizada", reservado: reservado ? 1 : 0 });
+    return res.json({
+      mensaje: reservado ? "Cajón reservado" : "Reserva eliminada",
+      reservado: reservado ? 1 : 0
+    });
+
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Error al reservar cajón" });
+    console.error("❌ Error POST /reservar:", err);
+    return res.status(500).json({ error: "Error al reservar cajón" });
   }
 });
 
@@ -57,6 +63,23 @@ router.post("/ocupar/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { idVehiculo } = req.body;
+
+        // Validación para evitar ocupar si ya está ocupado
+    const [[cajon]] = await db.query(`
+      SELECT ID_Estado, ID_Vehiculo_Ocupando
+      FROM cajones_estacionamiento
+      WHERE ID_Cajon = ?
+    `, [id]);
+
+    if (!cajon) {
+      return res.status(404).json({ error: "Cajón no existe" });
+    }
+
+    if (cajon.ID_Estado === 2) {
+      return res.status(400).json({
+        error: "El cajón ya está ocupado"
+      });
+    }
 
     await db.query(
       `
