@@ -1,4 +1,4 @@
-import { apiFetch } from "./shared.js";
+const apiFetch = window.apiFetch;
 
 document.addEventListener("DOMContentLoaded", cargarCajones);
 
