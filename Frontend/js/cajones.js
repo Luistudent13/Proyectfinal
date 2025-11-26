@@ -1,63 +1,25 @@
-// js/cajones.js
+document.addEventListener("DOMContentLoaded", async () => {
+  // 1. Opcional: Si quieres proteger la pantalla, descomenta esto:
+  // requireAuth({ roles: ["ADMIN", "GUARDIA", "ALUMNO"] }); 
 
-// ==========================================
-// 1. CONFIGURACIÓN DE CONEXIÓN (Integrada)
-// ==========================================
-// Ajusta el puerto si tu backend no es el 3000
-const BASE_URL = "http://localhost:3000"; 
+  cargarCajones();
+});
 
-// Función interna para hacer peticiones sin archivo extra
-async function api(endpoint, options = {}) {
-  // Asegurar que el endpoint empiece con /
-  if (!endpoint.startsWith("/")) endpoint = "/" + endpoint;
-  
-  const url = `${BASE_URL}${endpoint}`;
-  
-  const headers = {
-    "Content-Type": "application/json"
-  };
-
-  const config = {
-    ...options,
-    headers: {
-      ...headers,
-      ...options.headers
-    }
-  };
-
-  if (config.body && typeof config.body === "object") {
-    config.body = JSON.stringify(config.body);
-  }
-
-  try {
-    const res = await fetch(url, config);
-    if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || `Error ${res.status}`);
-    }
-    return await res.json();
-  } catch (error) {
-    console.error("Error de conexión:", error);
-    throw error;
-  }
-}
-
-// ==========================================
-// 2. LÓGICA DE LA PÁGINA
-// ==========================================
-
-document.addEventListener("DOMContentLoaded", cargarCajones);
-
+// ==============================
+// 1. CARGAR DATOS (Usando apiFetch de shared.js)
+// ==============================
 async function cargarCajones() {
   const grid = document.getElementById("gridCajones");
-  grid.innerHTML = "<p style='text-align:center; width:100%;'>Cargando cajones...</p>";
+  grid.innerHTML = "<p>Cargando mapa...</p>";
 
   try {
-    const cajones = await api("/cajones");
-    grid.innerHTML = "";
+    // apiFetch viene de shared.js, ya sabe la URL correcta
+    const cajones = await apiFetch("/cajones"); 
+    
+    grid.innerHTML = ""; // Limpiar mensaje de carga
 
     if (cajones.length === 0) {
-        grid.innerHTML = "<p>No hay cajones registrados.</p>";
+        grid.innerHTML = "<p>No se encontraron cajones.</p>";
         return;
     }
 
@@ -65,114 +27,87 @@ async function cargarCajones() {
       const div = document.createElement("div");
       div.className = "cajon";
 
+      // Asignar clases CSS según estado
       if (c.ID_Estado === 1) div.classList.add("disponible");
       if (c.ID_Estado === 2) div.classList.add("ocupado");
       if (c.Es_Reservado === 1) div.classList.add("reservado");
-      if (c.Es_Discapacitado === 1) div.classList.add("discapacitado");
 
       div.innerHTML = `
-        <p style="margin:0; font-size:1.2em;">Cajón <strong>${c.Numero_Cajon}</strong></p>
-        <p style="margin:5px 0;">${c.ID_Estado === 1 ? "Libre" : "Ocupado"}</p>
-        <p style="margin:0; font-size:0.9em;">${c.Es_Reservado ? "⭐ Reservado" : ""}</p>
-        <p style="margin:5px 0; color:#444;">${c.PlacaOcupante ? "🚗 " + c.PlacaOcupante : ""}</p>
+        <div>${c.Numero_Cajon}</div>
+        <small>${c.ID_Estado === 1 ? "Libre" : "Ocupado"}</small>
+        ${c.Es_Reservado ? "<br>⭐ Reservado" : ""}
       `;
 
-      div.addEventListener("click", () => manejarAccion(c));
+      // Evento Click
+      div.addEventListener("click", () => manejarClick(c));
 
       grid.appendChild(div);
     });
 
   } catch (err) {
     console.error(err);
-    grid.innerHTML = "<p style='color:red; text-align:center;'>Error al conectar con el servidor.<br>Revisa que el Backend esté encendido.</p>";
+    grid.innerHTML = "<p style='color:red'>Error al conectar con el servidor.</p>";
   }
 }
 
-async function manejarAccion(cajon) {
-  // Si está ocupado -> Solo opción de liberar
-  if (cajon.ID_Estado === 2) {
-    Swal.fire({
-      icon: "warning",
-      title: `Cajón ${cajon.Numero_Cajon}`,
-      text: "Este cajón está ocupado. ¿Deseas liberarlo?",
-      showCancelButton: true,
-      confirmButtonText: "Liberar",
-      cancelButtonText: "Cancelar",
-      confirmButtonColor: "#d33",
-      customClass: { popup: "swal-wide" }
-    }).then(async (res) => {
-      if (res.isConfirmed) {
-        try {
-            await api(`/cajones/liberar/${cajon.ID_Cajon}`, { method: "POST" });
-            Swal.fire("Liberado", "El cajón fue liberado.", "success");
-            cargarCajones();
-        } catch(e) {
-            Swal.fire("Error", "No se pudo liberar", "error");
-        }
-      }
-    });
-    return;
-  }
-
-  // Si está libre -> Menú de opciones
-  Swal.fire({
-    title: `Cajón ${cajon.Numero_Cajon}`,
-    html: `
-      <div style="display:flex; flex-direction:column; gap:10px;">
-        <button id="btnReservar" class="swal2-confirm swal2-styled" style="background:#f59e0b; width:100%; margin:0;">
-          ${cajon.Es_Reservado ? "Quitar Reserva" : "Reservar"}
-        </button>
-        <button id="btnOcupar" class="swal2-confirm swal2-styled" style="background:#ef4444; width:100%; margin:0;">
-          Ocupar (Prueba)
-        </button>
-      </div>
-    `,
-    showConfirmButton: false,
-    showCloseButton: true,
-    customClass: { popup: "swal-wide" },
-    didOpen: () => {
-      const bReservar = document.getElementById("btnReservar");
-      const bOcupar = document.getElementById("btnOcupar");
-
-      bReservar.onclick = async () => {
-        Swal.close(); // Cerramos el modal antes de la acción
-        await reservarCajon(cajon);
-      };
-
-      bOcupar.onclick = async () => {
-        Swal.close();
-        await ocuparCajon(cajon);
-      };
+// ==============================
+// 2. MANEJAR CLICK (Lógica)
+// ==============================
+function manejarClick(cajon) {
+    // Si está ocupado, sugerir liberar
+    if (cajon.ID_Estado === 2) {
+        Swal.fire({
+            title: `Cajón ${cajon.Numero_Cajon}`,
+            text: "¿Liberar este espacio?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, liberar",
+            cancelButtonText: "Cancelar"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await apiFetch(`/cajones/liberar/${cajon.ID_Cajon}`, { method: "POST" });
+                    Swal.fire("Liberado", "", "success");
+                    cargarCajones(); // Recargar grid
+                } catch (error) {
+                    Swal.fire("Error", "No se pudo liberar", "error");
+                }
+            }
+        });
+        return;
     }
-  });
-}
 
-async function reservarCajon(c) {
-  try {
-      await api(`/cajones/reservar/${c.ID_Cajon}`, {
-        method: "POST",
-        body: { reservado: c.Es_Reservado ? 0 : 1 }
-      });
-      Swal.fire("Listo", "Estado de reserva actualizado.", "success");
-      cargarCajones();
-  } catch (e) {
-      Swal.fire("Error", "No se pudo cambiar la reserva", "error");
-  }
-}
+    // Si está libre, reservar u ocupar
+    Swal.fire({
+        title: `Cajón ${cajon.Numero_Cajon}`,
+        text: "Selecciona una acción",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: cajon.Es_Reservado ? "Quitar Reserva" : "Reservar",
+        denyButtonText: "Ocupar (Prueba)",
+        cancelButtonText: "Cancelar"
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            // Acción: Reservar / Quitar Reserva
+            await apiFetch(`/cajones/reservar/${cajon.ID_Cajon}`, {
+                method: "POST",
+                body: JSON.stringify({ reservado: cajon.Es_Reservado ? 0 : 1 })
+            });
+            Swal.fire("Éxito", "Estado de reserva actualizado", "success");
+            cargarCajones();
 
-async function ocuparCajon(c) {
-  try {
-      // AQUÍ ESTÁ EL ID DE VEHÍCULO "QUEMADO" (Hardcoded) PARA PRUEBAS
-      // Asegúrate de que exista un vehículo con ID 1 en tu base de datos
-      await api(`/cajones/ocupar/${c.ID_Cajon}`, {
-        method: "POST",
-        body: { idVehiculo: 1 } 
-      });
-
-      Swal.fire("Ocupado", "El cajón ahora está ocupado.", "success");
-      cargarCajones();
-  } catch (e) {
-      console.log(e);
-      Swal.fire("Error", "No se pudo ocupar (¿Quizás el vehículo ID 1 no existe?)", "error");
-  }
+        } else if (result.isDenied) {
+            // Acción: Ocupar (Simulado con Vehículo ID 1)
+            try {
+                await apiFetch(`/cajones/ocupar/${cajon.ID_Cajon}`, {
+                    method: "POST",
+                    body: JSON.stringify({ idVehiculo: 1 }) 
+                });
+                Swal.fire("Ocupado", "", "success");
+                cargarCajones();
+            } catch (e) {
+                Swal.fire("Error", "No se pudo ocupar", "error");
+            }
+        }
+    });
 }
