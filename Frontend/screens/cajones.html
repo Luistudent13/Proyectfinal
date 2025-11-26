@@ -7,56 +7,111 @@
   <link rel="stylesheet" href="/styles.css">
 
   <style>
+
+    /* CONTENEDOR GENERAL */
+    .contenedor-cajones {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+      margin-top: 30px;
+      margin-bottom: 40px;
+    }
+
+    /* TITULO */
+    .titulo {
+      font-size: 32px;
+      text-align: center;
+      color: #1a489a;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .subtitulo {
+      text-align: center;
+      font-size: 16px;
+      color: #444;
+      margin-bottom: 30px;
+    }
+
+    /* GRID MEJORADO */
     .grid-cajones {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
-      margin-top: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 18px;
+      padding: 10px;
     }
 
+    /* TARJETA DE CAJÓN */
     .cajon {
-      padding: 16px;
-      border-radius: 10px;
+      padding: 22px;
+      border-radius: 15px;
       text-align: center;
-      font-weight: bold;
-      background: #eee;
+      font-weight: 600;
+      background: #f3f4f6;
       cursor: pointer;
-      transition: .2s;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
+    .cajon:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* COLORES */
     .disponible {
-      background: #8fda8f !important;
+      background: #b4f6b4 !important;
     }
 
     .ocupado {
-      background: #e67a7a !important;
+      background: #ff9c9c !important;
       cursor: not-allowed;
     }
 
     .reservado {
-      background: #f7d36a !important;
+      background: #ffe28a !important;
     }
 
     .discapacitado {
-      border: 3px solid #005eff;
+      border: 3px solid #005eff !important;
     }
 
-    .cajon:hover {
-      transform: scale(1.05);
+    /* BOTÓN REGRESAR */
+    .btn-volver {
+      width: 100%;
+      display: block;
+      margin: 35px auto 10px auto;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: 600;
+      background: #5bbf9a;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-volver:hover {
+      background: #4aa584;
     }
   </style>
 </head>
 
 <body>
-  <div class="historial-container">
-    <img src="/assets/espacio-seguro.png" class="logo" />
 
-    <h2>Cajones (50 espacios)</h2>
-    <p>Da clic para **reservar**, **ocupar**, o **liberar**.</p>
+  <div class="contenedor-cajones">
+    <img src="/assets/espacio-seguro.png" class="logo" style="display:block; margin:0 auto 10px auto;" />
+
+    <h2 class="titulo">Cajones de Estacionamiento</h2>
+    <p class="subtitulo">Da clic para reservar, ocupar o liberar un espacio.</p>
 
     <div id="gridCajones" class="grid-cajones"></div>
 
-    <button class="btn-azul" onclick="window.location.href='/screens/menu.html'">
+    <button class="btn-volver" onclick="window.location.href='/screens/menu.html'">
       Volver al Menú
     </button>
   </div>
