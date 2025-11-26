@@ -103,3 +103,37 @@ router.get("/general", catchAsync(async (req, res) => {
 }));
 
 module.exports = router;
+
+router.get('/android/buscar/:matricula', async (req, res) => {
+    const { matricula } = req.params;
+
+    try {
+        const [rows] = await db.execute(`
+            SELECT 
+                u.ID_Usuario,
+                u.Nombre_Completo,
+                u.Matricula,
+                v.ID_Vehiculo,
+                v.Placa,
+                v.Color,
+                m.Marca,
+                c.ID_Cajon,
+                c.Numero_Cajon,
+                c.ID_Estado
+            FROM usuarios u
+            LEFT JOIN vehiculos v ON v.ID_Usuario = u.ID_Usuario
+            LEFT JOIN marca_vehiculos m ON m.ID_Marca = v.ID_Marca
+            LEFT JOIN cajones_estacionamiento c ON c.ID_Vehiculo_Ocupando = v.ID_Vehiculo
+            WHERE u.Matricula = ?
+        `, [matricula]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ ok: false, message: "No encontrado" });
+        }
+
+        res.json({ ok: true, data: rows });
+
+    } catch (error) {
+        res.status(500).json({ ok: false, error: error.message });
+    }
+});
