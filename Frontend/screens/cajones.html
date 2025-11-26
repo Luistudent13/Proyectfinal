@@ -4,67 +4,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cajones Disponibles</title>
+
+  <!-- Estilos globales -->
   <link rel="stylesheet" href="/styles.css">
 
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <style>
-    /* Fondo general */
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow-y: auto;
-      background: #f4f6f9;
-      font-family: Arial, sans-serif;
+    /* ===== Contenedor principal ===== */
+    .contenedor-principal {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #0001;
     }
 
-    /* Contenedor principal (igual estilo que menú) */
-    .contenedor-cajones {
-      width: 100%;
-      max-width: 1400px;
-      margin: 30px auto;
-      padding: 20px;
-      background: #ffffff;
-      border-radius: 14px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    .logo {
-      display: block;
-      margin: 0 auto 20px;
-      max-width: 120px;
-    }
-
-    h2 {
+    /* ===== Títulos ===== */
+    .titulo {
       text-align: center;
-      margin-top: 0;
-      font-size: 28px;
-      color: #003366;
+      margin-bottom: 10px;
     }
 
-    p.descripcion {
+    .subtitulo {
       text-align: center;
-      color: #444;
-      font-size: 16px;
       margin-bottom: 20px;
+      color: #444;
     }
 
-    /* GRID RESPONSIVE */
+    /* ===== Grid ===== */
     .grid-cajones {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
       gap: 15px;
-      margin-top: 20px;
+      padding: 10px;
+      max-height: 70vh;
+      overflow-y: auto;
     }
 
-    /* Tarjetas */
+    /* ===== Tarjeta de cajón ===== */
     .cajon {
-      padding: 18px;
-      border-radius: 12px;
+      padding: 16px;
+      border-radius: 14px;
       text-align: center;
       font-weight: bold;
-      background: #eeeeee;
       cursor: pointer;
-      transition: 0.2s;
+      transition: .2s;
+      background: #f2f2f2;
       border: 2px solid transparent;
     }
 
@@ -72,60 +60,72 @@
       transform: scale(1.05);
     }
 
-    /* Estados */
     .disponible {
-      background: #b7f5b2 !important;
+      background: #b5ffb5 !important;
     }
 
     .ocupado {
-      background: #ff9f9f !important;
+      background: #ffb5b5 !important;
       cursor: not-allowed;
     }
 
     .reservado {
-      background: #ffe28a !important;
+      background: #ffe7a3 !important;
     }
 
     .discapacitado {
       border: 3px solid #005eff !important;
     }
 
-    /* Botón volver */
-    .btn-azul {
+    /* ===== Botón volver ===== */
+    .btn-volver {
       display: block;
-      margin: 30px auto 0;
-      padding: 12px 20px;
-      background: #005eff;
+      margin: 25px auto 0;
+      padding: 12px 25px;
+      background: #0a84ff;
       color: white;
       border: none;
       border-radius: 10px;
       font-size: 16px;
       cursor: pointer;
-      width: 250px;
-      text-align: center;
+      transition: .2s;
     }
 
-    .btn-azul:hover {
-      background: #0047c2;
+    .btn-volver:hover {
+      background: #006fd6;
+      transform: scale(1.03);
+    }
+
+    /* Ancho extra para los modales de SweetAlert */
+    .swal-wide {
+      width: 380px !important;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="contenedor-cajones">
-    <img src="/assets/espacio-seguro.png" class="logo" />
+  <div class="contenedor-principal">
 
-    <h2>Cajones (50 espacios)</h2>
-    <p class="descripcion">Da clic para <strong>reservar</strong>, <strong>ocupar</strong> o <strong>liberar</strong>.</p>
+    <div class="titulo">
+      <img src="/assets/espacio-seguro.png" class="logo" style="width:120px; margin-bottom:-10px" />
+      <h2>Cajones (50 espacios)</h2>
+    </div>
 
+    <p class="subtitulo">
+      Da clic para <strong>reservar</strong>, <strong>ocupar</strong> o <strong>liberar</strong>.
+    </p>
+
+    <!-- GRID -->
     <div id="gridCajones" class="grid-cajones"></div>
 
-    <button class="btn-azul" onclick="window.location.href='/screens/menu.html'">
+    <button class="btn-volver" onclick="window.location.href='/screens/menu.html'">
       Volver al Menú
     </button>
+
   </div>
 
+  <!-- Scripts -->
   <script src="/js/shared.js"></script>
   <script src="/js/cajones.js"></script>
 
