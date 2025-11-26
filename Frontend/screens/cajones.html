@@ -7,67 +7,78 @@
   <link rel="stylesheet" href="/styles.css">
 
   <style>
+    /* Fondo general */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-y: auto;
+      background: #f4f6f9;
+      font-family: Arial, sans-serif;
+    }
 
-    /* CONTENEDOR GENERAL */
+    /* Contenedor principal (igual estilo que menú) */
     .contenedor-cajones {
-      max-width: 1100px;
-      margin: 0 auto;
+      width: 100%;
+      max-width: 1400px;
+      margin: 30px auto;
       padding: 20px;
       background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-      margin-top: 30px;
-      margin-bottom: 40px;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    /* TITULO */
-    .titulo {
-      font-size: 32px;
-      text-align: center;
-      color: #1a489a;
-      margin-bottom: 10px;
-      font-weight: 700;
+    .logo {
+      display: block;
+      margin: 0 auto 20px;
+      max-width: 120px;
     }
 
-    .subtitulo {
+    h2 {
       text-align: center;
-      font-size: 16px;
+      margin-top: 0;
+      font-size: 28px;
+      color: #003366;
+    }
+
+    p.descripcion {
+      text-align: center;
       color: #444;
-      margin-bottom: 30px;
+      font-size: 16px;
+      margin-bottom: 20px;
     }
 
-    /* GRID MEJORADO */
+    /* GRID RESPONSIVE */
     .grid-cajones {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 18px;
-      padding: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
     }
 
-    /* TARJETA DE CAJÓN */
+    /* Tarjetas */
     .cajon {
-      padding: 22px;
-      border-radius: 15px;
+      padding: 18px;
+      border-radius: 12px;
       text-align: center;
-      font-weight: 600;
-      background: #f3f4f6;
+      font-weight: bold;
+      background: #eeeeee;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: 0.2s;
+      border: 2px solid transparent;
     }
 
     .cajon:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: scale(1.05);
     }
 
-    /* COLORES */
+    /* Estados */
     .disponible {
-      background: #b4f6b4 !important;
+      background: #b7f5b2 !important;
     }
 
     .ocupado {
-      background: #ff9c9c !important;
+      background: #ff9f9f !important;
       cursor: not-allowed;
     }
 
@@ -79,24 +90,23 @@
       border: 3px solid #005eff !important;
     }
 
-    /* BOTÓN REGRESAR */
-    .btn-volver {
-      width: 100%;
+    /* Botón volver */
+    .btn-azul {
       display: block;
-      margin: 35px auto 10px auto;
-      padding: 15px;
-      font-size: 18px;
-      font-weight: 600;
-      background: #5bbf9a;
+      margin: 30px auto 0;
+      padding: 12px 20px;
+      background: #005eff;
       color: white;
       border: none;
       border-radius: 10px;
+      font-size: 16px;
       cursor: pointer;
-      transition: 0.2s;
+      width: 250px;
+      text-align: center;
     }
 
-    .btn-volver:hover {
-      background: #4aa584;
+    .btn-azul:hover {
+      background: #0047c2;
     }
   </style>
 </head>
@@ -104,14 +114,14 @@
 <body>
 
   <div class="contenedor-cajones">
-    <img src="/assets/espacio-seguro.png" class="logo" style="display:block; margin:0 auto 10px auto;" />
+    <img src="/assets/espacio-seguro.png" class="logo" />
 
-    <h2 class="titulo">Cajones de Estacionamiento</h2>
-    <p class="subtitulo">Da clic para reservar, ocupar o liberar un espacio.</p>
+    <h2>Cajones (50 espacios)</h2>
+    <p class="descripcion">Da clic para <strong>reservar</strong>, <strong>ocupar</strong> o <strong>liberar</strong>.</p>
 
     <div id="gridCajones" class="grid-cajones"></div>
 
-    <button class="btn-volver" onclick="window.location.href='/screens/menu.html'">
+    <button class="btn-azul" onclick="window.location.href='/screens/menu.html'">
       Volver al Menú
     </button>
   </div>
