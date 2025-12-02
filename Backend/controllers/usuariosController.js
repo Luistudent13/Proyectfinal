@@ -63,13 +63,21 @@ exports.registrarUsuarioConVehiculo = async (req, res) => {
     ]
   );
 
-  // 2) Insertar vehículo
-  const idUsuario = rU.insertId;
-  await db.query(
-    `INSERT INTO vehiculos (Placa, Color, ID_Marca, ID_Usuario)
-     VALUES (?, ?, ?, ?)`,
-    [placaFinal, color || null, idMarca, idUsuario]
-  );
+
+// 2) Insertar vehículo
+const idUsuario = rU.insertId;
+
+// Normalizar marca recibida
+let marcaVehiculo = idMarca || 1;  // si no viene, default 1
+
+await db.query(
+  `INSERT INTO vehiculos (Placa, Color, ID_Marca, ID_Usuario)
+   VALUES (?, ?, ?, ?)`,
+  [placaFinal, color || null, marcaVehiculo, idUsuario]
+);
+
+
+
 
   res.status(201).json({ ok: true, ID_Usuario: idUsuario });
 };
