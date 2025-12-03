@@ -26,7 +26,7 @@ router.get("/disponibles", catchAsync(async (req, res) => {
 }));
 
 // ==============================
-//  OCUPADOS
+//  OCUPADOS (GENERAL)
 // ==============================
 router.get("/ocupados", catchAsync(async (req, res) => {
   const [rows] = await db.query(`
@@ -34,6 +34,22 @@ router.get("/ocupados", catchAsync(async (req, res) => {
     FROM cajones_estacionamiento
     WHERE ID_Estado = 2
   `);
+  res.json(rows[0]);
+}));
+
+// ========================================================
+//  ENDPOINT: /ocupados/discapacitados   <--- ¡NUEVO!
+//  Cuenta EXCLUSIVAMENTE los cajones azules ocupados
+// ========================================================
+router.get("/ocupados/discapacitados", catchAsync(async (req, res) => {
+  const [rows] = await db.query(`
+    SELECT COUNT(*) AS ocupados
+    FROM cajones_estacionamiento
+    WHERE ID_Estado = 2          -- 2 = Ocupado
+      AND Es_Discapacitado = 1   -- 1 = Es lugar azul
+  `);
+  
+  // Responde: { "ocupados": X }
   res.json(rows[0]);
 }));
 
@@ -138,7 +154,7 @@ router.get('/android/buscar/:matricula', async (req, res) => {
 
 // =============================================================
 //  ANDROID: BUSCAR POR PLACA (¡NUEVO! PARA LLENAR DATOS)
-//  Este devuelve el JSON exacto que me pediste.
+//  Este devuelve el JSON exacto para el autocompletado.
 // =============================================================
 router.get('/android/buscar-placa/:placa', async (req, res) => {
     const { placa } = req.params;
