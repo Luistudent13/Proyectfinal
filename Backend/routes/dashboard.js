@@ -15,14 +15,12 @@ const catchAsync = require("../middlewares/catchAsync");
 //  Obtiene la cantidad de cajones libres (ID_Estado = 1)
 // =====================================================================
 router.get("/disponibles", catchAsync(async (req, res) => {
-
   // Ejecuta consulta SQL para contar cuántos cajones están disponibles
   const [rows] = await db.query(`
     SELECT COUNT(*) AS disponibles
     FROM cajones_estacionamiento
     WHERE ID_Estado = 1
   `);
-
   // Envía la respuesta en formato JSON con el resultado
   res.json(rows[0]); // rows[0] contiene { disponibles: X }
 }));
@@ -65,10 +63,9 @@ router.get("/temporales", catchAsync(async (req, res) => {
 }));
 
 // ==============================
-//  GENERAL
+//  GENERAL (Resumen completo)
 // ==============================
 router.get("/general", catchAsync(async (req, res) => {
-
   const [[disponibles]] = await db.query(`
     SELECT COUNT(*) AS disponibles
     FROM cajones_estacionamiento
@@ -102,8 +99,9 @@ router.get("/general", catchAsync(async (req, res) => {
   });
 }));
 
-module.exports = router;
-
+// =============================================================
+//  ANDROID: BUSCAR POR MATRICULA (Tu código existente)
+// =============================================================
 router.get('/android/buscar/:matricula', async (req, res) => {
     const { matricula } = req.params;
 
@@ -137,3 +135,51 @@ router.get('/android/buscar/:matricula', async (req, res) => {
         res.status(500).json({ ok: false, error: error.message });
     }
 });
+
+// =============================================================
+//  ANDROID: BUSCAR POR PLACA (¡NUEVO! PARA LLENAR DATOS)
+//  Este devuelve el JSON exacto que me pediste.
+// =============================================================
+router.get('/android/buscar-placa/:placa', async (req, res) => {
+    const { placa } = req.params;
+
+    try {
+        const [rows] = await db.query(`
+            SELECT 
+                u.ID_Usuario,
+                u.Nombre_Completo,
+                u.Matricula,
+                u.ID_Tipo_Usuario,
+                u.Licenciatura,
+                u.Area_Empleado,
+                u.Evento_Asiste,
+                u.Horario,
+                u.Persona_Recoge,
+                u.Relacion_Estudiante,
+                u.Fecha_Registro,
+                v.ID_Vehiculo,   
+                v.Placa,
+                v.Color,
+                m.Marca
+            FROM usuarios u
+            JOIN vehiculos v ON u.ID_Usuario = v.ID_Usuario
+            LEFT JOIN marca_vehiculos m ON v.ID_Marca = m.ID_Marca
+            WHERE v.Placa = ?
+        `, [placa]);
+
+        if (rows.length === 0) {
+            // Android espera un 404 si no existe para saber que debe registrarlo
+            return res.status(404).json({ message: "No se encontró usuario con esa placa" });
+        }
+
+        // Devolvemos el objeto directo (sin {data: ...}) para que coincida con tu petición
+        res.json(rows[0]);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error en el servidor al buscar placa" });
+    }
+});
+
+// ¡IMPORTANTE! Esto debe ir SIEMPRE al final de todo
+module.exports = router;
