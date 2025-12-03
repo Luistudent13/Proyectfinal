@@ -44,6 +44,21 @@ exports.crearAcceso = async (req, res, next) => {
       [ID_Vehiculo, ID_Usuario, fechaHora, fecha]
     );
 
+        // Validar límite de cajones normales (46 máximo)
+    const [[countNormal]] = await db.query(`
+      SELECT COUNT(*) AS ocupados
+      FROM cajones_estacionamiento
+      WHERE Es_Discapacitado = 0 AND ID_Estado = 2
+    `);
+
+    if (countNormal.ocupados >= 46) {
+      return res.status(400).json({
+        ok: false,
+        message: "Ya no hay cajones disponibles para usuarios normales",
+        code: "LIMITE_CAJONES_NORMALES"
+      });
+    }
+
 
     //  🔥🔥🔥 BLOQUE QUE FALTABA — OCUPAR AUTOMÁTICAMENTE UN CAJÓN 🔥🔥🔥
     // Buscar un cajón disponible
