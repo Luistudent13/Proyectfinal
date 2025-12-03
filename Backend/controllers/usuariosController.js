@@ -77,8 +77,6 @@ await db.query(
 );
 
 
-
-
   res.status(201).json({ ok: true, ID_Usuario: idUsuario });
 };
 
