@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa de Estacionamiento</title>
+  
+  <link rel="stylesheet" href="/styles.css">
+
+  <style>
+    /* =========================================================
+       CORRECCIÓN DE LAYOUT (Importante para sobreescribir styles.css)
+       ========================================================= */
+    
+    /* 1. Romper el centrado vertical del body (que causa que no veas los primeros) */
+    body {
+      display: block !important;        /* Quita el display: flex del login */
+      height: auto !important;          /* Permite que la página crezca */
+      overflow-y: auto !important;      /* Activa la barra de scroll */
+      background: #f2f5f9 !important;   /* Fondo gris claro */
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    /* 2. Configurar el contenedor para que sea ancho */
+    .page-container {
+      width: 95% !important;            /* Usar casi todo el ancho de la pantalla */
+      max-width: 1200px !important;     /* Pero no exagerar en pantallas gigantes */
+      margin: 30px auto !important;     /* Centrado horizontalmente */
+      padding: 20px;
+      position: static !important;      /* Quitar posiciones absolutas si las hubiera */
+      transform: none !important;       /* Quitar transformaciones de centrado */
+      background: transparent !important;
+      box-shadow: none !important;      /* Quitar sombra de tarjeta de login si existe */
+    }
+
+    /* 3. Encabezado */
+    .header-zone {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .header-zone h2 {
+      margin: 10px 0;
+      color: #233347;
+    }
+
+    /* 4. Grid de Cajones (Ahora sí se verá como rejilla) */
+    .grid-cajones {
+      display: grid !important;
+      /* Esto crea columnas automáticas de mínimo 140px */
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+      gap: 15px;
+      width: 100%;
+    }
+
+    /* 5. Estilos de cada tarjeta de cajón */
+    .cajon {
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 15px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100px;
+    }
+
+    .cajon:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border-color: #aaa;
+    }
+
+    /* Colores por estado */
+    .disponible { background-color: #d1fae5 !important; border-color: #34d399 !important; color: #065f46; }
+    .ocupado    { background-color: #fee2e2 !important; border-color: #f87171 !important; color: #991b1b; }
+    .reservado  { background-color: #fef3c7 !important; border-color: #fbbf24 !important; color: #92400e; }
+
+    /* Botón flotante o fijo para volver */
+    .btn-volver-container {
+      margin-top: 40px;
+      text-align: center;
+      padding-bottom: 40px;
+    }
+    
+    .btn-volver {
+      background: #3b82f6;
+      color: white;
+      padding: 10px 25px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .btn-volver:hover { background: #2563eb; }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-container">
+    
+    <div class="header-zone">
+      <img src="/assets/espacio-seguro.png" alt="Logo" width="120">
+      <h2>Estado del Estacionamiento</h2>
+      <p>Selecciona un espacio para ver detalles.</p>
+    </div>
+
+    <div id="gridCajones" class="grid-cajones"></div>
+
+    <div class="btn-volver-container">
+      <button class="btn-volver" onclick="window.location.href='/screens/menu.html'">
+        Volver al Menú
+      </button>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <script src="/js/shared.js"></script>
+  
+  <script src="/js/cajones.js"></script>
+
+</body>
+</html>
